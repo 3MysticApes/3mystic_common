@@ -1,0 +1,59 @@
+[project]
+name = "tiki_common"
+version = "0.0.1"
+authors = [
+  { name="Ron Truex" },
+]
+description = "Common Library for for various tool sets"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+  "colorama; platform_system == 'Windows'",
+  "asyncio >= 3.4.3",
+  "python-dateutil >= 2.8.2",
+  "openpyxl >= 3.0.9",
+  "pycryptodomex >= 3.14.1",
+  "requests >= 2.27.1",
+  "boto3 >= 1.21.41",
+  "botocore >= 1.24.41",
+  "azure-cli-core >= 2.34.1",
+  "azure-identity >= 1.8.0",
+  "azure-mgmt-subscription >= 3.0.0",
+  "azure-mgmt-managementgroups >= 1.0.0",
+  "azure-mgmt-resourcegraph >= 8.0.0",
+  "azure-cli >= 2.34.1",
+  "azure-core >= 1.23.0",
+  "azure-common >= 1.1.28",
+  "azure-mgmt-costmanagement >= 3.0.0",
+  "hvac >= 1.0.2",
+  "pyhcl >= 0.4.4",
+  "polling2 >= 0.5.0",
+  "cryptography >= 38.0.3",
+  "typing-extensions >= 4.4.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/tikicoder/tiki_common"
+"Bug Tracker" = "https://github.com/tikicoder/tiki_common/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/tiki_common/__version__.py"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+  "/docs",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tiki_common"]
