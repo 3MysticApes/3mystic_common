@@ -19,3 +19,12 @@ class common_main:
     
     from domain.monitor.performance import performance
     self._performance_monitoring = performance()
+    return self.performance_monitoring(*args, **kwargs)
+  
+  def helper_json(self, *args, **kwargs):
+    if not hasattr(self, "_helper_json"):
+      return self._helper_json
+    
+    from domain.helpers.json import json
+    self._helper_json = json()
+    return self.helper_json(*args, **kwargs)
