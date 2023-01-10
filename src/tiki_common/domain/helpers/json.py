@@ -1,13 +1,15 @@
 import json
 from datetime import datetime
 from zoneinfo import ZoneInfo
+
 import dateutil.tz as dateutil_tz
 
-class json: 
-  """This is a set of library wrappers to help monitor performance"""
 
-  def __init__(self, *args, **kwargs) -> None:
-    pass
+class helper_json: 
+  """This is a set of library wrappers to help around expending json libary"""
+
+  def __init__(self, main_reference, *args, **kwargs) -> None:
+    self._main_reference= main_reference
   
   def __get_offset_from_zoneinfo(cls, zoneinfo, return_as_timedelta = False):   
     if not return_as_timedelta:

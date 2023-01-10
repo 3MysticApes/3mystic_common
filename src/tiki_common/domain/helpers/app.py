@@ -1,29 +1,16 @@
-import logging, sys
 
-class app: 
-  """This is a set of library wrappers to help monitor performance"""
 
-  def __init__(self, *args, **kwargs) -> None:
-    pass
+class helper_app: 
+  """This is a set of library wrappers to help general python apps"""
+
+  def __init__(self, main_reference, *args, **kwargs) -> None:
+    self._main_reference= main_reference
   
   def __is_type(cls, obj, type_check):
     try:
       return isinstance(obj, type_check)
     except:
       return type(obj) == type_check
-
-  def set_logger_level(cls, logger: logging.Logger, level):
-    logger.setLevel(level= level)
-
-  def add_handler_logger_stdout(cls, logger: logging.Logger, level):
-    handler = logging.StreamHandler(sys.stdout)
-    handler.set_name(f"Log STDOUT - {level}")
-    handler.setLevel(level)
-
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-    
-    logger.addHandler(handler)
   
   def get_output_levels(self):
     return {
@@ -74,3 +61,8 @@ class app:
 
     
     return True if output_level <= max_acceptable_level else False
+
+  def start_processing_time(self, dateStart = None):
+    if dateStart is None:
+      dateStart = self._main_reference.helper_type().datetime().get_utc_datetime()
+    return dateStart

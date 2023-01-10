@@ -1,7 +1,8 @@
-class performance: 
+class app_monitoring_performance: 
   """This is a set of library wrappers to help monitor performance"""
 
-  def __init__(self, features, *args, **kwargs) -> None:
+  def __init__(self, main_reference, features, *args, **kwargs) -> None:
+    self._main_reference= main_reference
     
     if features is None:
       return
