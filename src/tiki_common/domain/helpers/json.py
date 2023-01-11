@@ -17,6 +17,7 @@ class helper_json:
     
     return datetime.now(tz= zoneinfo).utcoffset()
 
+  # json_dumps_serializable_default
   def serializable_default(self, data, *args, **kwargs):
     if self.is_type(data, datetime) or self.is_type(data, type(datetime.now().time())):
       return data.isoformat()
@@ -31,3 +32,6 @@ class helper_json:
       raise
 
     return data
+  
+  def dumps(self, data, default_encoder_function = None, *args, **kwargs):   
+    return json.dumps(data, default= self.serializable_default if default_encoder_function is None else default_encoder_function)

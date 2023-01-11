@@ -64,3 +64,13 @@ class helper_type_common:
     )
     return self.datetime(*args, **kwargs)
   
+  def bool(self, *args, **kwargs):
+    if not hasattr(self, "_bool"):
+      return self._bool
+    
+    from domain.helpers.type.bool import helper_type_bool as helper
+    self._bool = helper(
+      main_reference= self._main_reference
+    )
+    return self.bool(*args, **kwargs)
+  

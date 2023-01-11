@@ -5,7 +5,8 @@ class helper_type_string:
   def __init__(self, main_reference, *args, **kwargs) -> None:
     self._main_reference= main_reference
   
-  def is_null_or_whitespace(self, strValue):
+  # isNullOrWhiteSpace
+  def is_null_or_whitespace(self, strValue, *args, **kwargs):
     if not strValue:
       return True
     

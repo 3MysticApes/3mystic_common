@@ -16,13 +16,13 @@ class helper_type_general:
     else:
       return float(n).is_integer()
   
-  def is_numeric(self, n):
+  def is_numeric(self, n, *args, **kwargs):
     try:
       return str(n).isnumeric()
     except:
       return False
   
-  def is_type(self, obj, type_check):
+  def is_type(self, obj, type_check, *args, **kwargs):
     if isinstance(type_check, list):
       for check in type_check:
         if self.is_type(obj= obj, type_check= check):
@@ -33,7 +33,7 @@ class helper_type_general:
     except:
       return type(obj) == type_check
   
-  def if_null_default(self, check_val, default_val, enforce_type = None):
+  def if_null_default(self, check_val, default_val, enforce_type = None, *args, **kwargs):
     if enforce_type is not None and not self.is_type(check_val, enforce_type):
       return default_val
 
@@ -42,7 +42,7 @@ class helper_type_general:
     
     return check_val
   
-  def copy_object(cls, object_copy, deep_copy = True):
+  def copy_object(cls, object_copy, deep_copy = True, *args, **kwargs):
     if object_copy is None:
       return None
 

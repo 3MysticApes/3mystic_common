@@ -6,7 +6,7 @@ class helper_app:
   def __init__(self, main_reference, *args, **kwargs) -> None:
     self._main_reference= main_reference
   
-  def __is_type(cls, obj, type_check):
+  def __is_type(cls, obj, type_check, *args, **kwargs):
     try:
       return isinstance(obj, type_check)
     except:
@@ -22,7 +22,7 @@ class helper_app:
     "suppress": 0
     }
   
-  def get_output_level(self, output_dictionary):
+  def get_output_level(self, output_dictionary, *args, **kwargs):
     output_output_level = output_dictionary.get("output_output_level") if output_dictionary.get("output_output_level") is not None else -1
     if output_output_level > -1:
       return output_output_level
@@ -41,7 +41,7 @@ class helper_app:
     
     return self.get_output_levels()["information"]
   
-  def show_output(self, output_level, output_dictionary):
+  def show_output(self, output_level, output_dictionary, *args, **kwargs):
     output_levels = self.get_output_levels()  
   
   
@@ -51,7 +51,7 @@ class helper_app:
 
     return True
   
-  def outputlevel_ok(self, output_level, max_acceptable_level):
+  def outputlevel_ok(self, output_level, max_acceptable_level, *args, **kwargs):
     output_levels = self.get_output_levels()  
     if self.__is_type(output_level, str):
       output_level = output_levels.get(output_level) if output_levels.get(output_level) is not None else output_levels.get("main")
@@ -62,7 +62,7 @@ class helper_app:
     
     return True if output_level <= max_acceptable_level else False
 
-  def start_processing_time(self, dateStart = None):
+  def start_processing_time(self, dateStart = None, *args, **kwargs):
     if dateStart is None:
       dateStart = self._main_reference.helper_type().datetime().get_utc_datetime()
     return dateStart

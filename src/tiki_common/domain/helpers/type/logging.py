@@ -8,17 +8,17 @@ class helper_type_logging:
   def __init__(self, main_reference, *args, **kwargs) -> None:
     self._main_reference= main_reference
   
-  def get_child_logger(cls, child_logger_name, logger: logging.Logger = None):
+  def get_child_logger(cls, child_logger_name, logger: logging.Logger = None, *args, **kwargs):
     if logger is None:
       import logging
       logger = logging.getLogger()
       
     return logger.getChild(child_logger_name)
 
-  def set_logger_level(cls, logger: logging.Logger, level):
+  def set_logger_level(cls, logger: logging.Logger, level, *args, **kwargs):
     logger.setLevel(level= level)
 
-  def add_handler_logger_stdout(cls, logger: logging.Logger, level):
+  def add_handler_logger_stdout(cls, logger: logging.Logger, level, *args, **kwargs):
     handler = logging.StreamHandler(sys.stdout)
     handler.set_name(f"Log STDOUT - {level}")
     handler.setLevel(level)

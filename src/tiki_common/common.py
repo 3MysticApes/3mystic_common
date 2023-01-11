@@ -6,14 +6,33 @@ class common_main:
     def __init__(self):
       pass
 
-  def __init__(self, logger = None, *args, **kwargs) -> None: 
+  def __init__(self, logger = None, config_path = None, *args, **kwargs) -> None: 
     self.logger = self.helper_type().logging().get_child_logger(
       child_logger_name= "common_lib_logger",
       logger= logger
     )
+    self.update_configuration(config_path= config_path)
     
+  def update_configuration(self, config_path, merge_existing = False, *args, **kwargs):
+    if self.helper_type().string().is_null_or_whitespace(config_path):
+      return
+    
+    self._config_data = {}
+    # Add load data code by path
 
+  def get_configuration(self, *args, **kwargs):
+    return self._config_data
   
+  def exception(self, *args, **kwargs):
+    if not hasattr(self, "_exception"):
+      return self._monitoring
+    
+    from domain.exception.common import exception_common as exception        
+    self._monitoring = exception(
+      main_reference= self, *args, **kwargs
+    )
+    return self.exception(*args, **kwargs)
+
   def app_monitoring(self, *args, **kwargs):
     if not hasattr(self, "_monitoring"):
       return self._monitoring
@@ -21,7 +40,7 @@ class common_main:
     from domain.app_monitoring.common import \
         app_monitoring_common as app_monitoring
     self._monitoring = app_monitoring(
-      main_reference= self
+      main_reference= self, *args, **kwargs
     )
     return self.performance_monitoring(*args, **kwargs)
   
@@ -31,17 +50,17 @@ class common_main:
     
     from domain.encryption import encryption_common as encryption
     self._helper_dictionary = encryption(
-      main_reference= self
+      main_reference= self, *args, **kwargs
     )
     return self.encryption(*args, **kwargs)
   
-  def helper_cmdb(self, *args, **kwargs):
-    if not hasattr(self, "_helper_cmdb"):
-      return self._helper_cmdb
+  def cmdb(self, *args, **kwargs):
+    if not hasattr(self, "_cmdb"):
+      return self._cmdb
     
-    from domain.helpers.cmdb import helper_cmdb as helper
-    self._helper_cmdb = helper(
-      main_reference= self
+    from domain.cmdb.common import cmdb_common as cmdb
+    self._cmdb = cmdb(
+      main_reference= self, *args, **kwargs
     )
     return self.helper_cmdb(*args, **kwargs)
   
@@ -51,7 +70,7 @@ class common_main:
     
     from domain.helpers.app import helper_app as helper
     self._helper_app = helper(
-      main_reference= self
+      main_reference= self, *args, **kwargs
     )
     return self.helper_app(*args, **kwargs)
   
@@ -61,7 +80,7 @@ class common_main:
     
     from domain.helpers.json import helper_json as helper
     self._helper_json = helper(
-      main_reference= self
+      main_reference= self, *args, **kwargs
     )
     return self.helper_json(*args, **kwargs)
   
@@ -71,6 +90,6 @@ class common_main:
     
     from domain.helpers.type.common import helper_type_common as helper
     self._helper_dictionary = helper(
-      main_reference= self
+      main_reference= self, *args, **kwargs
     )
     return self.helper_type(*args, **kwargs)
