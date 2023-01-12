@@ -1,11 +1,11 @@
-import abc
+from base_class.base_common import base
 
 
-class exception_base(abc.ABC): 
+class exception_base(base): 
   """This is a set of library wrappers to help create a cmdb"""
 
-  def __init__(self, main_reference, exception_type = "generic", *args, **kwargs) -> None:
-    self._main_reference= main_reference
+  def __init__(self, exception_type = "generic", *args, **kwargs) -> None:
+    super().__init__(*args, **kwargs)
     self._exception_type = exception_type.lower()
 
   def exception(self, message, name = None, *args, **kwargs):

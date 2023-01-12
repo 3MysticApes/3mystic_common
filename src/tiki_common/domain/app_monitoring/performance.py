@@ -1,8 +1,11 @@
-class app_monitoring_performance: 
+from base_class.base_common import base
+
+
+class app_monitoring_performance(base): 
   """This is a set of library wrappers to help monitor performance"""
 
-  def __init__(self, main_reference, features, *args, **kwargs) -> None:
-    self._main_reference= main_reference
+  def __init__(self, features, *args, **kwargs) -> None:
+    super().__init__(*args, **kwargs)
     
     if features is None:
       return
@@ -22,13 +25,21 @@ class app_monitoring_performance:
       return self._memory
     
     if raise_exception_not_init:
-      raise Exception("Memory tracing not defined")
+      raise self._main_reference.exception().exception(
+        exception_type = "generic"
+      ).type_error(
+        message = f"Memory tracing not defined"
+      )
     return None
 
   def startstop_tracemalloc(self, action = None, *args, **kwargs):
     memory_performance = self.memory_performance(raise_exception_not_init= False)
     if memory_performance is None:
-      raise Exception("Memory tracing not defined")
+      raise self._main_reference.exception().exception(
+        exception_type = "generic"
+      ).type_error(
+        message = f"Memory tracing not defined"
+      )
     if action is None:
       if memory_performance.is_tracing():
         return memory_performance.stop()
@@ -49,7 +60,11 @@ class app_monitoring_performance:
   def performance_monitoring_memory_snapshot(self, clear_tracing = False):    
     memory_performance = self.memory_performance(raise_exception_not_init= False)
     if memory_performance is None:
-      raise Exception("Memory tracing not defined")
+      raise self._main_reference.exception().exception(
+        exception_type = "generic"
+      ).type_error(
+        message = f"Memory tracing not defined"
+      )
 
     snapshot = memory_performance.take_snapshot()
     if clear_tracing:
@@ -59,7 +74,11 @@ class app_monitoring_performance:
   def performance_monitoring_memory(self, *args, **kwargs):
     memory_performance = self.memory_performance(raise_exception_not_init= False)
     if memory_performance is None:
-      raise Exception("Memory tracing not defined")
+      raise self._main_reference.exception().exception(
+        exception_type = "generic"
+      ).type_error(
+        message = f"Memory tracing not defined"
+      )
 
     return {
       "traced_memory": memory_performance.get_traced_memory(),

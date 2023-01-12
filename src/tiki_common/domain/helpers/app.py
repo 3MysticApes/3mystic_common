@@ -1,10 +1,12 @@
 
+from base_class.base_common import base
 
-class helper_app: 
+
+class helper_app(base): 
   """This is a set of library wrappers to help general python apps"""
 
-  def __init__(self, main_reference, *args, **kwargs) -> None:
-    self._main_reference= main_reference
+  def __init__(self, *args, **kwargs) -> None:
+    super().__init__(*args, **kwargs)
   
   def __is_type(cls, obj, type_check, *args, **kwargs):
     try:

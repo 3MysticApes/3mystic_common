@@ -1,9 +1,11 @@
+from base_class.base_common import base
 
-class cmdb_common: 
+
+class cmdb_common(base): 
   """This is a common set of methods and libraries"""
 
-  def __init__(self, main_reference, *args, **kwargs) -> None:
-    self._main_reference= main_reference
+  def __init__(self, *args, **kwargs) -> None:
+    super().__init__(*args, **kwargs)
     self._cmdb = {}
     self.__supported_cloud_source = ["aws", "azure"]
   

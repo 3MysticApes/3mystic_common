@@ -1,12 +1,14 @@
 import logging
 import sys
+from base_class.base_common import base
 
 
-class helper_type_logging: 
+
+class helper_type_logging(base): 
   """This is a set of library wrappers to help around expending dictionary libary"""
 
-  def __init__(self, main_reference, *args, **kwargs) -> None:
-    self._main_reference= main_reference
+  def __init__(self, *args, **kwargs) -> None:
+    super().__init__(*args, **kwargs)
   
   def get_child_logger(cls, child_logger_name, logger: logging.Logger = None, *args, **kwargs):
     if logger is None:

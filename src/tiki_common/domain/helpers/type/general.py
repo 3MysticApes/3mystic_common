@@ -1,11 +1,12 @@
 import copy
+from base_class.base_common import base
 
 
-class helper_type_general: 
+class helper_type_general(base): 
   """This is a set of general type helpers"""
 
-  def __init__(self, main_reference, *args, **kwargs) -> None:
-    self._main_reference= main_reference
+  def __init__(self, *args, **kwargs) -> None:
+    super().__init__(*args, **kwargs)
   
   def is_integer(self, n):
     try:

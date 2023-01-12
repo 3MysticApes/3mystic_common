@@ -84,6 +84,26 @@ class common_main:
     )
     return self.helper_json(*args, **kwargs)
   
+  def helper_parallel_processing(self, *args, **kwargs):
+    if not hasattr(self, "_helper_parallel_processing"):
+      return self._helper_parallel_processing
+    
+    from domain.helpers.parallel_processing import helper_parallel_processing as helper
+    self._helper_parallel_processing = helper(
+      main_reference= self, *args, **kwargs
+    )
+    return self.helper_json(*args, **kwargs)
+  
+  def helper_config(self, *args, **kwargs):
+    if not hasattr(self, "_helper_config"):
+      return self._helper_json
+    
+    from domain.helpers.config import helper_config as helper
+    self._helper_config = helper(
+      main_reference= self, *args, **kwargs
+    )
+    return self.helper_config(*args, **kwargs)
+  
   def helper_type(self, *args, **kwargs):
     if not hasattr(self, "_helper_type"):
       return self._helper_dictionary

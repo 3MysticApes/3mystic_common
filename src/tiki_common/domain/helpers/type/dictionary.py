@@ -1,10 +1,11 @@
+from base_class.base_common import base
 
 
-class helper_type_dictionary: 
+class helper_type_dictionary(base): 
   """This is a set of library wrappers to help around expending dictionary libary"""
 
-  def __init__(self, main_reference, *args, **kwargs) -> None:
-    self._main_reference= main_reference
+  def __init__(self, *args, **kwargs) -> None:
+    super().__init__(*args, **kwargs)
   
   def _merge_dictionary_find_main_dictionary_index(self, dicts, *args, **kwargs):
     if dicts[0] is not None:

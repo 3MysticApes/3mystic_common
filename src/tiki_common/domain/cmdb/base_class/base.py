@@ -1,12 +1,13 @@
 import abc
 import asyncio
+from base_class.base_common import base
 
 
-class cmdb_base(abc.ABC): 
+class cmdb_base(base): 
   """This is a set of library wrappers to help create a cmdb"""
 
-  def __init__(self, main_reference, *args, **kwargs) -> None:
-    self._main_reference= main_reference
+  def __init__(self, *args, **kwargs) -> None:
+    super().__init__(*args, **kwargs)
 
   def _get_default_columns(self, *args, **kwargs):
     return {

@@ -1,9 +1,11 @@
+from base_class.base_common import base
 
-class encryption_common: 
+
+class encryption_common(base): 
   """This is a common set of methods and libraries"""
 
-  def __init__(self, main_reference, *args, **kwargs) -> None:
-    self._main_reference= main_reference
+  def __init__(self, *args, **kwargs) -> None:
+    super().__init__(*args, **kwargs)
   
   
   def hash(self, hash_method, *args, **kwargs):

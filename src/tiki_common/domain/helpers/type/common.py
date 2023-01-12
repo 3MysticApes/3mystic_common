@@ -1,8 +1,11 @@
-class helper_type_common: 
+from base_class.base_common import base
+
+
+class helper_type_common(base): 
   """This is a common set of methods and libraries"""
 
-  def __init__(self, main_reference, *args, **kwargs) -> None:
-    self._main_reference= main_reference
+  def __init__(self, *args, **kwargs) -> None:
+    super().__init__(*args, **kwargs)
   
   def general(self, *args, **kwargs):
     if not hasattr(self, "_general"):

@@ -1,9 +1,11 @@
+from base_class.base_common import base
 
-class helper_type_string: 
+
+class helper_type_string(base): 
   """This is a set of library wrappers to help around expending string libary"""
 
-  def __init__(self, main_reference, *args, **kwargs) -> None:
-    self._main_reference= main_reference
+  def __init__(self, *args, **kwargs) -> None:
+    super().__init__(*args, **kwargs)
   
   # isNullOrWhiteSpace
   def is_null_or_whitespace(self, strValue, *args, **kwargs):

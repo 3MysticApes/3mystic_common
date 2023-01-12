@@ -1,13 +1,14 @@
 from datetime import datetime
 
 from dateutil import tz as dateutil_tz
+from base_class.base_common import base
 
 
-class helper_type_datetime: 
+class helper_type_datetime(base): 
   """This is a set of library wrappers to help around expending datetime libary"""
 
-  def __init__(self, main_reference, *args, **kwargs) -> None:
-    self._main_reference= main_reference
+  def __init__(self, *args, **kwargs) -> None:
+    super().__init__(*args, **kwargs)
   
   def convert_datetime_utc(self, custom_datetime, default_utctime = True, *args, **kwargs):   
     if custom_datetime.tzinfo is None:
