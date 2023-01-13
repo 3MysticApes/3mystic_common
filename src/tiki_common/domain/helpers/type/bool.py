@@ -19,7 +19,7 @@ class helper_type_bool(base):
         exception_type = "argument"
       ).type_error(
         name = "check_item",
-        message = f"Unknown Boolean ({type(check_item)}) / {check_item}"
+        message = f"Unknown type for comparison ({type(check_item)})"
       )
 
     item = item.lower()

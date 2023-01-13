@@ -9,10 +9,16 @@ class cmdb_base(base):
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(*args, **kwargs)
 
-  def _get_default_columns(self, *args, **kwargs):
+  def _get_default_columns(self, include_source = False, include_id = False, *args, **kwargs):
+    prepend = []
+    if include_source:
+      prepend.append("Source")
+    if include_id:
+      prepend.append("Id")
+
     return {
-      "no_region": ["Account ID", "Account Name"],
-      "region": ["Account ID", "Account Name", "Region" ]
+      "no_region": prepend + ["Account ID", "Account Name"],
+      "region": prepend + ["Account ID", "Account Name", "Region" ]
     }
 
   # get_cmdb_source
@@ -183,6 +189,85 @@ class cmdb_base(base):
         {} if not hasattr(self, "_custom_require_tags") else self._custom_require_tags
       ]
     )
-      
+  
+  # init_report_workbook_cmdb_header_row
+  def init_report_workbook_header_row(self, datasheet, inventory_data_column_info, *args, **kwargs):
+    raise self._main_reference.exception().exception(
+      exception_type = "function"
+    ).not_implemented(
+      name = "compare_account_ids",
+      message = f"Not Implemented"
+    )
 
+  # init_report_workbook_cmdb
+  def init_report_workbook(self, InventoryDataSheet, inventory_data_column_info, lambda_create, include_deleted_column = False, *args, **kwargs):
+    raise self._main_reference.exception().exception(
+      exception_type = "function"
+    ).not_implemented(
+      name = "compare_account_ids",
+      message = f"Not Implemented"
+    )
+  
+  def get_workbook_column_header_display_dict(self, column_display, default, existing_header = None, *args, **kwargs):
+    if self._main_reference.helper_type().general().is_type(column_display, str):
+      return column_display
+
+    if existing_header is not None and "search" in column_display and callable(column_display.get("search")):
+      return existing_header if column_display.get("search")(existing_header) else default
     
+    if "display" in column_display:
+      return column_display.get("display")
+    
+    raise Exception(f"unknown column_display_dict - {self._main_reference.helper_json().dumps(data= column_display)}")
+  
+  def get_workbook_column_header_display(self, inventory_data_column_info_column, display_key = "default", existing_header = None, *args, **kwargs):
+    if self._main_reference.helper_type().general().is_type(inventory_data_column_info_column["display"], str):
+      return inventory_data_column_info_column["display"]
+
+    if self._main_reference.helper_type().general().is_type(inventory_data_column_info_column["display"], dict):      
+      if display_key in inventory_data_column_info_column["display"]:      
+        return self.get_workbook_column_header_display_dict(column_display = inventory_data_column_info_column["display"].get(display_key), default = inventory_data_column_info_column["display"]["default"], existing_header = existing_header)
+        
+      return inventory_data_column_info_column["display"]["default"]
+    
+    raise Exception(f"unknown inventory_data_column_info_column - {self._main_reference.helper_json().dumps(inventory_data_column_info_column)}")
+  
+  def pre_init_report_workbook(self, *args, **kwargs):
+    raise self._main_reference.exception().exception(
+      exception_type = "function"
+    ).not_implemented(
+      name = "compare_account_ids",
+      message = f"Not Implemented"
+    )
+  
+  def init_report_workbook(self, InventoryDataSheet, inventory_data_column_info, lambda_create, *args, **kwargs):
+    raise self._main_reference.exception().exception(
+      exception_type = "function"
+    ).not_implemented(
+      name = "compare_account_ids",
+      message = f"Not Implemented"
+    )
+  
+  def get_tag_report_columns(self, InventoryDataSheet, *args, **kwargs):
+    raise self._main_reference.exception().exception(
+      exception_type = "function"
+    ).not_implemented(
+      name = "compare_account_ids",
+      message = f"Not Implemented"
+    )
+
+  def get_default_report_columns(self, InventoryDataSheet, *args, **kwargs):
+    raise self._main_reference.exception().exception(
+      exception_type = "function"
+    ).not_implemented(
+      name = "compare_account_ids",
+      message = f"Not Implemented"
+    )
+
+  def get_default_report_columns_cmdb(self, InventoryDataSheet, *args, **kwargs):
+    raise self._main_reference.exception().exception(
+      exception_type = "function"
+    ).not_implemented(
+      name = "compare_account_ids",
+      message = f"Not Implemented"
+    )

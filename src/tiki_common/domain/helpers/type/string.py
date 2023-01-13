@@ -1,4 +1,5 @@
 from base_class.base_common import base
+import re
 
 
 class helper_type_string(base): 
@@ -16,3 +17,13 @@ class helper_type_string(base):
       return True
     
     return False
+  
+  def split_string(self, string_value, trim_data = True, remove_empty = True, split_value = "[,;]"):
+    split_data = re.split(split_value, string_value)
+    if not remove_empty:
+      return split_data
+      
+    if not trim_data:
+      return [item for item in split_data if not self.is_null_or_whitespace(item)]
+
+    return [item.strip() for item in split_data if not self.is_null_or_whitespace(item)]
