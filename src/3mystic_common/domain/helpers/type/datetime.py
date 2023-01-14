@@ -13,31 +13,38 @@ class helper_type_datetime(base):
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(*args, **kwargs)
   
-  # convert_datetime_utc
-  def convert_to_utc(self, custom_datetime, default_utctime = True, *args, **kwargs):   
-    if custom_datetime.tzinfo is None:
-      custom_datetime = (custom_datetime.replace(tzinfo=dateutil_tz.tzutc() if default_utctime else dateutil_tz.tzlocal()))
-          
-    return custom_datetime.astimezone(dateutil_tz.tzutc())
-  
   # get_utc_datetime
-  def get_utc(self, *args, **kwargs):    
-    return self.convert_to_utc(custom_datetime=datetime.utcnow(), default_utctime= True)
+  # get_utc
+  def get(self, time_zone = "utc", *args, **kwargs):    
+    utc = self.convert_to_utc(dt=datetime.utcnow(), default_utctime= True)
+    return utc.astimezone()
+  
+  def get_epoch(self, *args, **kwargs):    
+    return datetime.utcfromtimestamp(0)
+
+  # convert_datetime_utc
+  def convert_to_utc(self, dt, default_utctime = True, *args, **kwargs):   
+    if dt.tzinfo is None:
+      dt = (dt.replace(tzinfo=dateutil_tz.tzutc() if default_utctime else dateutil_tz.tzlocal()))
+          
+    return dt.astimezone(dateutil_tz.tzutc())
   
   def datetime_as_string(self, datetime_format = "%Y%M%d%H%M%S", datetime_to_format = None, *args, **kwargs):    
     if datetime_to_format is None:
-      datetime_to_format = self.get_utc()
+      datetime_to_format = self.get()
     
     return datetime_to_format.strftime(datetime_format)
   
-  def get_tzinfo_from_datetime(self, check_datetime, default_tz, *args, **kwargs):
+  # get_tzinfo_from_datetime
+  def get_tzinfo(self, check_datetime, default_tz, *args, **kwargs):
     
     if check_datetime.tzinfo is not None:
       return check_datetime.tzinfo
     
-    return self.get_tzinfo(timezone= default_tz)
+    return self.get_timezone(timezone= default_tz)
 
-  def get_tzinfo(self, timezone, default_utc = True, *args, **kwargs):
+  # get_tzinfo
+  def get_timezone(self, timezone, default_utc = True, *args, **kwargs):
     if not self._main_reference.helper_type().general().is_type(timezone, str):
       return dateutil_tz.tzutc() if default_utc else dateutil_tz.tzlocal()
       
@@ -68,7 +75,7 @@ class helper_type_datetime(base):
         raise Exception("missing am/pm indicator")
       return time_str
     
-    time_parts = self._main_reference.helper_type().string().split_string(string_value=time_str.rstrip(" amp"), split_value=":")
+    time_parts = self._main_reference.helper_type().string().split(string_value=time_str.rstrip(" amp"), split_value=":")
     for idx,part in enumerate(time_parts):
       time_parts[idx]=int(part)
     
@@ -100,43 +107,53 @@ class helper_type_datetime(base):
     return datetime.fromisoformat(iso_datetime_str.replace('Z', '+00:00'))
 
   # convert_datetime_utc
-  def convert_utc(self, custom_datetime, default_utctime = True):   
-    if custom_datetime.tzinfo is None:
-      custom_datetime = (custom_datetime.replace(tzinfo=dateutil_tz.tzutc() if default_utctime else dateutil_tz.tzlocal()))
+  def convert_utc(self, dt, default_utctime = True):   
+    if dt.tzinfo is None:
+      dt = (dt.replace(tzinfo=dateutil_tz.tzutc() if default_utctime else dateutil_tz.tzlocal()))
           
-    return custom_datetime.astimezone(dateutil_tz.tzutc())
+    return self.convert_timezone(
+      dt= dt,
+      timezone = "utc"
+    )
   
   def set_tzinfo(self, dt, timezone = "utc", force_replace = False, *args, **kwargs):    
     
     if dt.tzinfo is not None and not force_replace:
-      dt = dt.astimezone(self.get_tzinfo(timezone))
+      dt = dt.astimezone(self.get_timezone(timezone))
       return dt
 
-    dt =  dt.replace(tzinfo=self.get_tzinfo(timezone))
+    dt =  dt.replace(tzinfo=self.get_timezone(timezone))
     return dt
 
 
   # convert_datetime
   def convert_timezone(self, dt = None, timezone = None, base_timezone = "utc", *args, **kwargs):    
     if dt is None:
-      dt = self.get_utc()
+      dt = self.get()
     
-    dt_timezone = self.get_tzinfo_from_datetime(check_datetime= dt, default_tz= base_timezone)
+    dt_timezone = self.get_tzinfo(check_datetime= dt, default_tz= base_timezone)
     self.set_tzinfo(dt= dt, timezone=dt_timezone, force_replace= True)
-    return dt.astimezone(timezone) if dt_timezone != base_timezone else dt
+    timezone = self.get_timezone(timezone= timezone)
+    return dt.astimezone(timezone) 
 
-  def remove_tzinfo_datetime(self, custom_datetime, default_utctime = True, *args, **kwargs):         
-    return self.convert_to_utc(custom_datetime= custom_datetime, default_utctime= default_utctime).replace(tzinfo=None)
+  # remove_tzinfo_datetime
+  def remove_tzinfo(self, dt, default_utctime = True, *args, **kwargs):         
+    return self.convert_to_utc(dt= dt, default_utctime= default_utctime).replace(tzinfo=None)
 
-  def convert_datetime_local(self, dt, *args, **kwargs):
+  # convert_datetime_local
+  def convert_local(self, dt, *args, **kwargs):
     if dt is None:
-      dt = self.get_utc()
+      dt = self.get()
     
-    dt_timezone = self.get_tzinfo_from_datetime(check_datetime= dt, default_tz= None)
+    dt_timezone = self.get_tzinfo(check_datetime= dt, default_tz= None)
     self.set_tzinfo(dt= dt, timezone=dt_timezone, force_replace= True)
-    return dt.astimezone(dateutil_tz.tzlocal())
+    return self.convert_timezone(
+      dt= dt,
+      timezone = "local"
+    )
   
-  def datetime_ticks_as_seconds(self, dt, tick_startdate = datetime(year= 1, month= 1, day= 1, hour= 0, minute= 0, tzinfo= dateutil_tz.tzutc()), *args, **kwargs):
+  # datetime_ticks_as_seconds
+  def ticks_as_seconds(self, dt, tick_startdate = datetime(year= 1, month= 1, day= 1, hour= 0, minute= 0, tzinfo= dateutil_tz.tzutc()), *args, **kwargs):
     dt = self.convert_to_utc(dt)
     if tick_startdate is None:
       tick_startdate = datetime(year= 1, month= 1, day= 1, hour= 0, minute= 0, tzinfo= dateutil_tz.tzutc())
@@ -144,5 +161,27 @@ class helper_type_datetime(base):
     tick_startdate = self.convert_to_utc(tick_startdate)
     return (dt - tick_startdate).total_seconds()
 
-  def datetime_ticks(self, dt, tick_startdate = datetime(year= 1, month= 1, day= 1, hour= 0, minute= 0, tzinfo= dateutil_tz.tzutc()), *args, **kwargs):
+  # datetime_ticks
+  def ticks(self, dt, tick_startdate = datetime(year= 1, month= 1, day= 1, hour= 0, minute= 0, tzinfo= dateutil_tz.tzutc()), *args, **kwargs):
     return self.datetime_ticks_as_seconds(dt= dt, tick_startdate= tick_startdate) * 10**7
+  
+  def isTokenExpired_Now(self, compare_datetime, buffer_delta = timedelta(seconds=300)):   
+    return (self.convert_utc(compare_datetime) <= (self.convert_utc(datetime.now()) + buffer_delta))
+
+  # isTokenExpired_Duration
+  def is_token_expired(self, token_life_duration, start_time = None, buffer_delta = timedelta(seconds=60), *args, **kwargs):  
+    if start_time is None:
+      start_time = self.get()
+    return (start_time + token_life_duration) <= (self.get() + buffer_delta)
+  
+  # isTokenExpiredEpoch_Duration
+  def is_token_expired_epoch(self, token_life_duration, start_time = None, buffer_delta = timedelta(seconds=300), *args, **kwargs):  
+    if start_time is None:
+      start_time = self.get_epoch()
+    return (start_time + token_life_duration) <= (datetime.utcnow() + buffer_delta)
+  
+  # GetTokenExpiredEpoch_Duration
+  def GetTokenExpiredEpoch_Duration(self, token_life_duration, start_time = None):  
+    if start_time is None:
+      start_time = self.get_epoch()
+    return (start_time + token_life_duration)

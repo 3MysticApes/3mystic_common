@@ -74,6 +74,16 @@ class common_main:
     )
     return self.helper_app(*args, **kwargs)
   
+  def helper_path(self, *args, **kwargs):
+    if not hasattr(self, "_helper_path"):
+      return self._helper_path
+    
+    from domain.helpers.json import helper_path as helper
+    self._helper_path = helper(
+      main_reference= self, *args, **kwargs
+    )
+    return self.helper_path(*args, **kwargs)
+  
   def helper_json(self, *args, **kwargs):
     if not hasattr(self, "_helper_json"):
       return self._helper_json

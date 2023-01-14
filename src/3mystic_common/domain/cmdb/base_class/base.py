@@ -1,13 +1,33 @@
 import abc
 import asyncio
 from base_class.base_common import base
-
+from openpyxl import Workbook
 
 class cmdb_base(base): 
   """This is a set of library wrappers to help create a cmdb"""
 
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(*args, **kwargs)
+
+  def init_workbook(self, *args, **kwargs):
+    workbook = Workbook()
+
+    while len(workbook.sheetnames) > 0:
+      workbook.remove(workbook[workbook.sheetnames[0]])
+    
+    return workbook
+
+  def _get_default_columns(self, include_source = False, include_id = False, *args, **kwargs):
+    prepend = []
+    if include_source:
+      prepend.append("Source")
+    if include_id:
+      prepend.append("Id")
+
+    return {
+      "no_region": prepend + ["Account ID", "Account Name"],
+      "region": prepend + ["Account ID", "Account Name", "Region" ]
+    }
 
   def _get_default_columns(self, include_source = False, include_id = False, *args, **kwargs):
     prepend = []
@@ -272,17 +292,9 @@ class cmdb_base(base):
       message = f"Not Implemented"
     )
 
+  # get_report_default_row_cmdb
   @abc.abstractmethod
   def get_report_default_row(self, *args, **kwargs):
-    raise self._main_reference.exception().exception(
-        exception_type = "function"
-      ).not_implemented(
-        name = "generate_resource_tags_csv",
-        message = f"Not Implemented"
-      )
-  
-  @abc.abstractmethod
-  def get_report_default_row_cmdb(self, *args, **kwargs):
     raise self._main_reference.exception().exception(
         exception_type = "function"
       ).not_implemented(
@@ -299,15 +311,48 @@ class cmdb_base(base):
         message = f"Not Implemented"
       )
 
-  def save_report(self, report_dir, report_name, save_lambda, show_output = True):
-    date_now = datetime.date(datetime.now())
+  # save_report
+  def save_report(self, report_dir, report_name, workbook, show_output = True):
+    date_now = self._main_reference.helper_type().datetime().get(time_zone = "local")
 
-    report_name = report_name.format(date_now)
-    report_directory_path_info = Path("{}/".format(report_dir)).resolve()    
-    report_path = "{}/{}".format(str(report_directory_path_info), report_name)
+    report_name = report_name.format(self._main_reference.helper_type().datetime().datetime_as_string(datetime_format = "%Y%M%d%H%M", datetime_format = date_now))
+    # report_directory_path_info = Path("{}/".format(report_dir)).resolve()    
+    report_directory_path_info = self._main_reference.helper_path().get(path = f"{report_dir}/")
+    report_path = report_directory_path_info.joinpath(f"{report_name}")
+    
     if not report_directory_path_info.exists():
       report_directory_path_info.mkdir(parents=True, exist_ok=True)
     
     if show_output:
-      print("Report will be saved @ {}".format(str(report_path)))
-    save_lambda(report_path)
+      print(f"Report will be saved @ {report_path.absolute()}")
+    
+    workbook.save(report_path.absolute())
+  
+  def generate_data_item(self, item, data_key, InventoryDataSheet, inventory_data_column_info, tags = None, raw_item = None):
+    if tags is None:
+      tags = item.get("Tags") if item.get("Tags") is not None else item.get("tags")
+    
+    
+    if item.get("Tags") is None:
+      item["Tags"] = tags
+
+    extra_account = item.get("extra_account")
+    extra_region = item.get("extra_region")
+    extra_resourcegroups = item.get("extra_resourcegroups")
+    if raw_item is not None:
+      item["extra_raw_item"] = raw_item
+      extra_account = raw_item.get("extra_account")
+      extra_region = raw_item.get("extra_region")
+      extra_resourcegroups = raw_item.get("extra_resourcegroups")
+    
+    return {
+      "raw_item": item,
+      "default_columns": self.get_report_default_row(account=extra_account, resource= raw_item if raw_item is not None else item,  region=extra_region, InventoryDataSheet=InventoryDataSheet[data_key], include_cmdb= include_cmdb, resource_groups = extra_resourcegroups),
+      "tags_columns":{
+        "InventoryDataSheet": InventoryDataSheet[data_key],
+        "tags": tags
+      },
+      "data":{
+        column:inventory_data_column_info[data_key][column]["handler"](item) for column in inventory_data_column_info[data_key]
+      }
+    }

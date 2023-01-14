@@ -1,7 +1,6 @@
 from pathlib import Path  
 from base_class.base_common import base
 
-
 class helper_path(base): 
   """This is a set of library wrappers to help around expending json libary"""
 
@@ -9,7 +8,7 @@ class helper_path(base):
     super().__init__(*args, **kwargs)
   
   # report_directory
-  def get_path(self, path = None, *args, **kwargs)->Path:
+  def get(self, path = None, *args, **kwargs)->Path:
     if not self._main_reference.helper_type().general().is_type(path, str):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
@@ -27,4 +26,9 @@ class helper_path(base):
       )
     
     return Path(path)
+  
+  def expandpath_user(self, path) -> Path:
+    return self.get(path).expanduser()
+  
+  
     
