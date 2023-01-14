@@ -1,5 +1,5 @@
 [project]
-name = "tiki_common"
+name = "3mystic_common"
 version = "0.0.1"
 authors = [
   { name="Ron Truex" },
@@ -39,15 +39,15 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/tikicoder/tiki_common"
-"Bug Tracker" = "https://github.com/tikicoder/tiki_common/issues"
+"Homepage" = "https://github.com/tikicoder/3mystic_common"
+"Bug Tracker" = "https://github.com/tikicoder/3mystic_common/issues"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.version]
-path = "src/tiki_common/__version__.py"
+path = "src/3mystic_common/__version__.py"
 
 [tool.hatch.build.targets.sdist]
 exclude = [
@@ -56,4 +56,4 @@ exclude = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/tiki_common"]
+packages = ["src/3mystic_common"]

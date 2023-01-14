@@ -271,3 +271,43 @@ class cmdb_base(base):
       name = "compare_account_ids",
       message = f"Not Implemented"
     )
+
+  @abc.abstractmethod
+  def get_report_default_row(self, *args, **kwargs):
+    raise self._main_reference.exception().exception(
+        exception_type = "function"
+      ).not_implemented(
+        name = "generate_resource_tags_csv",
+        message = f"Not Implemented"
+      )
+  
+  @abc.abstractmethod
+  def get_report_default_row_cmdb(self, *args, **kwargs):
+    raise self._main_reference.exception().exception(
+        exception_type = "function"
+      ).not_implemented(
+        name = "generate_resource_tags_csv",
+        message = f"Not Implemented"
+      )
+  
+  @abc.abstractmethod
+  def get_account_environment(self, *args, **kwargs):
+    raise self._main_reference.exception().exception(
+        exception_type = "function"
+      ).not_implemented(
+        name = "generate_resource_tags_csv",
+        message = f"Not Implemented"
+      )
+
+  def save_report(self, report_dir, report_name, save_lambda, show_output = True):
+    date_now = datetime.date(datetime.now())
+
+    report_name = report_name.format(date_now)
+    report_directory_path_info = Path("{}/".format(report_dir)).resolve()    
+    report_path = "{}/{}".format(str(report_directory_path_info), report_name)
+    if not report_directory_path_info.exists():
+      report_directory_path_info.mkdir(parents=True, exist_ok=True)
+    
+    if show_output:
+      print("Report will be saved @ {}".format(str(report_path)))
+    save_lambda(report_path)
