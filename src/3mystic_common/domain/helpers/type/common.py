@@ -8,7 +8,7 @@ class helper_type_common(base):
     super().__init__(*args, **kwargs)
   
   def general(self, *args, **kwargs):
-    if not hasattr(self, "_general"):
+    if hasattr(self, "_general"):
       return self._general
     
     from domain.helpers.type.general import helper_type_general as helper
@@ -18,7 +18,7 @@ class helper_type_common(base):
     return self.general(*args, **kwargs)
   
   def logging(self, *args, **kwargs):
-    if not hasattr(self, "_logging"):
+    if hasattr(self, "_logging"):
       return self._logging
     
     from domain.helpers.type.logging import helper_type_logging as helper
@@ -28,7 +28,7 @@ class helper_type_common(base):
     return self.logging(*args, **kwargs)
 
   def string(self, *args, **kwargs):
-    if not hasattr(self, "_string"):
+    if hasattr(self, "_string"):
       return self._string
     
     from domain.helpers.type.string import helper_type_string as helper
@@ -38,7 +38,7 @@ class helper_type_common(base):
     return self.string(*args, **kwargs)
   
   def dictionary(self, *args, **kwargs):
-    if not hasattr(self, "_dictionary"):
+    if hasattr(self, "_dictionary"):
       return self._dictionary
     
     from domain.helpers.type.dictionary import helper_type_dictionary as helper
@@ -48,7 +48,7 @@ class helper_type_common(base):
     return self.dictionary(*args, **kwargs)
   
   def list(self, *args, **kwargs):
-    if not hasattr(self, "_list"):
+    if hasattr(self, "_list"):
       return self._list
     
     from domain.helpers.type.list import helper_type_list as helper
@@ -58,7 +58,7 @@ class helper_type_common(base):
     return self.list(*args, **kwargs)
   
   def datetime(self, *args, **kwargs):
-    if not hasattr(self, "_datetime"):
+    if hasattr(self, "_datetime"):
       return self._datetime
     
     from domain.helpers.type.datetime import helper_type_datetime as helper
@@ -68,7 +68,7 @@ class helper_type_common(base):
     return self.datetime(*args, **kwargs)
   
   def bool(self, *args, **kwargs):
-    if not hasattr(self, "_bool"):
+    if hasattr(self, "_bool"):
       return self._bool
     
     from domain.helpers.type.bool import helper_type_bool as helper

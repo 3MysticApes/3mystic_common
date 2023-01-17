@@ -156,14 +156,13 @@ class cmdb_base(base):
     )
   
   def get_custom_require_tags(self, *args, **kwargs):
-    if not hasattr(self, "_custom_require_tags"):
-      return None
+    if hasattr(self, "_custom_require_tags"):
+      return self._custom_require_tags
     
-    return self._custom_require_tags
+    self._custom_require_tags = {}
+    return self.get_custom_require_tags(*args, **kwargs)
 
   def add_custom_require_tags(self, custom_require_tags, merge_if_existing = True, *args, **kwargs):
-    if not hasattr(self, "_custom_require_tags"):
-      self._custom_require_tags = {}
     
     if not self._main_reference.helper_type().general().is_type(custom_require_tags, dict):
       raise self._main_reference.exception().exception(
@@ -174,22 +173,25 @@ class cmdb_base(base):
       )
 
     if merge_if_existing:
-      self._main_reference.helper_type().dictionary().merge_dictionary(
+      self._custom_require_tags = self._main_reference.helper_type().dictionary().merge_dictionary(
         [
-          self._custom_require_tags,
+          {},
+          self.get_custom_require_tags(),
           custom_require_tags
         ]
       )
       return self.get_custom_require_tags()
     
+    for custom_tag_key, custom_tag_value in custom_require_tags.items():
+      self._custom_require_tags[custom_tag_key] = custom_tag_value
+    
+    return self.get_custom_require_tags()
+    
 
 
   
-  def remove_custom_require_tags(self, custom_require_tag_key, raise_exception = False, *args, **kwargs):
-    if not hasattr(self, "_custom_require_tags"):
-      return
-    
-    if custom_require_tag_key not in self._custom_require_tags:
+  def remove_custom_require_tags(self, custom_require_tag_key, raise_exception = False, *args, **kwargs):    
+    if custom_require_tag_key not in self.get_custom_require_tags():
       if raise_exception:
         raise self._main_reference.exception().exception(
           exception_type = "generic"
@@ -199,14 +201,14 @@ class cmdb_base(base):
         )
       return None
     
-    self._custom_require_tags.pop(custom_require_tag_key)
+    return self._custom_require_tags.pop(custom_require_tag_key)
 
   def required_tag_names(self, *args, **kwargs):
     return self._main_reference.helper_type().dictionary().merge_dictionary(
       [
         {}, 
         {} if self._main_reference.get_configuration().get("cmdb") is None else self._main_reference.get_configuration().get("cmdb").get("require_tags"),
-        {} if not hasattr(self, "_custom_require_tags") else self._custom_require_tags
+        self.get_custom_require_tags()
       ]
     )
   

@@ -9,7 +9,7 @@ class app_monitoring_common(base):
   
   
   def performance(self, *args, **kwargs):
-    if not hasattr(self, "_performance"):
+    if hasattr(self, "_performance"):
       return self._performance
     
     from domain.app_monitoring.performance import \

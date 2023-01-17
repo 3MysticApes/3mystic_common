@@ -16,9 +16,12 @@ class app_monitoring_performance(base):
   
   def __enable_feature_memory(self, features, **kwargs):
     if features.get("memory") == True:
+      if hasattr(self, "_memory"):
+       return self._memory
+       
       import tracemalloc
-      if not hasattr(self, "_memory"):
-       self._memory = tracemalloc
+      self._memory = tracemalloc
+      return self.__enable_feature_memory(features=features, **kwargs )
 
   def memory_performance(self, raise_exception_not_init = True, **kwargs):
     if hasattr(self, "_memory"):
