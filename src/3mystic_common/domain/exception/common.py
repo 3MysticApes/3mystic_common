@@ -5,7 +5,7 @@ class exception_common(base):
   """This is a common set of methods and libraries"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= "exception", *args, **kwargs)
 
     from domain.exception.generic import exception_generic as exception
     self._exception = {

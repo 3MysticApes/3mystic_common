@@ -5,7 +5,7 @@ class hashi_common(base):
   """This is a common set of methods and libraries"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= f"hashi", *args, **kwargs)
   
   
   def vault(self, *args, **kwargs):

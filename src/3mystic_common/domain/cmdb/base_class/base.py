@@ -47,6 +47,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).not_implemented(
+      logger = self.logger,
       name = "get_source",
       message = f"Not Implemented"
     )
@@ -57,6 +58,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).not_implemented(
+      logger = self.logger,
       name = "get_resource_groups",
       message = f"Not Implemented"
     )
@@ -98,6 +100,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).not_implemented(
+      logger = self.logger,
       name = "compare_account_ids",
       message = f"Not Implemented"
     )
@@ -118,6 +121,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
         exception_type = "function"
       ).not_implemented(
+        logger = self.logger,
         name = "generate_resource_tags_csv",
         message = f"Not Implemented"
       )
@@ -130,6 +134,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).not_implemented(
+      logger = self.logger,
       name = "generate_tag_columns",
       message = f"Not Implemented"
     )
@@ -142,6 +147,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).not_implemented(
+      logger = self.logger,
       name = "generate_tag_columns_basic",
       message = f"Not Implemented"
     )
@@ -168,6 +174,7 @@ class cmdb_base(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
+        logger = self.logger,
         name = "custom_require_tags",
         message = f"custom_require_tags is of type {type(custom_require_tags)}"
       )
@@ -196,6 +203,7 @@ class cmdb_base(base):
         raise self._main_reference.exception().exception(
           exception_type = "generic"
         ).key_error(
+          logger = self.logger,
           name = "custom_require_tags",
           message = f"key not found: {custom_require_tag_key}"
         )
@@ -217,6 +225,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).not_implemented(
+      logger = self.logger,
       name = "compare_account_ids",
       message = f"Not Implemented"
     )
@@ -226,6 +235,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).not_implemented(
+      logger = self.logger,
       name = "compare_account_ids",
       message = f"Not Implemented"
     )
@@ -258,6 +268,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).not_implemented(
+      logger = self.logger,
       name = "compare_account_ids",
       message = f"Not Implemented"
     )
@@ -266,6 +277,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).not_implemented(
+      logger = self.logger,
       name = "compare_account_ids",
       message = f"Not Implemented"
     )
@@ -274,6 +286,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).not_implemented(
+      logger = self.logger,
       name = "compare_account_ids",
       message = f"Not Implemented"
     )
@@ -282,6 +295,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).not_implemented(
+      logger = self.logger,
       name = "compare_account_ids",
       message = f"Not Implemented"
     )
@@ -290,6 +304,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).not_implemented(
+      logger = self.logger,
       name = "compare_account_ids",
       message = f"Not Implemented"
     )
@@ -300,6 +315,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
         exception_type = "function"
       ).not_implemented(
+        logger = self.logger,
         name = "generate_resource_tags_csv",
         message = f"Not Implemented"
       )
@@ -309,6 +325,7 @@ class cmdb_base(base):
     raise self._main_reference.exception().exception(
         exception_type = "function"
       ).not_implemented(
+        logger = self.logger,
         name = "generate_resource_tags_csv",
         message = f"Not Implemented"
       )

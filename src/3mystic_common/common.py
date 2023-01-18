@@ -24,7 +24,7 @@ class common_main:
     return self._config_data
   
   def exception(self, *args, **kwargs):
-    if not hasattr(self, "_exception"):
+    if hasattr(self, "_exception"):
       return self._monitoring
     
     from domain.exception.common import exception_common as exception        
@@ -34,7 +34,7 @@ class common_main:
     return self.exception(*args, **kwargs)
 
   def app_monitoring(self, *args, **kwargs):
-    if not hasattr(self, "_monitoring"):
+    if hasattr(self, "_monitoring"):
       return self._monitoring
     
     from domain.app_monitoring.common import \
@@ -45,7 +45,7 @@ class common_main:
     return self.performance_monitoring(*args, **kwargs)
   
   def encryption(self, *args, **kwargs):
-    if not hasattr(self, "_encryption"):
+    if hasattr(self, "_encryption"):
       return self._helper_dictionary
     
     from domain.encryption import encryption_common as encryption
@@ -55,7 +55,7 @@ class common_main:
     return self.encryption(*args, **kwargs)
   
   def cmdb(self, *args, **kwargs):
-    if not hasattr(self, "_cmdb"):
+    if hasattr(self, "_cmdb"):
       return self._cmdb
     
     from domain.cmdb.common import cmdb_common as cmdb
@@ -65,7 +65,7 @@ class common_main:
     return self.helper_cmdb(*args, **kwargs)
   
   def helper_app(self, *args, **kwargs):
-    if not hasattr(self, "_helper_app"):
+    if hasattr(self, "_helper_app"):
       return self._helper_app
     
     from domain.helpers.app import helper_app as helper
@@ -75,7 +75,7 @@ class common_main:
     return self.helper_app(*args, **kwargs)
   
   def helper_path(self, *args, **kwargs):
-    if not hasattr(self, "_helper_path"):
+    if hasattr(self, "_helper_path"):
       return self._helper_path
     
     from domain.helpers.json import helper_path as helper
@@ -85,7 +85,7 @@ class common_main:
     return self.helper_path(*args, **kwargs)
   
   def helper_json(self, *args, **kwargs):
-    if not hasattr(self, "_helper_json"):
+    if hasattr(self, "_helper_json"):
       return self._helper_json
     
     from domain.helpers.json import helper_json as helper
@@ -95,7 +95,7 @@ class common_main:
     return self.helper_json(*args, **kwargs)
   
   def helper_parallel_processing(self, *args, **kwargs):
-    if not hasattr(self, "_helper_parallel_processing"):
+    if hasattr(self, "_helper_parallel_processing"):
       return self._helper_parallel_processing
     
     from domain.helpers.parallel_processing import helper_parallel_processing as helper
@@ -105,7 +105,7 @@ class common_main:
     return self.helper_json(*args, **kwargs)
   
   def helper_config(self, *args, **kwargs):
-    if not hasattr(self, "_helper_config"):
+    if hasattr(self, "_helper_config"):
       return self._helper_json
     
     from domain.helpers.config import helper_config as helper
@@ -115,7 +115,7 @@ class common_main:
     return self.helper_config(*args, **kwargs)
   
   def helper_type(self, *args, **kwargs):
-    if not hasattr(self, "_helper_type"):
+    if hasattr(self, "_helper_type"):
       return self._helper_dictionary
     
     from domain.helpers.type.common import helper_type_common as helper

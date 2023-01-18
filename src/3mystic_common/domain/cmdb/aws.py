@@ -5,7 +5,7 @@ class cmdb_aws(base):
   """This is a common set of methods and libraries"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init(*args, **kwargs)
+    super().__init(logger_name= "cmdb_aws", *args, **kwargs)
   
   def get_source(self, *args, **kwargs):
     return "aws"

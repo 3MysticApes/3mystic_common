@@ -6,7 +6,7 @@ class helper_type_general(base):
   """This is a set of general type helpers"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= f"helper_type_general", *args, **kwargs)
   
   def is_integer(self, n):
     try:

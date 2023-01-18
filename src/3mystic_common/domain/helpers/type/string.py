@@ -6,7 +6,7 @@ class helper_type_string(base):
   """This is a set of library wrappers to help around expending string libary"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= f"helper_type_list", *args, **kwargs)
   
   # isNullOrWhiteSpace
   def is_null_or_whitespace(self, strValue, *args, **kwargs):
@@ -18,7 +18,8 @@ class helper_type_string(base):
     
     return False
   
-  def split_string(self, string_value, trim_data = True, remove_empty = True, split_value = "[,;]"):
+  # split_string
+  def split(self, string_value, trim_data = True, remove_empty = True, split_value = "[,;]"):
     split_data = re.split(split_value, string_value)
     if not remove_empty:
       return split_data

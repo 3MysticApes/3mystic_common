@@ -6,7 +6,7 @@ class helper_parallel_processing(base):
   """This is a set of library wrappers to help around expending json libary"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= f"helper_parallel_processing", *args, **kwargs)
   
   async def ensure_all_tasks_complete(self, done_function, done_function_params, total_tasks = None, current_running_total = None, verbose = True):
     running_done_count = current_running_total if current_running_total is not None else 0

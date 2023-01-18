@@ -5,7 +5,7 @@ class helper_type_bool(base):
   """This is a set of library wrappers to help around expending bool libary"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= f"helper_type_bool", *args, **kwargs)
   
   def is_true(self, check_item):
     if self._main_reference.helper_type().general().is_type(check_item, bool):
@@ -18,6 +18,7 @@ class helper_type_bool(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
+        logger = self.logger,
         name = "check_item",
         message = f"Unknown type for comparison ({type(check_item)})"
       )

@@ -5,7 +5,7 @@ class helper_path(base):
   """This is a set of library wrappers to help around expending json libary"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= f"helper_path", *args, **kwargs)
   
   # report_directory
   def get(self, path = None, *args, **kwargs)->Path:
@@ -13,6 +13,7 @@ class helper_path(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
+        logger = self.logger,
         name = "path",
         message = f"Unknown type ({type(path)})"
       )
@@ -21,6 +22,7 @@ class helper_path(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
+        logger = self.logger,
         name = "path",
         message = f"path is either None or an empty string"
       )

@@ -5,7 +5,7 @@ class app_monitoring_performance(base):
   """This is a set of library wrappers to help monitor performance"""
 
   def __init__(self, features, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= "app_monitoring_performance", *args, **kwargs)
     
     if features is None:
       return
@@ -31,6 +31,7 @@ class app_monitoring_performance(base):
       raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).type_error(
+        logger = self.logger,
         message = f"Memory tracing not defined"
       )
     return None
@@ -41,6 +42,7 @@ class app_monitoring_performance(base):
       raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).type_error(
+        logger = self.logger,
         message = f"Memory tracing not defined"
       )
     if action is None:
@@ -66,6 +68,7 @@ class app_monitoring_performance(base):
       raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).type_error(
+        logger = self.logger,
         message = f"Memory tracing not defined"
       )
 
@@ -80,6 +83,7 @@ class app_monitoring_performance(base):
       raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).type_error(
+        logger = self.logger,
         message = f"Memory tracing not defined"
       )
 

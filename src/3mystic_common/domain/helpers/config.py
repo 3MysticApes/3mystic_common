@@ -6,7 +6,7 @@ class helper_config(base):
   """This is a set of library wrappers to help general python apps"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= f"helper_config", *args, **kwargs)
 
   def _get_known_config_types(self, *args, **kwargs):
     return ["json", "config"]
@@ -16,6 +16,7 @@ class helper_config(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
+        logger = self.logger,
         name = "config_type",
         message = f"config_type is either None or an empty string"
       )
@@ -24,6 +25,7 @@ class helper_config(base):
       raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).not_implemented(
+        logger = self.logger,
         name = "config_type",
         message = f"config_type not known, known values: {self._get_known_config_types()}"
       )

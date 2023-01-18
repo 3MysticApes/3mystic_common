@@ -5,7 +5,7 @@ class helper_type_dictionary(base):
   """This is a set of library wrappers to help around expending dictionary libary"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= f"helper_type_dictionary", *args, **kwargs)
   
   def _merge_dictionary_find_main_dictionary_index(self, dicts, *args, **kwargs):
     if dicts[0] is not None:

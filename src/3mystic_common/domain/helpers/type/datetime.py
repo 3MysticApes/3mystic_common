@@ -11,7 +11,7 @@ class helper_type_datetime(base):
   """This is a set of library wrappers to help around expending datetime libary"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= f"helper_type_datetime", *args, **kwargs)
   
   # get_utc_datetime
   # get_utc
@@ -104,7 +104,9 @@ class helper_type_datetime(base):
 
   # parse_datetime_iso
   def parse_iso(self, iso_datetime_str, *args, **kwargs):    
-    return datetime.fromisoformat(iso_datetime_str.replace('Z', '+00:00'))
+    if iso_datetime_str.lower()[-1] == "Z":
+      iso_datetime_str = f"{iso_datetime_str[0:len(iso_datetime_str) - 1]}+00:00"
+    return datetime.fromisoformat(iso_datetime_str)
 
   # convert_datetime_utc
   def convert_utc(self, dt, default_utctime = True):   
@@ -165,7 +167,8 @@ class helper_type_datetime(base):
   def ticks(self, dt, tick_startdate = datetime(year= 1, month= 1, day= 1, hour= 0, minute= 0, tzinfo= dateutil_tz.tzutc()), *args, **kwargs):
     return self.datetime_ticks_as_seconds(dt= dt, tick_startdate= tick_startdate) * 10**7
   
-  def isTokenExpired_Now(self, compare_datetime, buffer_delta = timedelta(seconds=300)):   
+  # isTokenExpired_Now
+  def is_token_expired_now(self, compare_datetime, buffer_delta = timedelta(seconds=300)):   
     return (self.convert_utc(compare_datetime) <= (self.convert_utc(datetime.now()) + buffer_delta))
 
   # isTokenExpired_Duration

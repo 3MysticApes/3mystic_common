@@ -6,7 +6,7 @@ class helper_app(base):
   """This is a set of library wrappers to help general python apps"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= f"helper_app", *args, **kwargs)
   
   def __is_type(cls, obj, type_check, *args, **kwargs):
     try:

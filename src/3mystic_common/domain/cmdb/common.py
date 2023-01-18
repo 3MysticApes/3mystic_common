@@ -5,7 +5,7 @@ class cmdb_common(base):
   """This is a common set of methods and libraries"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= "cmdb", *args, **kwargs)
     self._cmdb = {}
     self.__supported_cloud_source = ["aws", "azure"]
   
@@ -16,6 +16,7 @@ class cmdb_common(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
+        logger = self.logger,
         name = "cloud_source",
         message = "cloud_source is None"
       )
@@ -24,6 +25,7 @@ class cmdb_common(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).exception(
+        logger = self.logger,
         name = "cloud_source",
         message = f"Unknown cloud_source: {cloud_source}"
       )

@@ -5,41 +5,109 @@ class exception_base(base):
   """This is a set of library wrappers to help create a cmdb"""
 
   def __init__(self, exception_type = "generic", *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= f"exception_{exception_type}", *args, **kwargs)
     self._exception_type = exception_type.lower()
 
-  def exception(self, message, name = None, *args, **kwargs):
+  def exception(self, message, name = None, logger = None, *args, **kwargs):
+    if logger is None:
+      logger = self._main_reference.logger
     if name is not None and self._exception_type != "generic":
-      return Exception(f"{self._exception_type}: {name}\n{message}")
+      return_exception = Exception(f"{self._exception_type}: {name}\n{message}")
+      logger.exception(
+        msg= str(return_exception),
+        exc_info= return_exception
+      )
+      return return_exception
     
     if name is not None:
-      return Exception(f"{name}\n{message}")
+      return_exception = Exception(f"{name}\n{message}")
+      logger.exception(
+        msg= str(return_exception),
+        exc_info= return_exception
+      )
+      return return_exception
     
-    return Exception(message)
+    return_exception =Exception(message)
+    logger.exception(
+      msg= str(return_exception),
+      exc_info= return_exception
+    )
+    return return_exception
 
   def not_implemented(self, message, name = None, *args, **kwargs):
+    if logger is None:
+      logger = self._main_reference.logger
     if name is not None and self._exception_type != "generic":
-      return NotImplementedError(f"{self._exception_type}: {name}\n{message}")
+      return_exception = NotImplementedError(f"{self._exception_type}: {name}\n{message}")
+      logger.exception(
+        msg= str(return_exception),
+        exc_info= return_exception
+      )
+      return return_exception
     
     if name is not None:
-      return NotImplementedError(f"{name}\n{message}")
+      return_exception = NotImplementedError(f"{name}\n{message}")
+      logger.exception(
+        msg= str(return_exception),
+        exc_info= return_exception
+      )
+      return return_exception
     
-    return NotImplementedError(message)
+    return_exception =NotImplementedError(message)
+    logger.exception(
+      msg= str(return_exception),
+      exc_info= return_exception
+    )
+    return return_exception
   
   def type_error(self, message, name = None, *args, **kwargs):
+    if logger is None:
+      logger = self._main_reference.logger
     if name is not None and self._exception_type != "generic":
-      return TypeError(f"{self._exception_type}: {name}\n{message}")
+      return_exception = TypeError(f"{self._exception_type}: {name}\n{message}")
+      logger.exception(
+        msg= str(return_exception),
+        exc_info= return_exception
+      )
+      return return_exception
     
     if name is not None:
-      return TypeError(f"{name}\n{message}")
+      return_exception = TypeError(f"{name}\n{message}")
+      logger.exception(
+        msg= str(return_exception),
+        exc_info= return_exception
+      )
+      return return_exception
     
-    return TypeError(message)
+    return_exception =TypeError(message)
+    logger.exception(
+      msg= str(return_exception),
+      exc_info= return_exception
+    )
+    return return_exception
   
   def key_error(self, message, name = None, *args, **kwargs):
-    if name is not None and self._exception_type != "generic":
-      return KeyError(f"{self._exception_type}: {name}\n{message}")
+    if logger is None:
+      logger = self._main_reference.logger
+    if name is not None and self._exception_type != "generic":      
+      return_exception = KeyError(f"{self._exception_type}: {name}\n{message}")
+      logger.exception(
+        msg= str(return_exception),
+        exc_info= return_exception
+      )
+      return return_exception
     
     if name is not None:
-      return KeyError(f"{name}\n{message}")
+      return_exception = KeyError(f"{name}\n{message}")
+      logger.exception(
+        msg= str(return_exception),
+        exc_info= return_exception
+      )
+      return return_exception
     
-    return KeyError(message)
+    return_exception =KeyError(message)
+    logger.exception(
+      msg= str(return_exception),
+      exc_info= return_exception
+    )
+    return return_exception

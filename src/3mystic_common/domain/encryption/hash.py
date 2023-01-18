@@ -4,7 +4,7 @@ class encryption_hash(base):
   """This is a set of library wrappers to help monitor performance"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= "encryption_hash", *args, **kwargs)
     self._hash_method = self.__get_hash_method(*args, **kwargs)
   
   def __get_hash_method(self, hash_method, *args, **kwargs):
@@ -12,6 +12,7 @@ class encryption_hash(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).not_implemented(
+        logger = self.logger,
         name = "hash_method",
         message = f"argument not provided"
       )
@@ -31,6 +32,7 @@ class encryption_hash(base):
     raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).not_implemented(
+        logger = self.logger,
         name = "hash_method",
         message = f"Unknown Hash Method Provided: {hash_method}"
       )

@@ -10,7 +10,7 @@ class helper_json(base):
   """This is a set of library wrappers to help around expending json libary"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= f"helper_json", *args, **kwargs)
   
   def __get_offset_from_zoneinfo(cls, zoneinfo, return_as_timedelta = False):   
     if not return_as_timedelta:
@@ -42,6 +42,7 @@ class helper_json(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
+        logger = self.logger,
         name = "data",
         message = f"attribute is not of type string - {type(data)}"
       )

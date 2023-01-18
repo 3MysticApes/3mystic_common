@@ -5,7 +5,7 @@ class app_monitoring_common(base):
   """This is a common set of methods and libraries"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= "app_monitoring", *args, **kwargs)
   
   
   def performance(self, *args, **kwargs):

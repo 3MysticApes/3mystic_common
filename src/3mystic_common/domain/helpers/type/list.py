@@ -5,7 +5,7 @@ class helper_type_list(base):
   """This is a set of library wrappers to help around expending list libary"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(*args, **kwargs)
+    super().__init__(logger_name= f"helper_type_list", *args, **kwargs)
   
   def unique_list(self, data, *args, **kwargs):
     if len(data) < 2:
@@ -22,6 +22,7 @@ class helper_type_list(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
+        logger = self.logger,
         name = "data",
         message = f"Unknown type: {type(data)}\n expected list"
       )
@@ -42,6 +43,7 @@ class helper_type_list(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
+        logger = self.logger,
         name = "data",
         message = f"Unknown type: {type(data)}\n expected list"
       )
@@ -55,6 +57,7 @@ class helper_type_list(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).exception(
+        logger = self.logger,
       name = "flatten_length",
       message = f"Not Needed"
     )
@@ -64,6 +67,7 @@ class helper_type_list(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
+        logger = self.logger,
         name = "data",
         message = f"Unknown type: {type(data)}\n expected list"
       )
