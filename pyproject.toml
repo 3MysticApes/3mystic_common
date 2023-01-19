@@ -21,7 +21,6 @@ dependencies = [
   "pycryptodomex >= 3.14.1",
   "requests >= 2.27.1",
   "boto3 >= 1.21.41",
-  
   "hvac >= 1.0.2",
   "pyhcl >= 0.4.4",
   "cryptography >= 38.0.3",
@@ -29,8 +28,8 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/tikicoder/3mystic_common"
-"Bug Tracker" = "https://github.com/tikicoder/3mystic_common/issues"
+"Homepage" = "https://github.com/3MysticApes/3mystic_common"
+"Bug Tracker" = "https://github.com/3MysticApes/3mystic_common/issues"
 
 [build-system]
 requires = ["hatchling"]
@@ -46,4 +45,5 @@ exclude = [
 ]
 
 [tool.hatch.build.targets.wheel]
+only-include = ["tests", "dist"]
 packages = ["src/3mystic_common"]

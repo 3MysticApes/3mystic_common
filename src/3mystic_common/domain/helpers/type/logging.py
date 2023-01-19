@@ -17,10 +17,19 @@ class helper_type_logging(base):
       
     return logger.getChild(child_logger_name)
 
+  # set_logger_info
   def set_logger_level(cls, logger: logging.Logger, level, *args, **kwargs):
     logger.setLevel(level= level)
 
+  # set_logger_level_stdout
   def add_handler_logger_stdout(cls, logger: logging.Logger, level, *args, **kwargs):
+    handler_name = f"Log STDOUT - {level}"
+
+    if logger.hasHandlers():
+      for handler in logger.handlers:
+        if handler.name == handler_name:
+          return
+
     handler = logging.StreamHandler(sys.stdout)
     handler.set_name(f"Log STDOUT - {level}")
     handler.setLevel(level)
