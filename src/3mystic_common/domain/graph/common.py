@@ -10,7 +10,7 @@ class graph_common(base):
   def __get_supported_graphs(self):
     return ["msgraph"]
   
-  def graph_init(self, graph_method, graph_config, *args, **kwargs):
+  def init_graph(self, graph_method, graph_config, *args, **kwargs):
     graph_method = graph_method.lower() if graph_method is not None else ""
     if not hasattr(self, "_graph_method"):
       if self._graph_method.get(graph_method) is not None:
@@ -34,17 +34,6 @@ class graph_common(base):
         config = graph_config
       )
 
-    if not hasattr(self, "_hash"):
-      from domain.encryption.hash import encryption_hash as encryption
-      self._hash = encryption
-      self._hash_methods = {}
-    
-    self._hash_methods[hash_method.lower()] = self._hash(
-      main_reference= self._main_reference,
-      hash_method= hash_method
-    )
-    return self.hash(*args, **kwargs)
-
   def graph(self, graph_method, *args, **kwargs):
     graph_method = graph_method.lower() if graph_method is not None else ""
     if not hasattr(self, "_graph_method"):
@@ -56,7 +45,7 @@ class graph_common(base):
     ).not_implemented(
       logger = self.logger,
       name = "graph_method",
-      message = f"Graph not inited: {graph_method}.\nPlease run graph_init}"
+      message = f"Graph not inited: {graph_method}.\nPlease run init_graph}"
     )
 
   

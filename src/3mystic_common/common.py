@@ -1,4 +1,4 @@
-class common_main: 
+class common: 
   """This is a common set of methods and libraries"""
 
   class emptyclass(object):   
