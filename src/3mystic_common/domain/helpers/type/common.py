@@ -7,17 +7,7 @@ class helper_type_common(base):
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(logger_name= f"helper_type", *args, **kwargs)
   
-  def general(self, *args, **kwargs):
-    if hasattr(self, "_general"):
-      return self._general
-    
-    from domain.helpers.type.general import helper_type_general as helper
-    self._general = helper(
-      main_reference= self._main_reference
-    )
-    return self.general(*args, **kwargs)
-  
-  def logging(self, *args, **kwargs):
+  def logging(self, *args, **kwargs):    
     if hasattr(self, "_logging"):
       return self._logging
     
@@ -26,8 +16,26 @@ class helper_type_common(base):
       main_reference= self._main_reference
     )
     return self.logging(*args, **kwargs)
+  
+  def general(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_general")
+      return
 
-  def string(self, *args, **kwargs):
+    if hasattr(self, "_general"):
+      return self._general
+    
+    from domain.helpers.type.general import helper_type_general as helper
+    self._general = helper(
+      main_reference= self._main_reference
+    )
+    return self.general(*args, **kwargs)
+
+  def string(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_string")
+      return      
+    
     if hasattr(self, "_string"):
       return self._string
     
@@ -37,7 +45,11 @@ class helper_type_common(base):
     )
     return self.string(*args, **kwargs)
   
-  def dictionary(self, *args, **kwargs):
+  def dictionary(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_dictionary")
+      return      
+    
     if hasattr(self, "_dictionary"):
       return self._dictionary
     
@@ -47,7 +59,11 @@ class helper_type_common(base):
     )
     return self.dictionary(*args, **kwargs)
   
-  def list(self, *args, **kwargs):
+  def list(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_list")
+      return
+    
     if hasattr(self, "_list"):
       return self._list
     
@@ -57,7 +73,11 @@ class helper_type_common(base):
     )
     return self.list(*args, **kwargs)
   
-  def datetime(self, *args, **kwargs):
+  def datetime(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_datetime")
+      return
+      
     if hasattr(self, "_datetime"):
       return self._datetime
     
@@ -67,7 +87,11 @@ class helper_type_common(base):
     )
     return self.datetime(*args, **kwargs)
   
-  def bool(self, *args, **kwargs):
+  def bool(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_bool")
+      return
+      
     if hasattr(self, "_bool"):
       return self._bool
     

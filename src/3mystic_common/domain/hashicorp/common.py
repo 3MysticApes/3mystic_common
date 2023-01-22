@@ -8,7 +8,11 @@ class hashi_common(base):
     super().__init__(logger_name= f"hashi", *args, **kwargs)
   
   
-  def vault(self, *args, **kwargs):
+  def vault(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_hashi_vault")
+      return
+    
     if hasattr(self, "_hashi_vault"):
       return self._hashi_vault
     

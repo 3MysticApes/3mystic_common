@@ -8,7 +8,11 @@ class app_monitoring_common(base):
     super().__init__(logger_name= "app_monitoring", *args, **kwargs)
   
   
-  def performance(self, *args, **kwargs):
+  def performance(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_performance")
+      return
+    
     if hasattr(self, "_performance"):
       return self._performance
     

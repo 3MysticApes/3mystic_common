@@ -8,7 +8,17 @@ class encryption_common(base):
     super().__init__(logger_name= "encryption", *args, **kwargs)
   
   
-  def hash(self, hash_method, *args, **kwargs):
+  def hash(self, hash_method, unset = False, *args, **kwargs):
+    if(unset):
+      if hash_method is None:
+        self._unset("_hash_method")
+        return
+      if hasattr(self, "_hash_method"):
+        if self._hash_method.get(hash_method) is not None:
+          self._hash_method.pop(hash_method)
+          
+      return 
+    
     hash_method = hash_method.lower() if hash_method is not None else ""
     if not hasattr(self, "_hash_method"):
       if self._hash_method.get(hash_method) is not None:

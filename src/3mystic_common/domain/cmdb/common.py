@@ -10,7 +10,17 @@ class cmdb_common(base):
     self.__supported_cloud_source = ["aws", "azure"]
   
   
-  def cmdb(self, cloud_source, *args, **kwargs):
+  def cmdb(self, cloud_source, unset = False, *args, **kwargs):
+    if(unset):
+      if cloud_source is None:
+        self._unset("_cmdb")
+        self._cmdb = {}
+        return
+      if hasattr(self, "_cmdb"):
+        if self._cmdb.get(cloud_source) is not None:
+          self._cmdb.pop(cloud_source)
+          
+      return 
     
     if self._main_reference.helper_type().string().is_null_or_whitespace(cloud_source):
       raise self._main_reference.exception().exception(

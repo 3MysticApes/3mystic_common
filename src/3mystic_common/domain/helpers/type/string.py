@@ -6,7 +6,7 @@ class helper_type_string(base):
   """This is a set of library wrappers to help around expending string libary"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__(logger_name= f"helper_type_list", *args, **kwargs)
+    super().__init__(logger_name= f"helper_type_string", *args, **kwargs)
   
   # isNullOrWhiteSpace
   def is_null_or_whitespace(self, strValue, *args, **kwargs):

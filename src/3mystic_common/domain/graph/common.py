@@ -10,11 +10,8 @@ class graph_common(base):
   def __get_supported_graphs(self):
     return ["msgraph"]
   
-  def init_graph(self, graph_method, graph_config, *args, **kwargs):
+  def init_graph(self, graph_method, graph_config, *args, **kwargs):    
     graph_method = graph_method.lower() if graph_method is not None else ""
-    if not hasattr(self, "_graph_method"):
-      if self._graph_method.get(graph_method) is not None:
-        return self._graph_method[graph_method]
     
     if graph_method not in self.__get_supported_graphs():
       raise self._main_reference.exception().exception(
@@ -34,7 +31,17 @@ class graph_common(base):
         config = graph_config
       )
 
-  def graph(self, graph_method, *args, **kwargs):
+  def graph(self, graph_method, unset = False, *args, **kwargs):
+    if(unset):
+      if graph_method is None:
+        self._unset("_graph_method")
+        return
+      if hasattr(self, "_graph_method"):
+        if self._graph_method.get(graph_method) is not None:
+          self._graph_method.pop(graph_method)
+          
+      return    
+    
     graph_method = graph_method.lower() if graph_method is not None else ""
     if not hasattr(self, "_graph_method"):
       if self._graph_method.get(graph_method) is not None:
