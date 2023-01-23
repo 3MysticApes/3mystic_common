@@ -1,6 +1,6 @@
 [project]
 name = "3mystic_common"
-version = "0.0.1"
+dynamic = ["version"]
 authors = [
   { name="Ron Truex" },
 ]
@@ -27,6 +27,12 @@ dependencies = [
   "typing-extensions >= 4.4.0"
 ]
 
+[template.licenses]
+headers = true
+default = [
+  "MIT",
+]
+
 [project.urls]
 "Homepage" = "https://github.com/3MysticApes/3mystic_common"
 "Bug Tracker" = "https://github.com/3MysticApes/3mystic_common/issues"
@@ -47,3 +53,6 @@ exclude = [
 [tool.hatch.build.targets.wheel]
 only-include = ["tests", "dist"]
 packages = ["src/3mystic_common"]
+
+[tool.hatch.build.sources]
+"src/3mystic_common" = "3mystic_common"

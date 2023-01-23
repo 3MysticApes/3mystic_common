@@ -16,6 +16,14 @@ class common(base):
       logger= logger
     )
     self.update_configuration(config_path= config_path)
+  
+  def version(self):
+    if hasattr(self, "_version"):
+      return self._version
+    import __version__
+    self._version = __version__.__version__
+    return self.version()
+
     
   def update_configuration(self, config_path, merge_existing = False, *args, **kwargs):
     if self.helper_type().string().is_null_or_whitespace(config_path):
@@ -177,6 +185,3 @@ class common(base):
       main_reference= self, *args, **kwargs
     )
     return self.helper_type(*args, **kwargs)
-
-if __name__ == '__main__':
-  print("Test")

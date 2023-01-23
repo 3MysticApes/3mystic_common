@@ -39,7 +39,7 @@ class graph_common(base):
       if hasattr(self, "_graph_method"):
         if self._graph_method.get(graph_method) is not None:
           self._graph_method.pop(graph_method)
-          
+
       return    
     
     graph_method = graph_method.lower() if graph_method is not None else ""
@@ -55,4 +55,3 @@ class graph_common(base):
       message = f"Graph not inited: {graph_method}.\nPlease run init_graph}"
     )
 
-  
