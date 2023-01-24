@@ -2,7 +2,7 @@ import sys
 
 
 def main(*args, **kwargs):
-  from 3mystic_common.common import common
+  from common import common
 
   print(f"Thank you for using the 3 Mystic Apes Common Library. You currenly have installed 3mystic_common version {common().version()}")
 
