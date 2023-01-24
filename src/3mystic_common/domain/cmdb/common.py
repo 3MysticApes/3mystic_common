@@ -26,7 +26,7 @@ class cmdb_common(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.logger,
+        logger = self.get_logger(),
         name = "cloud_source",
         message = "cloud_source is None"
       )
@@ -35,7 +35,7 @@ class cmdb_common(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).exception(
-        logger = self.logger,
+        logger = self.get_logger(),
         name = "cloud_source",
         message = f"Unknown cloud_source: {cloud_source}"
       )

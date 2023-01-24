@@ -42,7 +42,7 @@ class helper_json(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.logger,
+        logger = self.get_logger(),
         name = "data",
         message = f"attribute is not of type string - {type(data)}"
       )

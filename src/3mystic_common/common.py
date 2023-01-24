@@ -11,8 +11,8 @@ class common(base):
 
   def __init__(self, logger = None, config_path = None, *args, **kwargs) -> None:     
     super().__init__(*args, **kwargs)
-    self.logger = self.helper_type().logging().get_child_logger(
-      child_logger_name= "common_lib_logger",
+    self._logger = self.helper_type().logging().get_child_logger(
+      child_logger_name= "3mystic_common_lib_logger",
       logger= logger
     )
     self.update_configuration(config_path= config_path)
@@ -164,7 +164,7 @@ class common(base):
       return
     
     if hasattr(self, "_helper_config"):
-      return self._helper_json
+      return self._helper_config
     
     from domain.helpers.config import helper_config as helper
     self._helper_config = helper(
@@ -178,10 +178,10 @@ class common(base):
       return
     
     if hasattr(self, "_helper_type"):
-      return self._helper_dictionary
+      return self._helper_type
     
     from domain.helpers.type.common import helper_type_common as helper
-    self._helper_dictionary = helper(
+    self._helper_type = helper(
       main_reference= self, *args, **kwargs
     )
     return self.helper_type(*args, **kwargs)

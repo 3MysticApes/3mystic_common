@@ -25,7 +25,7 @@ class generate_data(base):
         raise self._main_reference.exception().exception(
           exception_type = "argument"
         ).exception(
-          logger = self.logger,
+          logger = self.get_logger(),
           name = "generate_data_config",
           message = f"Contains an element using a reserved key: {key}. Reserved Keys: {self._get_restricted_keynames()}"
         )   
@@ -34,7 +34,7 @@ class generate_data(base):
         raise self._main_reference.exception().exception(
             exception_type = "argument"
           ).type_error(
-            logger = self.logger,
+            logger = self.get_logger(),
             name = "generate_data_config",
             message = f"Handler cannot be None for key: {key}."
           )
@@ -57,7 +57,7 @@ class generate_data(base):
           raise self._main_reference.exception().exception(
             exception_type = "argument"
           ).type_error(
-            logger = self.logger,
+            logger = self.get_logger(),
             name = "generate_data_config",
             message = f"Unknown children type. Should be either a Dictrionary of children or a list. Got Type {type(item['children'])}"
           )
@@ -69,7 +69,7 @@ class generate_data(base):
         raise self._main_reference.exception().exception(
             exception_type = "function"
           ).exception(
-            logger = self.logger,
+            logger = self.get_logger(),
             name = "handler",
             message = f"Handler for Key: {key} did not return proper response. Should return a dictionary with raw and formated"
           )

@@ -12,7 +12,7 @@ class encryption_hash(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).not_implemented(
-        logger = self.logger,
+        logger = self.get_logger(),
         name = "hash_method",
         message = f"argument not provided"
       )
@@ -32,7 +32,7 @@ class encryption_hash(base):
     raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).not_implemented(
-        logger = self.logger,
+        logger = self.get_logger(),
         name = "hash_method",
         message = f"Unknown Hash Method Provided: {hash_method}"
       )

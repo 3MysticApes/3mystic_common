@@ -22,7 +22,7 @@ class helper_type_list(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.logger,
+        logger = self.get_logger(),
         name = "data",
         message = f"Unknown type: {type(data)}\n expected list"
       )
@@ -43,7 +43,7 @@ class helper_type_list(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.logger,
+        logger = self.get_logger(),
         name = "data",
         message = f"Unknown type: {type(data)}\n expected list"
       )
@@ -57,7 +57,7 @@ class helper_type_list(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).exception(
-        logger = self.logger,
+        logger = self.get_logger(),
       name = "flatten_length",
       message = f"Not Needed"
     )
@@ -67,7 +67,7 @@ class helper_type_list(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.logger,
+        logger = self.get_logger(),
         name = "data",
         message = f"Unknown type: {type(data)}\n expected list"
       )

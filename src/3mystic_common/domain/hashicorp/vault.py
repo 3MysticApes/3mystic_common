@@ -42,7 +42,7 @@ class hashi_vault(base):
     role_name = iam_role_request.text
     
     metadata_pkcs7_url = f'{metadata_url_base}/latest/meta-data/iam/security-credentials/{role_name}'
-    self.logger.debug("load_aws_ec2_role_iam_credentials connecting to %s" % metadata_pkcs7_url)
+    self.get_logger().debug("load_aws_ec2_role_iam_credentials connecting to %s" % metadata_pkcs7_url)
     response = requests.get(url=metadata_pkcs7_url)
     response.raise_for_status()
     security_credentials = response.json()
@@ -74,8 +74,8 @@ class hashi_vault(base):
         self._get_client(client= client).auth.aws.iam_login(**self.common.merge_dictionary([{}, default_iam_auth_creds, data.get("auth_data")]))
         return
       except Exception as ex:
-        self.logger.exception(msg= str(ex), exc_info= ex)
-        self.logger.exception(msg= str(ex), exc_info= ex)
+        self.get_logger().exception(msg= str(ex), exc_info= ex)
+        self.get_logger().exception(msg= str(ex), exc_info= ex)
         return
     
     try:
@@ -91,8 +91,8 @@ class hashi_vault(base):
           }]))
         return
       except Exception as ex_environ:
-        self.logger.exception(msg= str(ex_session), exc_info= ex_session)
-        self.logger.exception(msg= str(ex_environ), exc_info= ex_environ)
+        self.get_logger().exception(msg= str(ex_session), exc_info= ex_session)
+        self.get_logger().exception(msg= str(ex_environ), exc_info= ex_environ)
     
     
 

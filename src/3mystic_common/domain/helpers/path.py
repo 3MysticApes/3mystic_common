@@ -13,7 +13,7 @@ class helper_path(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.logger,
+        logger = self.get_logger(),
         name = "path",
         message = f"Unknown type ({type(path)})"
       )
@@ -22,7 +22,7 @@ class helper_path(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.logger,
+        logger = self.get_logger(),
         name = "path",
         message = f"path is either None or an empty string"
       )

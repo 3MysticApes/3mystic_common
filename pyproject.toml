@@ -37,9 +37,34 @@ default = [
 "Homepage" = "https://github.com/3MysticApes/3mystic_common"
 "Bug Tracker" = "https://github.com/3MysticApes/3mystic_common/issues"
 
+[project.scripts]
+3mystic_common = "3mystic_common.cli:main"
+
+[tool.ruff.isort]
+known-first-party = ["3mystic_common"]
+
+[tool.mypy]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+follow_imports = "normal"
+ignore_missing_imports = true
+pretty = true
+show_column_numbers = true
+show_error_codes = true
+warn_no_return = false
+warn_unused_ignores = true
+
+
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.11.0"]
 build-backend = "hatchling.build"
+
+[tool.coverage.run]
+branch = true
+source_pkgs = ["3mystic_common", "tests"]
+omit = [
+  "src/3mystic_common/__main__.py",
+]
 
 [tool.hatch.version]
 path = "src/3mystic_common/__version__.py"

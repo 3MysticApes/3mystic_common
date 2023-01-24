@@ -18,7 +18,7 @@ class helper_type_bool(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.logger,
+        logger = self.get_logger(),
         name = "check_item",
         message = f"Unknown type for comparison ({type(check_item)})"
       )
