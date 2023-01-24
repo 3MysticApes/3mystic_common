@@ -1,18 +1,24 @@
+# reference can be found 
+# https://github.com/pypa/hatch/blob/master/pyproject.toml
+
+[build-system]
+requires = ["hatchling>=1.11.0"]
+build-backend = "hatchling.build"
+
 [project]
 name = "3mystic_common"
-dynamic = ["version"]
+description = "Common Library for for various tool sets"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
 authors = [
   { name="Ron Truex" },
 ]
-description = "Common Library for for various tool sets"
-readme = "README.md"
-requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-
 dependencies = [
   "colorama; platform_system == 'Windows'",
   "asyncio >= 3.4.3",
@@ -26,12 +32,7 @@ dependencies = [
   "cryptography >= 38.0.3",
   "typing-extensions >= 4.4.0"
 ]
-
-[template.licenses]
-headers = true
-default = [
-  "MIT",
-]
+dynamic = ["version"]
 
 [project.urls]
 "Homepage" = "https://github.com/3MysticApes/3mystic_common"
@@ -40,8 +41,15 @@ default = [
 [project.scripts]
 3mystic_common = "3mystic_common.cli:main"
 
-[tool.ruff.isort]
-known-first-party = ["3mystic_common"]
+[tool.hatch.version]
+path = "src/3mystic_common/__version__.py"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+  "/docs",
+  "/scripts",
+]
 
 [tool.mypy]
 disallow_untyped_defs = false
@@ -54,19 +62,6 @@ show_error_codes = true
 warn_no_return = false
 warn_unused_ignores = true
 
-[tool.isort]
-default_section = "THIRDPARTY"
-force_grid_wrap = 0
-include_trailing_comma = true
-known_first_party = ["3mystic_common"]
-line_length = 120
-multi_line_output = 3
-use_parentheses = true
-
-[build-system]
-requires = ["hatchling>=1.11.0"]
-build-backend = "hatchling.build"
-
 [tool.coverage.run]
 branch = true
 source_pkgs = ["3mystic_common", "tests"]
@@ -74,22 +69,7 @@ omit = [
   "src/3mystic_common/__main__.py",
 ]
 
-[tool.hatch.version]
-path = "src/3mystic_common/__version__.py"
-
-[tool.hatch.build.targets.sdist]
-exclude = [
-  "/.github",
-  "/docs",
-]
-
-[tool.hatch.build.targets.wheel]
-only-include = ["tests", "dist"]
-packages = ["src/3mystic_common"]
-
-[tool.hatch.build.sources]
-"src/3mystic_common" = "3mystic_common"
-
 [tool.coverage.paths]
 3mystic_common = ["src", "*/3mystic_common/src"]
 tests = ["tests", "*/3mystic_common/tests"]
+
