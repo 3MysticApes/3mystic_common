@@ -6,7 +6,7 @@ requires = ["hatchling>=1.11.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "3mystic_common"
+name = "threemystic-common"
 description = "Common Library for for various tool sets"
 readme = "README.md"
 license = "MIT"
@@ -15,9 +15,15 @@ authors = [
   { name="Ron Truex" },
 ]
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Natural Language :: English",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
   "colorama; platform_system == 'Windows'",
@@ -39,10 +45,10 @@ dynamic = ["version"]
 "Bug Tracker" = "https://github.com/3MysticApes/3mystic_common/issues"
 
 [project.scripts]
-3mystic_common = "cli:main"
+3mystic_common = "threemystic_common.cli:main"
 
 [tool.hatch.version]
-path = "src/3mystic_common/__version__.py"
+path = "threemystic_common/__version__.py"
 
 [tool.hatch.build.targets.sdist]
 exclude = [
@@ -50,6 +56,71 @@ exclude = [
   "/docs",
   "/scripts",
 ]
+
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+target-version = ["py37"]
+
+[tool.ruff]
+target-version = "py38"
+line-length = 120
+select = [
+  "A",
+  "B",
+  "C",
+  "DTZ",
+  "E",
+  "EM",
+  "F",
+  "FBT",
+  "I",
+  "ICN",
+  "ISC",
+  "N",
+  "PLC",
+  "PLE",
+  "PLR",
+  "PLW",
+  "Q",
+  "RUF",
+  "S",
+  "SIM",
+  "T",
+  "TID",
+  "UP",
+  "W",
+  "YTT",
+]
+ignore = [
+  # Allow non-abstract empty methods in abstract base classes
+  "B027",
+  # Ignore McCabe complexity
+  "C901",
+  # Allow boolean positional values in function calls, like `dict.get(... True)`
+  "FBT003",
+  # Ignore checks for possible passwords
+  "S105", "S106", "S107",
+  # https://github.com/charliermarsh/ruff/issues/1949
+  "PLR2004",
+]
+unfixable = [
+  # Don't touch unused imports
+  "F401",
+]
+
+[tool.ruff.isort]
+known-first-party = ["3mystic-common"]
+
+[tool.ruff.flake8-quotes]
+inline-quotes = "single"
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.per-file-ignores]
+# Tests can use assertions and relative imports
+"tests/**/*" = ["S101", "TID252"]
 
 [tool.mypy]
 disallow_untyped_defs = false
@@ -64,12 +135,12 @@ warn_unused_ignores = true
 
 [tool.coverage.run]
 branch = true
-source_pkgs = ["3mystic_common", "tests"]
+source_pkgs = ["3mystic-common", "tests"]
 omit = [
-  "src/3mystic_common/__main__.py",
+  "threemystic_common/__main__.py",
 ]
 
 [tool.coverage.paths]
-3mystic_common = ["src", "*/3mystic_common/src"]
-tests = ["tests", "*/3mystic_common/tests"]
+3mystic_common = ["threemystic_common"]
+tests = ["tests", "*/threemystic_common/tests"]
 
