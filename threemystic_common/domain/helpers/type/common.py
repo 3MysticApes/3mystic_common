@@ -101,3 +101,17 @@ class helper_type_common(base):
     )
     return self.bool(*args, **kwargs)
   
+  def regex(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_regex")
+      return
+      
+    if hasattr(self, "_regex"):
+      return self._regex
+    
+    from threemystic_common.domain.helpers.type.regex import helper_type_regex as helper
+    self._bool = helper(
+      main_reference= self._main_reference
+    )
+    return self.bool(*args, **kwargs)
+  

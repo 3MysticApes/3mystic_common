@@ -9,8 +9,15 @@ class base_process_options:
         self._common = common
         self.this = base_process_options
         self.processed_options_as_dictionary = {}
+        self.__argKeys = {}
         return
     
+    def get_arg_keys(self):
+        return self.__argKeys
+
+    def add_arg_keys(self, arg_keys):
+        self._common.helper_type().dictionary().merge_dictionary(self.__argKeys, arg_keys)
+
     def get_parser(self, parser = None):
         if parser is not None:
             return parser

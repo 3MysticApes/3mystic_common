@@ -75,7 +75,7 @@ class helper_type_datetime(base):
         raise Exception("missing am/pm indicator")
       return time_str
     
-    time_parts = self._main_reference.helper_type().string().split(string_value=time_str.rstrip(" amp"), split_value=":")
+    time_parts = self._main_reference.helper_type().string().split(string_value=time_str.rstrip(" amp"), separator=":")
     for idx,part in enumerate(time_parts):
       time_parts[idx]=int(part)
     
