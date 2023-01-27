@@ -43,7 +43,7 @@ class helper_type_general(base):
     
     return check_val
   
-  def copy_object(cls, object_copy, deep_copy = True, *args, **kwargs):
+  def copy_object(self, object_copy, deep_copy = True, *args, **kwargs):
     if object_copy is None:
       return None
 
