@@ -86,5 +86,5 @@ class helper_config(base):
         
     return self._main_reference.helper_json().loads(
       data= json_data,
-      return_empty_json_on_null= True
+      return_empty_on_null= True
     )

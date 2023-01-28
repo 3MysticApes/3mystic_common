@@ -7,19 +7,19 @@ class helper_type_string(base):
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(logger_name= f"helper_type_string", *args, **kwargs)
   
-  def trim(self, strValue, trim_chars = None, *args, **kwargs):
-    if self.is_null_or_whitespace(strValue= strValue):
+  def trim(self, string_value, trim_chars = None, *args, **kwargs):
+    if self.is_null_or_whitespace(string_value= string_value):
       return ""
     
-    return strValue.strip() if trim_chars is None else strValue.strip(trim_chars)
+    return string_value.strip() if trim_chars is None else string_value.strip(trim_chars)
 
 
-  def set_case(self, strValue, case = "upper", *args, **kwargs):
-    if self.is_null_or_whitespace(strValue= strValue):
-      return strValue
+  def set_case(self, string_value, case = "upper", *args, **kwargs):
+    if self.is_null_or_whitespace(string_value= string_value):
+      return string_value
     
-    valid_case_options = ["upper", "lower"]
-    case = self.trim(strValue=case).lower()
+    valid_case_options = ["upper", "lower", "camel", "pascal"]
+    case = self.trim(string_value=case).lower()
     if case not in valid_case_options:
       raise self._main_reference.exception().exception(
         exception_type = "argument"
@@ -30,18 +30,28 @@ class helper_type_string(base):
       )
     
     if case == "upper":
-      return case.upper()
+      return string_value.upper()
     
     if case == "lower":
-      return case.lower()
+      return string_value.lower()
+    
+    if case == "camel":
+      str = "".join([word[0].upper() + word[1:] for word in self.split(string_value= string_value, separator="\s")])
+      return str[0].lower() + str[1:]
+    
+    if case == "pascal":
+      return "".join([word[0].upper() + word[1:] for word in self.split(string_value= string_value, separator="\s")])
+    
+    if case == "snake":
+      return "_".join([word[0].lower() + word[1:] for word in self.split(string_value= string_value, separator="\s")])
     
   
   # isNullOrWhiteSpace
-  def is_null_or_whitespace(self, strValue, *args, **kwargs):
-    if not strValue:
+  def is_null_or_whitespace(self, string_value, *args, **kwargs):
+    if not string_value:
       return True
     
-    if not str(strValue).strip():
+    if not str(string_value).strip():
       return True
     
     return False

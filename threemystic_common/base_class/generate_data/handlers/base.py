@@ -4,17 +4,16 @@ class base_handler:
     pass
   
   def _response_is_valid(self, response_value, item):
-    if self._type() is None:
-      if self._response_is_required(item= item) and self._is_response_empty(response_value= response_value):
-        return False
-      
-      if item.get("validation") is not None:
-        return True if item.get("validation")(response_value) else False
-      
-      return True
+    if self._response_is_required(item= item) and self._is_response_empty(response_value= response_value):
+      return False
     
-    return False
+    if item.get("validation") is not None:
+      return True if item.get("validation")(response_value) else False
     
+    return True
+     
+  def _type(self, *args, **kwargs):
+    return None
 
   def _is_array(self, *args, **kwargs):
     return False
@@ -42,9 +41,6 @@ class base_handler:
 
   def _response_is_required_required(self, item, *args, **kwargs):
     print("Required")
-  
-  def _type(self, *args, **kwargs):
-    return None
 
   def _get_formated(self, return_value, item, *args, **kwargs):
       return return_value  if item.get("conversion") is None else item.get("conversion")(return_value)
@@ -70,7 +66,7 @@ class base_handler:
         return item.get("messages").get("validation")
     
     return "Not Valid"
-    
+
   def _display_response_is_required(self, item, *args, **kwargs):
     print("-------------------------------------------------------------------------\n")
     print(self._get_validation_message(item= item))

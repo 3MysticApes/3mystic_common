@@ -34,9 +34,9 @@ class helper_json(base):
 
     return data
   
-  def loads(self, data, return_empty_json_on_null = True,  *args, **kwargs):   
+  def loads(self, data, return_empty_on_null = True,  *args, **kwargs):   
     if data is None:
-      return {} if return_empty_json_on_null else None
+      return {} if return_empty_on_null else None
 
     if not self._main_reference.helper_type().general().is_type(data, str):
       raise self._main_reference.exception().exception(
@@ -52,11 +52,11 @@ class helper_json(base):
   def dumps(self, data, default_encoder_function = None, *args, **kwargs):   
     return json.dumps(data, default= self.serializable_default if default_encoder_function is None else default_encoder_function)
 
-  def load_json_file(self, path_json, return_empty_json_on_null = True):
+  def load_file(self, path_json, return_empty_on_null = True, *args, **kwargs):
     with open(str(path_json), 'r') as json_stream:
       json_data = json_stream.read()
 
     return self.loads(
       data= json_data,
-      return_empty_json_on_null= return_empty_json_on_null
+      return_empty_on_null= return_empty_on_null
     )  

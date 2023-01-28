@@ -110,8 +110,8 @@ class helper_type_common(base):
       return self._regex
     
     from threemystic_common.domain.helpers.type.regex import helper_type_regex as helper
-    self._bool = helper(
+    self._regex = helper(
       main_reference= self._main_reference
     )
-    return self.bool(*args, **kwargs)
+    return self.regex(*args, **kwargs)
   
