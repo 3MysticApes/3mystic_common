@@ -80,3 +80,4 @@ class helper_type_list(base):
       if filter(item):
         return item
     return None
+  

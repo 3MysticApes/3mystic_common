@@ -14,12 +14,12 @@ class generate_data(base):
     return self._get_restricted_keynames(*args, **kwargs)
 
   def generate(self, generate_data_config, *args, **kwargs):
-    return self._generate(generate_data_config= generate_data_config, *args, **kwargs)s
+    return self._generate(generate_data_config= generate_data_config, *args, **kwargs)
 
   def _generate(self, generate_data_config, is_child_elemement = False, *args, **kwargs):
     
     return_data = {}
-
+    
     for key, item in generate_data_config.items():
       if key.lower() in self._get_restricted_keynames() and not is_child_elemement:
         raise self._main_reference.exception().exception(
@@ -30,7 +30,7 @@ class generate_data(base):
           message = f"Contains an element using a reserved key: {key}. Reserved Keys: {self._get_restricted_keynames()}"
         )   
 
-      if item.get("handler") is not None:
+      if item.get("handler") is None:
         raise self._main_reference.exception().exception(
             exception_type = "argument"
           ).type_error(
@@ -63,9 +63,12 @@ class generate_data(base):
           )
         continue
       
-      return_data[key] = item.get("handler").generate()
+      return_data[key] = item.get("handler").generate(
+        attribute_name= key, 
+        item= item
+      )
 
-      if return_data[key].get("raw") is None or return_data[key].get("raw") is None:
+      if "raw" not in return_data[key] is None or "formated" not in return_data[key] is None:
         raise self._main_reference.exception().exception(
             exception_type = "function"
           ).exception(
@@ -73,6 +76,8 @@ class generate_data(base):
             name = "handler",
             message = f"Handler for Key: {key} did not return proper response. Should return a dictionary with raw and formated"
           )
+    
+    return return_data
       
       
 

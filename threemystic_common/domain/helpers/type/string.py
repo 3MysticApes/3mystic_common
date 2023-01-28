@@ -7,6 +7,35 @@ class helper_type_string(base):
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(logger_name= f"helper_type_string", *args, **kwargs)
   
+  def trim(self, strValue, trim_chars = None, *args, **kwargs):
+    if self.is_null_or_whitespace(strValue= strValue):
+      return ""
+    
+    return strValue.strip() if trim_chars is None else strValue.strip(trim_chars)
+
+
+  def set_case(self, strValue, case = "upper", *args, **kwargs):
+    if self.is_null_or_whitespace(strValue= strValue):
+      return strValue
+    
+    valid_case_options = ["upper", "lower"]
+    case = self.trim(strValue=case).lower()
+    if case not in valid_case_options:
+      raise self._main_reference.exception().exception(
+        exception_type = "argument"
+      ).type_error(
+        logger = self.get_logger(),
+        name = "case",
+        message = f"case type is unknown. valid options: {valid_case_options}"
+      )
+    
+    if case == "upper":
+      return case.upper()
+    
+    if case == "lower":
+      return case.lower()
+    
+  
   # isNullOrWhiteSpace
   def is_null_or_whitespace(self, strValue, *args, **kwargs):
     if not strValue:

@@ -68,7 +68,7 @@ class common(base):
     if hasattr(self, "_generate_data"):
       return self._generate_data
     
-    from threemystic_common.domain.generate_data import generate_data as generate
+    from threemystic_common.domain.generate_data.generate import generate_data as generate
     self._generate_data = generate(
       main_reference= self, *args, **kwargs
     )

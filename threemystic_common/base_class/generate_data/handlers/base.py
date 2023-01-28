@@ -13,8 +13,12 @@ class base_handler:
       
       return True
     
+    return False
+    
 
-
+  def _is_array(self, *args, **kwargs):
+    return False
+    
   def _is_response_empty(self, response_value):
     if not response_value:
       return True
@@ -42,6 +46,12 @@ class base_handler:
   def _type(self, *args, **kwargs):
     return None
 
+  def _get_formated(self, return_value, item, *args, **kwargs):
+      return return_value  if item.get("conversion") is None else item.get("conversion")(return_value)
+
+  def _get_default(self, item, *args, **kwargs):
+    return item.get("default")
+
   def _response_is_required(self, item, *args, **kwargs):
     if item.get("optional") is not None:
       if item.get("optional") == False:
@@ -54,16 +64,20 @@ class base_handler:
 
     return False 
   
-  def _display_response_is_required(self, item, *args, **kwargs):
-    print("-------------------------------------------------------------------------\n")
+  def _get_validation_message(self, item, *args, **kwargs):
     if item.get("messages") is not None:
       if item.get("messages").get("validation") is not None:
-        print(item.get("messages").get("validation"))
-        return
+        return item.get("messages").get("validation")
+    
+    return "Not Valid"
+    
+  def _display_response_is_required(self, item, *args, **kwargs):
+    print("-------------------------------------------------------------------------\n")
+    print(self._get_validation_message(item= item))
     
     print("Input is not valid")
 
-  def _get_user_input_header_prompt(self, attribute_name, item):
+  def _get_user_input_header_prompt(self, attribute_name, item, *args, **kwargs):
     if item.get("messages") is not None:
       if item.get("messages").get("prompt") is not None:
         print(item.get("messages").get("prompt").format(attribute_name= attribute_name))
@@ -72,7 +86,7 @@ class base_handler:
     print(f"Enter your value for {attribute_name}: ")
 
   def _get_user_input_header(self, attribute_name = None, item = {}, *args, **kwargs):
-    self._get_user_input_header_prompt(self, attribute_name= attribute_name, item= item)
+    self._get_user_input_header_prompt(attribute_name= attribute_name, item= item)
     
     self.print_descrinption(item= item)
     
@@ -81,15 +95,35 @@ class base_handler:
     else:
       self._response_is_required_not_required(item= item, *args, **kwargs)
 
-    if self._is_array(item= item):
+    if self._is_array():
       print("(to end leave blank or type quit)")
 
-  def _get_user_input(self, item, *args, **kwargs):
-    if self._type() == None:
-      return_value = self._get_user_input_prompt()
+  def _process_type_none(self, item, *args, **kwargs):
+    return_value = self._get_user_input_prompt()
 
-      while not self._response_is_valid(response_value= return_value, item= item):
-        return_value = self._get_user_input_prompt()
+    if not self._response_is_required(item= item):
+      if not self._response_is_valid(response_value= return_value, item= item):
+        print("-------------------------------------------------------------------------\n")
+        print(self._get_validation_message(item= item))
+
+      return return_value if self._response_is_valid(response_value= return_value, item= item) else self._get_default(item= item)
+
+    while not self._response_is_valid(response_value= return_value, item= item):
+      return_value = self._get_user_input_prompt()
+    
+    return return_value
+
+  def _get_user_input(self, item, *args, **kwargs):
+    return_value = None
+    
+    if self._type() == None:
+      return_value = self._process_type_none(item= item)
+    
+    
+    return {
+      "raw": return_value,
+      "formated": self._get_formated(return_value= return_value, item= item)
+    }
 
   def _get_user_input_prompt(self, *args, **kwargs):
     print("-------------------------------------------------------------------------\n")
@@ -97,7 +131,7 @@ class base_handler:
 
   def generate(self, attribute_name, item, *args, **kwargs):
     self._get_user_input_header(attribute_name= attribute_name, item= item)
-
+    
     return self._get_user_input(item= item)
     
 
