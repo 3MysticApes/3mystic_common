@@ -17,7 +17,7 @@ class helper_type_datetime(base):
   # get_utc
   def get(self, time_zone = "utc", *args, **kwargs):    
     utc = self.convert_to_utc(dt=datetime.utcnow(), default_utctime= True)
-    return utc.astimezone()
+    return self.convert_time_zone(dt= utc, time_zone= time_zone)
   
   def get_epoch(self, *args, **kwargs):    
     return datetime.utcfromtimestamp(0)
@@ -41,23 +41,23 @@ class helper_type_datetime(base):
     if check_datetime.tzinfo is not None:
       return check_datetime.tzinfo
     
-    return self.get_timezone(timezone= default_tz)
+    return self.get_time_zone(time_zone= default_tz)
 
   # get_tzinfo
-  def get_timezone(self, timezone, default_utc = True, *args, **kwargs):
-    if not self._main_reference.helper_type().general().is_type(timezone, str):
+  def get_time_zone(self, time_zone, default_utc = True, *args, **kwargs):
+    if not self._main_reference.helper_type().general().is_type(time_zone, str):
       return dateutil_tz.tzutc() if default_utc else dateutil_tz.tzlocal()
       
-    if not self._main_reference.helper_string().is_null_or_whitespace(timezone):
+    if not self._main_reference.helper_type().string().is_null_or_whitespace(time_zone):
       return dateutil_tz.tzutc() if default_utc else dateutil_tz.tzlocal()
 
-    if timezone.lower() == "utc":
+    if time_zone.lower() == "utc":
       return dateutil_tz.tzutc()
     
-    if timezone.lower() == "local":
+    if time_zone.lower() == "local":
       return dateutil_tz.tzlocal()
 
-    return ZoneInfo(timezone)
+    return ZoneInfo(time_zone)
   
   def get_offset_from_zoneinfo(self, zoneinfo, return_as_timedelta = False, *args, **kwargs):   
     if not return_as_timedelta:
@@ -113,30 +113,30 @@ class helper_type_datetime(base):
     if dt.tzinfo is None:
       dt = (dt.replace(tzinfo=dateutil_tz.tzutc() if default_utctime else dateutil_tz.tzlocal()))
           
-    return self.convert_timezone(
+    return self.convert_time_zone(
       dt= dt,
-      timezone = "utc"
+      time_zone = "utc"
     )
   
-  def set_tzinfo(self, dt, timezone = "utc", force_replace = False, *args, **kwargs):    
+  def set_tzinfo(self, dt, time_zone = "utc", force_replace = False, *args, **kwargs):    
     
     if dt.tzinfo is not None and not force_replace:
-      dt = dt.astimezone(self.get_timezone(timezone))
+      dt = dt.astimezone(self.get_time_zone(time_zone))
       return dt
 
-    dt =  dt.replace(tzinfo=self.get_timezone(timezone))
+    dt =  dt.replace(tzinfo=self.get_time_zone(time_zone))
     return dt
 
 
   # convert_datetime
-  def convert_timezone(self, dt = None, timezone = None, base_timezone = "utc", *args, **kwargs):    
+  def convert_time_zone(self, dt = None, time_zone = None, base_time_zone = "utc", *args, **kwargs):    
     if dt is None:
       dt = self.get()
     
-    dt_timezone = self.get_tzinfo(check_datetime= dt, default_tz= base_timezone)
-    self.set_tzinfo(dt= dt, timezone=dt_timezone, force_replace= True)
-    timezone = self.get_timezone(timezone= timezone)
-    return dt.astimezone(timezone) 
+    dt_time_zone = self.get_tzinfo(check_datetime= dt, default_tz= base_time_zone)
+    self.set_tzinfo(dt= dt, time_zone=dt_time_zone, force_replace= True)
+    time_zone = self.get_time_zone(time_zone= time_zone)
+    return dt.astimezone(time_zone) 
 
   # remove_tzinfo_datetime
   def remove_tzinfo(self, dt, default_utctime = True, *args, **kwargs):         
@@ -147,11 +147,11 @@ class helper_type_datetime(base):
     if dt is None:
       dt = self.get()
     
-    dt_timezone = self.get_tzinfo(check_datetime= dt, default_tz= None)
-    self.set_tzinfo(dt= dt, timezone=dt_timezone, force_replace= True)
-    return self.convert_timezone(
+    dt_time_zone = self.get_tzinfo(check_datetime= dt, default_tz= None)
+    self.set_tzinfo(dt= dt, time_zone=dt_time_zone, force_replace= True)
+    return self.convert_time_zone(
       dt= dt,
-      timezone = "local"
+      time_zone = "local"
     )
   
   # datetime_ticks_as_seconds
