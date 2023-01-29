@@ -68,6 +68,10 @@ class generate_data(base):
         item= item
       )
 
+      if return_data[key].get("quit") == True:
+        print("Exiting now. No Data Saved")
+        return None
+
       if "raw" not in return_data[key] is None or "formated" not in return_data[key] is None:
         raise self._main_reference.exception().exception(
             exception_type = "function"
