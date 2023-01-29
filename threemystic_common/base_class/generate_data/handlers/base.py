@@ -90,9 +90,10 @@ class base_handler:
     print(f"Enter your value for {attribute_name}: ")
 
   def _get_user_input_header(self, allow_quit, attribute_name = None, item = {}, *args, **kwargs):
-    self._get_user_input_header_prompt(attribute_name= attribute_name, item= item)
+        
     
-    self.print_descrinption(item= item)
+    print()
+    print()
     
     if self._response_is_required(item= item):
       self._response_is_required_required(item= item, *args, **kwargs)
@@ -100,6 +101,10 @@ class base_handler:
       self._response_is_required_not_required(item= item, *args, **kwargs)
 
     self._quit_display_text(allow_quit= allow_quit)
+    print()
+    print()
+    self.print_descrinption(item= item)
+    self._get_user_input_header_prompt(attribute_name= attribute_name, item= item)
 
   def _process_type_none(self, item, allow_quit, *args, **kwargs):
     return_value = self._get_user_input_prompt()
@@ -111,15 +116,15 @@ class base_handler:
       return return_value if self._response_is_valid(response_value= return_value, item= item) else self._get_default(item= item)
 
     while not self._response_is_valid(response_value= return_value, item= item):
+      print("-------------------------------------------------------------------------\n")
+      print(self._get_validation_message(item= item))
+      print()
+      self._quit_display_text(allow_quit= allow_quit)
+
       return_value = self._get_user_input_prompt()
       if allow_quit and return_value.lower() in self._quit_options():
         raise quit_exception()
-      
-      
-      if not self._response_is_valid(response_value= return_value, item= item):
-        print("-------------------------------------------------------------------------\n")
-        print(self._get_validation_message(item= item))
-        self._quit_display_text(allow_quit= allow_quit)
+        
     
     return return_value
 

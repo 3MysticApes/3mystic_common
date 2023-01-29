@@ -8,11 +8,14 @@ class helper_type_regex(base):
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(logger_name= f"helper_type_string", *args, **kwargs)
   
+  def get(self, pattern, flags=re.IGNORECASE) -> re.Pattern:
+    return re.compile(pattern= pattern, flags= flags)
+
   def valid_email(self, check_str):
     if self._main_reference.helper_type().string().is_null_or_whitespace(check_str):
       return False
       
-    email_validator = re.compile(pattern="\A[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@↵(?:[A-Z0-9-]+\.)+[A-Z]{2,6}\Z")
+    email_validator = self.get(pattern="\A[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@↵(?:[A-Z0-9-]+\.)+[A-Z]{2,6}\Z")
     return True if email_validator.fullmatch(string= check_str) else False
   
   def split(self, string_value, trim_data = True, remove_empty = True, separator = "[,;]"):

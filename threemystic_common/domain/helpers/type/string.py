@@ -7,7 +7,10 @@ class helper_type_string(base):
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(logger_name= f"helper_type_string", *args, **kwargs)
   
-  def trim(self, string_value, trim_chars = None, *args, **kwargs):
+  def trim(self, string_value, trim_chars = None, return_empty_if_null = True, *args, **kwargs):
+    if not return_empty_if_null and string_value is None:
+      return None
+
     if self.is_null_or_whitespace(string_value= string_value):
       return ""
     
@@ -48,10 +51,11 @@ class helper_type_string(base):
   
   # isNullOrWhiteSpace
   def is_null_or_whitespace(self, string_value, *args, **kwargs):
+    
     if not string_value:
       return True
-    
-    if not str(string_value).strip():
+
+    if str(string_value).strip() == "":
       return True
     
     return False

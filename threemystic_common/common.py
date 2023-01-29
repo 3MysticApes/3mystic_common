@@ -124,7 +124,7 @@ class common(base):
     if hasattr(self, "_helper_path"):
       return self._helper_path
     
-    from threemystic_common.domain.helpers.json import helper_path as helper
+    from threemystic_common.domain.helpers.path import helper_path as helper
     self._helper_path = helper(
       main_reference= self, *args, **kwargs
     )
@@ -143,6 +143,20 @@ class common(base):
       main_reference= self, *args, **kwargs
     )
     return self.helper_json(*args, **kwargs)
+  
+  def helper_yaml(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_helper_yaml")
+      return
+    
+    if hasattr(self, "_helper_yaml"):
+      return self._helper_yaml
+    
+    from threemystic_common.domain.helpers.yaml import helper_yaml as helper
+    self._helper_yaml = helper(
+      main_reference= self, *args, **kwargs
+    )
+    return self.helper_yaml(*args, **kwargs)
   
   def helper_parallel_processing(self, unset = False, *args, **kwargs):
     if(unset):
