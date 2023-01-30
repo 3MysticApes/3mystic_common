@@ -4,7 +4,7 @@ class base(abc.ABC):
   """This is a set of library wrappers to help general python apps"""
 
   def __init__(self, *args, **kwargs) -> None:
-    pass
+    super().__init__()
   
   def get_logger(self):
     if not hasattr(self, "_logger"):

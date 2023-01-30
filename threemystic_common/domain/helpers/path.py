@@ -13,7 +13,7 @@ class helper_path(base):
       return None
     if self._main_reference.helper_type().general().is_type(path, Path):
       return path
-      
+
     if not self._main_reference.helper_type().general().is_type(path, str):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
@@ -36,6 +36,26 @@ class helper_path(base):
   
   def expandpath_user(self, path) -> Path:
     return self.get(path).expanduser()
+  
+  def is_file(self, path):
+    path = self.get(path= path)
+    if path is None: 
+      return False
+
+    if not path.exists(): 
+      return False
+
+    return Path.is_file(self.get(path= path))
+  
+  def is_dir(self, path):
+    path = self.get(path= path)
+    if path is None: 
+      return False
+
+    if not path.exists(): 
+      return False
+
+    return Path.is_dir(self.get(path= path))
   
   
     
