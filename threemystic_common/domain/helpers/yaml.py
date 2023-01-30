@@ -8,8 +8,14 @@ class helper_yaml(base):
 
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(logger_name= f"helper_json", *args, **kwargs)
+
+  def dumps(self, data, multiple_documents = False, use_safe = True, *args, **kwargs):   
+    if not multiple_documents:
+      return yaml.safe_dump(data, default_flow_style= False) if use_safe else yaml.dump(data)
+
+    return yaml.safe_dump_all(data, default_flow_style= False) if use_safe else yaml.dump_all(data)
   
-  def loads(self, data, return_empty_on_null = True, use_safe = True,  *args, **kwargs):   
+  def loads(self, data, return_empty_on_null = True, multiple_documents = False, use_safe = True,  *args, **kwargs):   
     if data is None:
       return {} if return_empty_on_null else None
 
@@ -22,12 +28,16 @@ class helper_yaml(base):
         message = f"attribute is not of type string - {type(data)}"
       )
     from io import StringIO
-    stream_data = StringIO(data)
-    return yaml.safe_load_all(stream_data) if use_safe else yaml.load_all(stream_data)
+    yaml_stream = StringIO(data)
+    return self._load_stream(yaml_stream= yaml_stream, multiple_documents= multiple_documents, use_safe= use_safe)
 
-  def dumps(self, data, default_encoder_function = None, use_safe = True, *args, **kwargs):   
-    return yaml.safe_dump_all(data) if use_safe else yaml.dump_all(data)
+  def load_file(self, path, multiple_documents = False, use_safe = True,  *args, **kwargs):
+    with self._main_reference.helper_path().get(path= path).open(mode= 'r') as yaml_stream:
+      return self._load_stream(yaml_stream= yaml_stream, multiple_documents= multiple_documents, use_safe= use_safe)
 
-  def load_file(self, path_json, return_empty_on_null = True, use_safe = True, *args, **kwargs):
-    with open(str(path_json), 'r') as yaml_stream:
-      return yaml.safe_load_all(yaml_stream) if use_safe else yaml.load_all(yaml_stream) 
+  def _load_stream(self, yaml_stream, multiple_documents, use_safe, *args, **kwargs):    
+    if not multiple_documents:
+      return yaml.safe_load(stream= yaml_stream) if use_safe else yaml.load(stream= yaml_stream, Loader=yaml.FullLoader)  
+
+    docs = yaml.safe_load_all(stream= yaml_stream) if use_safe else yaml.load_all(stream= yaml_stream, Loader=yaml.FullLoader)  
+    return [doc for doc in docs]

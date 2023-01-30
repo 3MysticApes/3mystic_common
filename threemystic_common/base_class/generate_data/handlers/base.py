@@ -4,7 +4,13 @@ class base_handler:
   def __init__(self, *args, **kwargs):
     pass
   
-  def _response_is_valid(self, response_value, item):
+  def _response_allow_empty(self, item, *args, **kwargs):
+    return item.get("allow_empty") == True
+
+  def _response_is_valid(self, response_value, item, *args, **kwargs):
+    if self._response_allow_empty(item= item) and self._is_response_empty(response_value= response_value):
+      return True
+
     if self._response_is_required(item= item) and self._is_response_empty(response_value= response_value):
       return False
     
@@ -94,17 +100,17 @@ class base_handler:
     
     print()
     print()
-    
-    if self._response_is_required(item= item):
-      self._response_is_required_required(item= item, *args, **kwargs)
-    else:
-      self._response_is_required_not_required(item= item, *args, **kwargs)
 
     self._quit_display_text(allow_quit= allow_quit)
     print()
     print()
     self.print_descrinption(item= item)
     self._get_user_input_header_prompt(attribute_name= attribute_name, item= item)
+    print()
+    if self._response_is_required(item= item):
+      self._response_is_required_required(item= item, *args, **kwargs)
+    else:
+      self._response_is_required_not_required(item= item, *args, **kwargs)
 
   def _process_type_none(self, item, allow_quit, *args, **kwargs):
     return_value = self._get_user_input_prompt()
@@ -114,7 +120,7 @@ class base_handler:
 
     if not self._response_is_required(item= item):
       return return_value if self._response_is_valid(response_value= return_value, item= item) else self._get_default(item= item)
-
+    
     while not self._response_is_valid(response_value= return_value, item= item):
       print("-------------------------------------------------------------------------\n")
       print(self._get_validation_message(item= item))
@@ -134,8 +140,11 @@ class base_handler:
     if self._type() == None:
       try:
         return_value = self._process_type_none(item= item, allow_quit= allow_quit)
+        if self._response_allow_empty(item= item) and self._is_response_empty(response_value= return_value):
+          if "default" in item:
+            return_value = item.get("default")
       
-      
+        
         return {
           "raw": return_value,
           "formated": self._get_formated(return_value= return_value, item= item)

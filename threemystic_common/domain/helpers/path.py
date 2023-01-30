@@ -9,6 +9,11 @@ class helper_path(base):
   
   # report_directory
   def get(self, path = None, *args, **kwargs)->Path:
+    if path is None:
+      return None
+    if self._main_reference.helper_type().general().is_type(path, Path):
+      return path
+      
     if not self._main_reference.helper_type().general().is_type(path, str):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
