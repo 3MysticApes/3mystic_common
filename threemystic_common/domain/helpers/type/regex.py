@@ -15,7 +15,7 @@ class helper_type_regex(base):
     if self._main_reference.helper_type().string().is_null_or_whitespace(check_str):
       return False
       
-    email_validator = self.get(pattern="\A[\w!#$%&'*+/=?`{|}~^-]+(?:\.[\w!#$%&'*+/=?`{|}~^-]+)*@↵(?:[A-Z0-9-]+\.)+[A-Z]{2,6}\Z")
+    email_validator = self.get(pattern=r"([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|\[[\t -Z^-~]*])")
     return True if email_validator.fullmatch(string= check_str) else False
   
   def split(self, string_value, trim_data = True, remove_empty = True, separator = "[,;]"):
