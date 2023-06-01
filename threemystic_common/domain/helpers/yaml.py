@@ -1,4 +1,4 @@
-import yaml
+import ruamel.yaml as yaml
 
 from threemystic_common.base_class.base_common import base
 

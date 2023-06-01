@@ -1,5 +1,7 @@
 from threemystic_common.domain.graph.base_class.base import graph_base as base
 
+# This will probably not be included as it looks like MS has a python SDK
+# https://github.com/microsoftgraph/msgraph-sdk-python
 class graph_msgraph(base): 
   """This is a set of library wrappers to help monitor performance"""
 
