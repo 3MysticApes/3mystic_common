@@ -52,12 +52,12 @@ class helper_config(base):
       
     return path
 
-  def _load_defaults_config_config(self, path, config_key = None, config_name = None, *args, **kwargs):
+  def _load_defaults_config_config(self, path, *args, **kwargs):
     config_parser = configparser.ConfigParser()
-    if self._main_reference.helper_type().string().is_null_or_whitespace(path) or self._main_reference.helper_type().string().is_null_or_whitespace(config_key) or self._main_reference.helper_type().string().is_null_or_whitespace(config_name):
+    if self._main_reference.helper_type().string().is_null_or_whitespace(path):
       return config_parser
     
-    config_path = Path(f'{path}/{config_key}/{config_name}').resolve()
+    config_path = self._main_reference.helper_path().get(path=path )
     if not config_path.exists():
       return config_parser
 
