@@ -19,6 +19,12 @@ class helper_type_datetime(base):
     utc = self.convert_to_utc(dt=datetime.utcnow(), default_utctime= True)
     return self.convert_time_zone(dt= utc, time_zone= time_zone)
   
+  def timedelta(self, dt = None, totalSecondAddTime = 300, time_zone="utc", *args, **kwargs):    
+    if dt is None:
+      dt = self.get(time_zone= time_zone)
+
+    return self.convert_time_zone(dt=(dt + timedelta(seconds=totalSecondAddTime)), time_zone= time_zone)
+  
   def get_epoch(self, *args, **kwargs):    
     return datetime.utcfromtimestamp(0)
 
@@ -29,9 +35,9 @@ class helper_type_datetime(base):
           
     return dt.astimezone(dateutil_tz.tzutc())
   
-  def datetime_as_string(self, datetime_format = "%Y%M%d%H%M%S", datetime_to_format = None, *args, **kwargs):    
+  def datetime_as_string(self, datetime_format = "%Y%M%d%H%M%S", datetime_to_format = None, time_zone="utc", *args, **kwargs):    
     if datetime_to_format is None:
-      datetime_to_format = self.get()
+      datetime_to_format = self.get(time_zone= time_zone)
     
     return datetime_to_format.strftime(datetime_format)
   
@@ -129,9 +135,9 @@ class helper_type_datetime(base):
 
 
   # convert_datetime
-  def convert_time_zone(self, dt = None, time_zone = None, base_time_zone = "utc", *args, **kwargs):    
+  def convert_time_zone(self, dt = None, time_zone = "utc", base_time_zone = "utc", *args, **kwargs):    
     if dt is None:
-      dt = self.get()
+      dt = self.get(time_zone= time_zone)
     
     dt_time_zone = self.get_tzinfo(check_datetime= dt, default_tz= base_time_zone)
     self.set_tzinfo(dt= dt, time_zone=dt_time_zone, force_replace= True)
@@ -143,9 +149,9 @@ class helper_type_datetime(base):
     return self.convert_to_utc(dt= dt, default_utctime= default_utctime).replace(tzinfo=None)
 
   # convert_datetime_local
-  def convert_local(self, dt, *args, **kwargs):
+  def convert_local(self, dt, time_zone= "utc", *args, **kwargs):
     if dt is None:
-      dt = self.get()
+      dt = self.get(time_zone= time_zone)
     
     dt_time_zone = self.get_tzinfo(check_datetime= dt, default_tz= None)
     self.set_tzinfo(dt= dt, time_zone=dt_time_zone, force_replace= True)
@@ -169,19 +175,19 @@ class helper_type_datetime(base):
   
   # isTokenExpired_Now
   def is_token_expired_now(self, compare_datetime, buffer_delta = timedelta(seconds=300)):   
-    return (self.convert_utc(compare_datetime) <= (self.convert_utc(datetime.now()) + buffer_delta))
+    return (self.convert_utc(compare_datetime) <= (self.convert_utc(self.get(time_zone= "local")) + buffer_delta))
 
   # isTokenExpired_Duration
-  def is_token_expired(self, token_life_duration, start_time = None, buffer_delta = timedelta(seconds=60), *args, **kwargs):  
+  def is_token_expired(self, token_life_duration, start_time = None, buffer_delta = timedelta(seconds=60), time_zone= "utc", *args, **kwargs):  
     if start_time is None:
-      start_time = self.get()
-    return (start_time + token_life_duration) <= (self.get() + buffer_delta)
+      start_time = self.get(time_zone= time_zone)
+    return (start_time + token_life_duration) <= (self.get(time_zone= time_zone + buffer_delta)
   
   # isTokenExpiredEpoch_Duration
-  def is_token_expired_epoch(self, token_life_duration, start_time = None, buffer_delta = timedelta(seconds=300), *args, **kwargs):  
+  def is_token_expired_epoch(self, token_life_duration, start_time = None, buffer_delta = timedelta(seconds=300), time_zone= "utc", *args, **kwargs):  
     if start_time is None:
       start_time = self.get_epoch()
-    return (start_time + token_life_duration) <= (datetime.utcnow() + buffer_delta)
+    return (start_time + token_life_duration) <= (self.get(time_zone= time_zone) + buffer_delta)
   
   # GetTokenExpiredEpoch_Duration
   def GetTokenExpiredEpoch_Duration(self, token_life_duration, start_time = None):  

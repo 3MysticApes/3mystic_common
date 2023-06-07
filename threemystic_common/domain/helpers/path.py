@@ -36,7 +36,8 @@ class helper_path(base):
   
   def expandpath_user(self, path) -> Path:
     if self._main_reference.helper_type().general().is_type(path, Path):
-      return path
+      return path.expanduser()
+    
     return self.get(path).expanduser()
   
   def path_exists(self, path):
