@@ -9,9 +9,10 @@ class helper_config(base):
     super().__init__(logger_name= f"helper_config", *args, **kwargs)
 
   def _get_known_config_types(self, *args, **kwargs):
-    return ["json", "config"]
+    return ["json", "config", "yaml"]
 
-  def load_defaults_config(self, config_type = "json", *args, **kwargs):
+  # load_defaults_config
+  def load(self, config_type = "yaml", *args, **kwargs):
     if self._main_reference.helper_type().string().is_null_or_whitespace(config_type):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
@@ -29,20 +30,34 @@ class helper_config(base):
         name = "config_type",
         message = f"config_type not known, known values: {self._get_known_config_types()}"
       )
-
-    if config_type.lower() == "json":
-      return self._load_defaults_config_json(*args, **kwargs)
     
     if config_type.lower() == "config":
-      return self._load_defaults_config_config(*args, **kwargs)
+      return self._load_defaults_config_config(config_type= config_type, *args, **kwargs)
     
+
+    return self._load_defaults_config_general(config_type= config_type, *args, **kwargs)
     
-  def _load_defaults_config_config(self, path_to_config, config_key, config_name, *args, **kwargs):
+  def _load_path(self, path, config_key = None, config_name = None, *args, **kwargs):
+    if self._main_reference.helper_type().string().is_null_or_whitespace(path):
+      return None
+    
+    path = self._main_reference.helper_path().get(path=path )
+    if not self._main_reference.helper_type().string().is_null_or_whitespace(config_key):
+      return path.joinpath(config_key)
+    if not self._main_reference.helper_type().string().is_null_or_whitespace(config_name):
+      return path.joinpath(config_name)
+    
+    if not self._main_reference.helper_path().is_file(path=path):
+      return None
+      
+    return path
+
+  def _load_defaults_config_config(self, path, *args, **kwargs):
     config_parser = configparser.ConfigParser()
-    if self._main_reference.helper_type().string().is_null_or_whitespace(path_to_config) or self._main_reference.helper_type().string().is_null_or_whitespace(config_key) or self._main_reference.helper_type().string().is_null_or_whitespace(config_name):
+    if self._main_reference.helper_type().string().is_null_or_whitespace(path):
       return config_parser
     
-    config_path = Path(f'{path_to_config}/{config_key}/{config_name}').resolve()
+    config_path = self._main_reference.helper_path().get(path=path )
     if not config_path.exists():
       return config_parser
 
@@ -50,41 +65,53 @@ class helper_config(base):
       config_parser.read_file(config_stream)
     
     return config_parser
+  
+  def _get_load_data_function(self, config_type):
+    return self._load_defaults_config_json_data if config_type == "json" else self._load_defaults_config_yaml_data
 
-  def _load_defaults_config_json(self, path_to_config, config_key, config_name, replace_on_merge, path_to_config_override, return_as_config = False, *args, **kwargs):
-    defaults_config = self._load_defaults_config_json_data(
-      path_to_config = path_to_config, 
+  def _load_defaults_config_general(self, config_type, path, config_key = None, config_name = None, replace_on_merge = False, path_override = None,  return_as_config = False, *args, **kwargs):
+    load_data_function = self._get_load_data_function(config_type= config_type)
+    defaults_config = load_data_function(
+      path = path, 
       config_key = config_key, 
       config_name = config_name
     )
 
-    if self._main_reference.helper_type().string().is_null_or_whitespace(path_to_config_override):
-      path_to_config_override = f"{path_to_config}/override"
+    if self._main_reference.helper_type().string().is_null_or_whitespace(path_override):
+      path_override = f"{path}/override"
     
-    override_config = self._load_defaults_config_json_data(
-      path_to_config = path_to_config_override, 
+    override_config = load_data_function(
+      path = path_override, 
       config_key = config_key, 
       config_name = config_name
     )
-
+    
     if not return_as_config:
       return self._main_reference.helper_type().dictionary().merge_dictionary([ {}, defaults_config, override_config], replace_on_merge= replace_on_merge)
     
     config_parser = configparser.ConfigParser()
     return config_parser.read_dict(self._main_reference.helper_type().dictionary().merge_dictionary([ {}, defaults_config, override_config], replace_on_merge= replace_on_merge))
   
-  def _load_defaults_config_json_data(self, path_to_config, config_key, config_name, *args, **kwargs):
-    if self._main_reference.helper_type().string().is_null_or_whitespace(path_to_config) or self._main_reference.helper_type().string().is_null_or_whitespace(config_key) or self._main_reference.helper_type().string().is_null_or_whitespace(config_name):
+  def _load_defaults_config_json_data(self, path, config_key, config_name, *args, **kwargs):
+    if self._main_reference.helper_type().string().is_null_or_whitespace(path):
       return {}
 
-    config_path = Path(f'{path_to_config}/{config_key}/{config_name}').resolve()
-    if not config_path.exists():
+    config_path = self._load_path(path= path, config_key= config_key, config_name= config_name)
+    if config_path is None:
       return {}
 
-    with config_path.open(mode= "r") as config_stream:
-      json_data = config_stream.read()
-        
-    return self._main_reference.helper_json().loads(
-      data= json_data,
+    return self._main_reference.helper_json().load_file(
+      path= config_path,
       return_empty_on_null= True
     )
+  
+  
+  def _load_defaults_config_yaml_data(self, path, config_key, config_name, *args, **kwargs):
+    if self._main_reference.helper_type().string().is_null_or_whitespace(path):
+      return {}
+    
+    config_path = self._load_path(path= path, config_key= config_key, config_name= config_name)
+    if config_path is None:
+      return {}
+
+    return self._main_reference.helper_yaml().load_file(path= config_path)

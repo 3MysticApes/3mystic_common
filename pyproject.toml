@@ -27,14 +27,12 @@ classifiers = [
 ]
 dependencies = [
   "colorama; platform_system == 'Windows'",
+  "ruamel.yaml >= 0.17.31",
   "asyncio >= 3.4.3",
   "python-dateutil >= 2.8.2",
   "openpyxl >= 3.0.9",
   "pycryptodomex >= 3.14.1",
   "requests >= 2.27.1",
-  "boto3 >= 1.21.41",
-  "hvac >= 1.0.2",
-  "pyhcl >= 0.4.4",
   "cryptography >= 38.0.3",
   "typing-extensions >= 4.4.0"
 ]
@@ -44,8 +42,8 @@ dynamic = ["version"]
 "Homepage" = "https://github.com/3MysticApes/3mystic_common"
 "Bug Tracker" = "https://github.com/3MysticApes/3mystic_common/issues"
 
-[project.scripts]
-3mystic_common = "threemystic_common.cli:main"
+# [project.scripts]
+# 3mystic_common = "threemystic_common.cli:main"
 
 [tool.hatch.version]
 path = "threemystic_common/__version__.py"

@@ -7,6 +7,20 @@ class helper_type_list(base):
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(logger_name= f"helper_type_list", *args, **kwargs)
   
+  def if_none(self, data, return_empty = True):
+    if data is not None:
+      return data
+    
+    if return_empty:
+      return []
+    
+    raise self._main_reference.exception().exception(
+      exception_type = "argument"
+    ).type_error(
+      logger = self.get_logger(),
+      name = "data",
+      message = f"Data is None"
+    )
   def unique_list(self, data, *args, **kwargs):
     if len(data) < 2:
       return data
