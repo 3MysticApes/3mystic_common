@@ -89,10 +89,10 @@ class common(base):
       return
     
     if hasattr(self, "_encryption"):
-      return self._helper_dictionary
+      return self._encryption
     
-    from threemystic_common.domain.encryption import encryption_common as encryption
-    self._helper_dictionary = encryption(
+    from threemystic_common.domain.encryption.common import encryption_common as encryption
+    self._encryption = encryption(
       main_reference= self, *args, **kwargs
     )
     return self.encryption(*args, **kwargs)

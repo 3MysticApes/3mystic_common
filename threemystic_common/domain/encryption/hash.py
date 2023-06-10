@@ -8,7 +8,7 @@ class encryption_hash(base):
     self._hash_method = self.__get_hash_method(*args, **kwargs)
   
   def __get_hash_method(self, hash_method, *args, **kwargs):
-    if self._main_reference.helper_type().general().is_null_or_whitespace(hash_method):
+    if self._main_reference.helper_type().string().is_null_or_whitespace(hash_method):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).not_implemented(
