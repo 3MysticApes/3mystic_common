@@ -17,7 +17,7 @@ class common(base):
     )
     self.update_configuration(config_path= config_path)
   
-  def get_threemystic_config_path(self, *args, **kwargs):
+  def get_threemystic_directory(self, *args, **kwargs):
     general_path = self.helper_path().expandpath_user(
       path= "~/.3mystic"
     )
@@ -25,6 +25,13 @@ class common(base):
       general_path.mkdir(parents= True)
     
     return general_path
+  
+  def get_threemystic_directory_config(self, *args, **kwargs):
+    config_path = self.get_threemystic_directory().joinpath("config")
+    if not config_path.exists():
+      config_path.mkdir(parents= True)
+    
+    return config_path
 
   def version(self):
     if hasattr(self, "_version"):
