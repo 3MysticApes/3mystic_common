@@ -4,7 +4,7 @@ class base(main_base):
   """This is a set of library wrappers to help general python apps"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init__()
+    super().__init__(*args, **kwargs)
 
     self._init_main(*args, **kwargs )
     self._init_common(*args, **kwargs)

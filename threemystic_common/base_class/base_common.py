@@ -1,6 +1,6 @@
-from threemystic_common.base_class.base import base as base_main
+from threemystic_common.base_class.base import base as main_base
 
-class base(base_main): 
+class base(main_base): 
   """This is a set of library wrappers to help general python apps"""
 
   def __init__(self, main_reference, logger_name, *args, **kwargs) -> None:
