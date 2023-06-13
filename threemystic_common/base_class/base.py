@@ -12,7 +12,7 @@ class base(abc.ABC):
     pass    
    
   
-  def __init_main(self, main_reference, *args, **kwargs):
+  def _init_main(self, main_reference, *args, **kwargs):
     if main_reference is not None:
       self._main_reference = main_reference
   
@@ -22,7 +22,7 @@ class base(abc.ABC):
     
     return None
 
-  def __logger_init(self, logger_name, logger = None, init_object = None,  refresh = False, *args, **kwargs):
+  def _logger_init(self, logger_name, logger = None, init_object = None,  refresh = False, *args, **kwargs):
     if hasattr(self, "_logger") and not refresh:
       if self._logger is not None:
         return
@@ -50,7 +50,7 @@ class base(abc.ABC):
 
       delattr(self, attribute)
   
-  def __init_common(self, init_object = None, common = None, refresh = False, force_skip_getcommon = False, *args, **kwargs):
+  def _init_common(self, init_object = None, common = None, refresh = False, force_skip_getcommon = False, *args, **kwargs):
     if hasattr(self, "_common") and not refresh:
       if self._common is not None:
         return self.get_common()
@@ -69,6 +69,6 @@ class base(abc.ABC):
       if self._common is not None:
         return self._common
     
-    self.__init_common(force_skip_getcommon= True)
+    self._init_common(force_skip_getcommon= True)
     return self.get_common()
       

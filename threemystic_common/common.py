@@ -51,19 +51,23 @@ class common(base):
   def get_configuration(self, *args, **kwargs):
     return self._config_data
   
-  def exception(self, *args, **kwargs):
+  def exception(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_exception")
+      return
+    
     if hasattr(self, "_exception"):
-      return self._monitoring
+      return self._exception
     
     from threemystic_common.domain.exception.common import exception_common as exception        
-    self._monitoring = exception(
+    self._exception = exception(
       main_reference= self, *args, **kwargs
     )
     return self.exception(*args, **kwargs)
 
   def app_monitoring(self, unset = False, *args, **kwargs):
     if(unset):
-      self._unset("_exception")
+      self._unset("_monitoring")
       return
     
     if hasattr(self, "_monitoring"):

@@ -44,9 +44,9 @@ class exception_base(base):
     )
     return return_exception
 
-  def not_implemented(self, message, name = None, exception = None, *args, **kwargs):
+  def not_implemented(self, message, name = None, logger = None, exception = None, *args, **kwargs):
     if logger is None:
-      logger = self._main_reference.logger
+      logger = self._main_reference.get_logger()
     if name is not None and self._exception_type != "generic":
       return_exception = NotImplementedError(f"{self._exception_type}: {name}\n{message}")
       logger.exception(
@@ -79,9 +79,9 @@ class exception_base(base):
     )
     return return_exception
   
-  def type_error(self, message, name = None, exception = None, *args, **kwargs):
+  def type_error(self, message, name = None, logger = None, exception = None, *args, **kwargs):
     if logger is None:
-      logger = self._main_reference.logger
+      logger = self._main_reference.get_logger()
     if name is not None and self._exception_type != "generic":
       return_exception = TypeError(f"{self._exception_type}: {name}\n{message}")
       logger.exception(
@@ -114,9 +114,9 @@ class exception_base(base):
     )
     return return_exception
   
-  def key_error(self, message, name = None,  exception = None,*args, **kwargs):
+  def key_error(self, message, name = None, logger = None,  exception = None,*args, **kwargs):
     if logger is None:
-      logger = self._main_reference.logger
+      logger = self._main_reference.get_logger()
     if name is not None and self._exception_type != "generic":      
       return_exception = KeyError(f"{self._exception_type}: {name}\n{message}")
       logger.exception(
