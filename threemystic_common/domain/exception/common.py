@@ -30,7 +30,7 @@ class exception_common(base):
     
     if exception_type == "argument":
       if self._exception.get(exception_type):
-        return self._exception[exception_type].exception(main_reference= self._main_reference, exception_type= exception_type, *args, **kwargs)
+        return self._exception[exception_type](main_reference= self._main_reference, exception_type= exception_type, *args, **kwargs)
       
       from threemystic_common.domain.exception.argument import exception_argument as exception
       self._exception[exception_type] = exception
@@ -38,7 +38,7 @@ class exception_common(base):
     
     if exception_type == "function":
       if self._exception.get(exception_type):
-        return self._exception[exception_type].exception(main_reference= self._main_reference,exception_type= exception_type, *args, **kwargs)
+        return self._exception[exception_type](main_reference= self._main_reference, exception_type= exception_type, *args, **kwargs)
       
       from threemystic_common.domain.exception.function import exception_function as exception
       self._exception[exception_type] = exception
