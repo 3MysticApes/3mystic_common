@@ -24,10 +24,12 @@ class helper_type_bool(base):
       return check_value > 0
     
     if not self._main_reference.helper_type().general().is_type(check_value, str):
+      if check_value is None:
+        return False
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_logger(),
         name = "check_value",
         message = f"Unknown type for comparison ({type(check_value)})"
       )
@@ -46,10 +48,12 @@ class helper_type_bool(base):
       return check_value > 0
     
     if not self._main_reference.helper_type().general().is_type(check_value, str):
+      if check_value is None:
+        return True
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_logger(),
         name = "check_value",
         message = f"Unknown type for comparison ({type(check_value)})"
       )
