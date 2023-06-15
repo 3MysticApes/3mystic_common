@@ -15,6 +15,10 @@ class base(main_base):
   def get_supported_providers(cls, *args, **kwargs):
     return ["aws", "azure"]
   
+  @classmethod
+  def get_supported_output_format(self, *args, **kwargs):
+    return ["json", "yaml"]
+  
   def get_provider(self, *args, **kwargs):
     return self.__provider
   

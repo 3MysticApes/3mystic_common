@@ -188,10 +188,10 @@ class helper_type_datetime(base):
   def is_token_expired_epoch(self, token_life_duration, start_time = None, buffer_delta = timedelta(seconds=300), time_zone= "utc", *args, **kwargs):  
     if start_time is None:
       start_time = self.get_epoch()
-    return (start_time + token_life_duration) <= (self.get(time_zone= time_zone) + buffer_delta)
+    return self.token_expired_epoch(token_life_duration= token_life_duration, start_time= start_time) <= (self.get(time_zone= time_zone) + buffer_delta)
   
   # GetTokenExpiredEpoch_Duration
-  def GetTokenExpiredEpoch_Duration(self, token_life_duration, start_time = None):  
+  def token_expired_epoch(self, token_life_duration, start_time = None, *args, **kwargs):  
     if start_time is None:
       start_time = self.get_epoch()
     return (start_time + token_life_duration)
