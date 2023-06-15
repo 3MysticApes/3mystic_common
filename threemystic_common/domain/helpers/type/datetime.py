@@ -19,11 +19,11 @@ class helper_type_datetime(base):
     utc = self.convert_to_utc(dt=datetime.utcnow(), default_utctime= True)
     return self.convert_time_zone(dt= utc, time_zone= time_zone)
   
-  def timedelta(self, dt = None, totalSecondAddTime = 300, time_zone="utc", *args, **kwargs):    
+  def time_delta_seconds(self, dt = None, total_seconds = 300, time_zone="utc", *args, **kwargs):    
     if dt is None:
       dt = self.get(time_zone= time_zone)
 
-    return self.convert_time_zone(dt=(dt + timedelta(seconds=totalSecondAddTime)), time_zone= time_zone)
+    return self.convert_time_zone(dt=(dt + timedelta(seconds=total_seconds)), time_zone= time_zone)
   
   def get_epoch(self, *args, **kwargs):    
     return datetime.utcfromtimestamp(0)
@@ -101,17 +101,18 @@ class helper_type_datetime(base):
     return datetime(year=dt.year, month=dt.month, day=dt.day, hour=dt.hour,minute=minute*int(math.floor((dt.minute / minute))), tzinfo= dt.tzinfo)
 
   # get_datetime_nearest_next_minute
-  def get_nearest_next_minute(cls, dt, minute = 15, *args, **kwargs):  
+  def get_nearest_next_minute(self, dt, minute = 15, *args, **kwargs):  
     next_nearest_minute = minute*(int(math.floor((dt.minute / minute)))+ 1)
     if next_nearest_minute < 60:
       return datetime(year=dt.year, month=dt.month, day=dt.day, hour=dt.hour,minute=next_nearest_minute, tzinfo= dt.tzinfo)
     
-    return dt + timedelta(seconds=((next_nearest_minute - dt.minute) * 60))
+    return dt + self.time_delta_seconds(total_seconds=((next_nearest_minute - dt.minute) * 60))
 
   # parse_datetime_iso
   def parse_iso(self, iso_datetime_str, *args, **kwargs):    
-    if iso_datetime_str.lower()[-1] == "Z":
+    if self._main_reference.helper_type().string().set_case(string_value= iso_datetime_str, case= "lower")[-1] == "z":
       iso_datetime_str = f"{iso_datetime_str[0:len(iso_datetime_str) - 1]}+00:00"
+    
     return datetime.fromisoformat(iso_datetime_str)
 
   # convert_datetime_utc
@@ -181,16 +182,16 @@ class helper_type_datetime(base):
   def is_token_expired(self, token_life_duration, start_time = None, buffer_delta = timedelta(seconds=60), time_zone= "utc", *args, **kwargs):  
     if start_time is None:
       start_time = self.get(time_zone= time_zone)
-    return (start_time + token_life_duration) <= (self.get(time_zone= time_zone + buffer_delta)
+    return (start_time + token_life_duration) <= (self.get(time_zone= time_zone + buffer_delta))
   
   # isTokenExpiredEpoch_Duration
   def is_token_expired_epoch(self, token_life_duration, start_time = None, buffer_delta = timedelta(seconds=300), time_zone= "utc", *args, **kwargs):  
     if start_time is None:
       start_time = self.get_epoch()
-    return (start_time + token_life_duration) <= (self.get(time_zone= time_zone) + buffer_delta)
+    return self.token_expired_epoch(token_life_duration= token_life_duration, start_time= start_time) <= (self.get(time_zone= time_zone) + buffer_delta)
   
   # GetTokenExpiredEpoch_Duration
-  def GetTokenExpiredEpoch_Duration(self, token_life_duration, start_time = None):  
+  def token_expired_epoch(self, token_life_duration, start_time = None, *args, **kwargs):  
     if start_time is None:
       start_time = self.get_epoch()
     return (start_time + token_life_duration)

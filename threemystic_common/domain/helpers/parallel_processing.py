@@ -8,7 +8,7 @@ class helper_parallel_processing(base):
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(logger_name= f"helper_parallel_processing", *args, **kwargs)
   
-  async def ensure_all_tasks_complete(self, done_function, done_function_params, total_tasks = None, current_running_total = None, verbose = True):
+  async def ensure_all_tasks_complete(self, done_function, done_function_params, total_tasks = None, current_running_total = None, verbose = False):
     running_done_count = current_running_total if current_running_total is not None else 0
     
     return_data = None

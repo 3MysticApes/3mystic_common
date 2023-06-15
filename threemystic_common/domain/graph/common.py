@@ -17,7 +17,7 @@ class graph_common(base):
       raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).not_implemented(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         name = "graph_method",
         message = f"Unknown Graph Provided: {graph_method}.\nSupported Graph Providers{self.__get_supported_graphs()}"
       )
@@ -50,7 +50,7 @@ class graph_common(base):
     raise self._main_reference.exception().exception(
       exception_type = "generic"
     ).not_implemented(
-      logger = self.get_logger(),
+      logger = self._main_reference.get_common().get_logger(),
       name = "graph_method",
       message = f"Graph not inited: {graph_method}.\nPlease run init_graph}"
     )

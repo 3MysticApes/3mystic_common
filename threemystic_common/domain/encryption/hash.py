@@ -8,11 +8,11 @@ class encryption_hash(base):
     self._hash_method = self.__get_hash_method(*args, **kwargs)
   
   def __get_hash_method(self, hash_method, *args, **kwargs):
-    if self._main_reference.helper_type().general().is_null_or_whitespace(hash_method):
+    if self._main_reference.helper_type().string().is_null_or_whitespace(hash_method):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).not_implemented(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         name = "hash_method",
         message = f"argument not provided"
       )
@@ -32,7 +32,7 @@ class encryption_hash(base):
     raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).not_implemented(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         name = "hash_method",
         message = f"Unknown Hash Method Provided: {hash_method}"
       )

@@ -17,7 +17,7 @@ class helper_config(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         name = "config_type",
         message = f"config_type is either None or an empty string"
       )
@@ -26,7 +26,7 @@ class helper_config(base):
       raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).not_implemented(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         name = "config_type",
         message = f"config_type not known, known values: {self._get_known_config_types()}"
       )

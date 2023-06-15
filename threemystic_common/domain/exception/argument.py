@@ -7,7 +7,9 @@ class exception_argument(base):
   """This is a common set of methods and libraries"""
 
   def __init__(self, *args, **kwargs) -> None:
-    super().__init(
+    if "exception_type" in kwargs:
+      kwargs.pop("exception_type")
+    super().__init__(
       exception_type = "argument", *args, **kwargs
     )
   

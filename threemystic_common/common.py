@@ -17,7 +17,7 @@ class common(base):
     )
     self.update_configuration(config_path= config_path)
   
-  def get_threemystic_config_path(self, *args, **kwargs):
+  def get_threemystic_directory(self, *args, **kwargs):
     general_path = self.helper_path().expandpath_user(
       path= "~/.3mystic"
     )
@@ -25,6 +25,13 @@ class common(base):
       general_path.mkdir(parents= True)
     
     return general_path
+  
+  def get_threemystic_directory_config(self, *args, **kwargs):
+    config_path = self.get_threemystic_directory().joinpath("config")
+    if not config_path.exists():
+      config_path.mkdir(parents= True)
+    
+    return config_path
 
   def version(self):
     if hasattr(self, "_version"):
@@ -44,19 +51,23 @@ class common(base):
   def get_configuration(self, *args, **kwargs):
     return self._config_data
   
-  def exception(self, *args, **kwargs):
+  def exception(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_exception")
+      return
+    
     if hasattr(self, "_exception"):
-      return self._monitoring
+      return self._exception
     
     from threemystic_common.domain.exception.common import exception_common as exception        
-    self._monitoring = exception(
+    self._exception = exception(
       main_reference= self, *args, **kwargs
     )
     return self.exception(*args, **kwargs)
 
   def app_monitoring(self, unset = False, *args, **kwargs):
     if(unset):
-      self._unset("_exception")
+      self._unset("_monitoring")
       return
     
     if hasattr(self, "_monitoring"):
@@ -89,10 +100,10 @@ class common(base):
       return
     
     if hasattr(self, "_encryption"):
-      return self._helper_dictionary
+      return self._encryption
     
-    from threemystic_common.domain.encryption import encryption_common as encryption
-    self._helper_dictionary = encryption(
+    from threemystic_common.domain.encryption.common import encryption_common as encryption
+    self._encryption = encryption(
       main_reference= self, *args, **kwargs
     )
     return self.encryption(*args, **kwargs)
@@ -179,7 +190,7 @@ class common(base):
     self._helper_parallel_processing = helper(
       main_reference= self, *args, **kwargs
     )
-    return self.helper_json(*args, **kwargs)
+    return self.helper_parallel_processing(*args, **kwargs)
   
   def helper_config(self, unset = False, *args, **kwargs):
     if(unset):

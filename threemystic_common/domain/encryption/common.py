@@ -20,7 +20,7 @@ class encryption_common(base):
       return 
     
     hash_method = hash_method.lower() if hash_method is not None else ""
-    if not hasattr(self, "_hash_method"):
+    if hasattr(self, "_hash_method"):
       if self._hash_method.get(hash_method) is not None:
         return self._hash_method[hash_method]
     
@@ -33,5 +33,5 @@ class encryption_common(base):
       main_reference= self._main_reference,
       hash_method= hash_method
     )
-    return self.hash(*args, **kwargs)
+    return self.hash(hash_method= hash_method, *args, **kwargs)
   
