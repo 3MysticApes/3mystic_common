@@ -31,7 +31,7 @@ class app_monitoring_performance(base):
       raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         message = f"Memory tracing not defined"
       )
     return None
@@ -42,7 +42,7 @@ class app_monitoring_performance(base):
       raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         message = f"Memory tracing not defined"
       )
     if action is None:
@@ -68,7 +68,7 @@ class app_monitoring_performance(base):
       raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         message = f"Memory tracing not defined"
       )
 
@@ -83,7 +83,7 @@ class app_monitoring_performance(base):
       raise self._main_reference.exception().exception(
         exception_type = "generic"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         message = f"Memory tracing not defined"
       )
 

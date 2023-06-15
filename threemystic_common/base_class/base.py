@@ -34,6 +34,10 @@ class base(abc.ABC):
       )
 
   def get_logger(self) -> Logger:
+    if hasattr(self, "_main_reference"):      
+      if self._main_reference is not None:
+        return self._main_reference.get_common().get_logger()
+    
     if hasattr(self, "_logger"):
       return self._logger
     
@@ -64,7 +68,11 @@ class base(abc.ABC):
       self._common = threemystic_common()
       self.get_common()
   
-  def get_common(self, *args, **kwargs):
+  def get_common(self, *args, **kwargs):    
+    if hasattr(self, "_main_reference"):
+      if self._main_reference is not None:
+        return self._main_reference.get_common()
+    
     if hasattr(self, "_common"):
       if self._common is not None:
         return self._common

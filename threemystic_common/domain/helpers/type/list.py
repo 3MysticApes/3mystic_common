@@ -17,7 +17,7 @@ class helper_type_list(base):
     raise self._main_reference.exception().exception(
       exception_type = "argument"
     ).type_error(
-      logger = self.get_logger(),
+      logger = self._main_reference.get_common().get_logger(),
       name = "data",
       message = f"Data is None"
     )
@@ -31,39 +31,36 @@ class helper_type_list(base):
 
     return [ val for val in unique_data.values()]
   
-  def __flatten(self, data, flatten_list, *args, **kwargs):
-    if self._main_reference.helper_type().general().is_type(data, list):
+  def __flatten(self, data, flatten_list, recursive= True, *args, **kwargs):
+    if not self._main_reference.helper_type().general().is_type(data, list):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         name = "data",
         message = f"Unknown type: {type(data)}\n expected list"
       )
-    
-    flatten_list = []
 
     for item in data:
-      if self._main_reference.helper_type().general().is_type(item, list):
-        self.flatten(data = item, flatten_list = flatten_list)
+      if self._main_reference.helper_type().general().is_type(item, list) and recursive:
+        flatten_list += self.flatten(data = item, flatten_list = flatten_list, recursive= recursive)
         continue
       
       flatten_list.append(item)
     
     return flatten_list
 
-  def flatten(self, data, *args, **kwargs):
-    if self._main_reference.helper_type().general().is_type(data, list):
+  def flatten(self, data, recursive= True, *args, **kwargs):
+    if not self._main_reference.helper_type().general().is_type(data, list):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         name = "data",
         message = f"Unknown type: {type(data)}\n expected list"
       )
     
-    flatten_list = []
-    return self.__flatten(data= data, flatten_list= flatten_list)
+    return self.__flatten(data= data, flatten_list= [], recursive= recursive)
   
   # flatten_array_length
   def flatten_length(self, *args, **kwargs):
@@ -71,7 +68,7 @@ class helper_type_list(base):
     raise self._main_reference.exception().exception(
       exception_type = "function"
     ).exception(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
       name = "flatten_length",
       message = f"Not Needed"
     )
@@ -81,7 +78,7 @@ class helper_type_list(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         name = "data",
         message = f"Unknown type: {type(data)}\n expected list"
       )

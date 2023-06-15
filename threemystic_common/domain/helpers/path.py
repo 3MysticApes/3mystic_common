@@ -18,7 +18,7 @@ class helper_path(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         name = "path",
         message = f"Unknown type ({type(path)})"
       )
@@ -27,7 +27,7 @@ class helper_path(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         name = "path",
         message = f"path is either None or an empty string"
       )
@@ -48,7 +48,7 @@ class helper_path(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         name = "path",
         message = f"path is not a string or Path type"
       )  
@@ -57,7 +57,7 @@ class helper_path(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         name = "path",
         message = f"path is either None or an empty string"
       )

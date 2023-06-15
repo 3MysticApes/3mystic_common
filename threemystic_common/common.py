@@ -190,7 +190,7 @@ class common(base):
     self._helper_parallel_processing = helper(
       main_reference= self, *args, **kwargs
     )
-    return self.helper_json(*args, **kwargs)
+    return self.helper_parallel_processing(*args, **kwargs)
   
   def helper_config(self, unset = False, *args, **kwargs):
     if(unset):
