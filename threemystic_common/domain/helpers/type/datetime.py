@@ -78,7 +78,12 @@ class helper_type_datetime(base):
     
     if not is_am and time_str[-2].lower() != "pm" and time_str[-1].lower() != "p":
       if error_missing_ampm:
-        raise Exception("missing am/pm indicator")
+        raise self._main_reference.exception().exception(
+        exception_type = "generic"
+        ).type_error(
+          logger = self._main_reference.get_common().get_logger(),
+          message = f"missing am/pm indicator"
+        )
       return time_str
     
     time_parts = self._main_reference.helper_type().string().split(string_value=time_str.rstrip(" amp"), separator=":")
@@ -107,6 +112,25 @@ class helper_type_datetime(base):
       return datetime(year=dt.year, month=dt.month, day=dt.day, hour=dt.hour,minute=next_nearest_minute, tzinfo= dt.tzinfo)
     
     return dt + self.time_delta_seconds(total_seconds=((next_nearest_minute - dt.minute) * 60))
+
+  def datetime_from_string(self, dt_string, dt_format="%Y/%M/%d", *args, **kwargs):    
+    if self._main_reference.helper_type().general().is_type(dt_format, str):
+      try:
+        return self.convert_to_utc(dt= datetime.strptime(dt_string, dt_format ))
+      except:
+        return None
+    
+    if self._main_reference.helper_type().general().is_type(dt_format, list):
+      for format in dt_format:
+        try:
+          format_value = self.datetime_from_string(dt_string= dt_string, dt_format=format)
+          if format_value is not None:
+            return format_value
+        except:
+          continue
+
+    return None
+    
 
   # parse_datetime_iso
   def parse_iso(self, iso_datetime_str, *args, **kwargs):    
