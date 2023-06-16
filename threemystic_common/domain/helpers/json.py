@@ -3,6 +3,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 import dateutil.tz as dateutil_tz
+import decimal
 from threemystic_common.base_class.base_common import base
 
 
@@ -25,6 +26,9 @@ class helper_json(base):
 
     if self._main_reference.helper_type().general().is_type(data, [ dateutil_tz.tz.tzutc,  dateutil_tz.tz.tzlocal, ZoneInfo]):
       return self.__get_offset_from_zoneinfo(data)
+    
+    if self._main_reference.helper_type().general().is_type(data, decimal.Decimal):
+      return str(data)
     try:
       json.dumps(data)
     except:
@@ -35,7 +39,9 @@ class helper_json(base):
     return data
 
   def dumps(self, data, default_encoder_function = None, *args, **kwargs):   
-    return json.dumps(data, default= self.serializable_default if default_encoder_function is None else default_encoder_function)
+    if kwargs.get("default") is None:
+      kwargs["default"] = self.serializable_default if default_encoder_function is None else default_encoder_function
+    return json.dumps(data, **kwargs)
   
   def loads(self, data, return_empty_on_null = True,  *args, **kwargs):   
     if data is None:

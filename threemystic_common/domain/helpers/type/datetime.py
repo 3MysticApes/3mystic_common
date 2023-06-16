@@ -35,7 +35,7 @@ class helper_type_datetime(base):
           
     return dt.astimezone(dateutil_tz.tzutc())
   
-  def datetime_as_string(self, datetime_format = "%Y%M%d%H%M%S", datetime_to_format = None, time_zone="utc", *args, **kwargs):    
+  def datetime_as_string(self, datetime_format = "%Y%m%d%H%M%S", datetime_to_format = None, time_zone="utc", *args, **kwargs):    
     if datetime_to_format is None:
       datetime_to_format = self.get(time_zone= time_zone)
     
@@ -113,7 +113,7 @@ class helper_type_datetime(base):
     
     return dt + self.time_delta_seconds(total_seconds=((next_nearest_minute - dt.minute) * 60))
 
-  def datetime_from_string(self, dt_string, dt_format="%Y/%M/%d", *args, **kwargs):    
+  def datetime_from_string(self, dt_string, dt_format="%Y/%m/%d", *args, **kwargs):    
     if self._main_reference.helper_type().general().is_type(dt_format, str):
       try:
         return self.convert_to_utc(dt= datetime.strptime(dt_string, dt_format ))
@@ -219,3 +219,33 @@ class helper_type_datetime(base):
     if start_time is None:
       start_time = self.get_epoch()
     return (start_time + token_life_duration)
+  
+  def get_month_as_2digits(self, month, *args, **kwargs):  
+    if int(month) < 10:
+      return f'0{month}'
+    
+    return month
+
+  def get_day_as_2digits(self, day, *args, **kwargs):  
+    if int(day) < 10:
+      return f'0{day}'
+    
+    return day
+  
+  def yesterday(self, dt = None, *args, **kwargs):  
+    if dt is None:
+      dt = self.get(*args, **kwargs)
+    return (dt - timedelta(days= 1))
+  
+  def last_day_month(self, month, *args, **kwargs):  
+    year = self.get().year
+    month = int(month) + 1
+    if month > 12:
+      month = 1
+      year = (year) + 1
+
+    dt = self.datetime_from_string(f"{year}/{self.get_month_as_2digits(month= month)}/01")
+    return (dt - timedelta(days= 1))
+  
+  def last_day_month_day(self, month, *args, **kwargs):      
+    return self.last_day_month(month= month).day
