@@ -334,7 +334,7 @@ class cmdb_base(base):
   def save_report(self, report_dir, report_name, workbook, show_output = True):
     date_now = self._main_reference.helper_type().datetime().get(time_zone = "local")
 
-    report_name = report_name.format(self._main_reference.helper_type().datetime().datetime_as_string(datetime_format = "%Y%M%d%H%M", datetime_format = date_now))
+    report_name = report_name.format(self._main_reference.helper_type().datetime().datetime_as_string(dt_format = "%Y%M%d%H%M", dt = date_now))
     # report_directory_path_info = Path("{}/".format(report_dir)).resolve()    
     report_directory_path_info = self._main_reference.helper_path().get(path = f"{report_dir}/")
     report_path = report_directory_path_info.joinpath(f"{report_name}")

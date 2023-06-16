@@ -19,11 +19,22 @@ class helper_type_datetime(base):
     utc = self.convert_to_utc(dt=datetime.utcnow(), default_utctime= True)
     return self.convert_time_zone(dt= utc, time_zone= time_zone)
   
-  def time_delta_seconds(self, dt = None, total_seconds = 300, time_zone="utc", *args, **kwargs):    
+  def time_delta(self, dt = None, microseconds = 0, milliseconds= 0, seconds = 0, minutes =0, hours = 0, days = 0, weeks = 0, time_zone="utc", *args, **kwargs):    
     if dt is None:
       dt = self.get(time_zone= time_zone)
 
-    return self.convert_time_zone(dt=(dt + timedelta(seconds=total_seconds)), time_zone= time_zone)
+    return self.convert_time_zone(dt=(dt + timedelta(
+      microseconds= microseconds,milliseconds= milliseconds,
+      seconds= seconds, minutes= minutes, hours= hours,
+      days= days, weeks= weeks )), time_zone= time_zone)
+  
+  def time_delta_seconds(self, dt = None, total_seconds = 300, time_zone="utc", *args, **kwargs):    
+    return self.time_delta(
+      dt= dt,
+      total_seconds= total_seconds,
+      time_zone= time_zone,
+      *args, **kwargs
+    )
   
   def get_epoch(self, *args, **kwargs):    
     return datetime.utcfromtimestamp(0)
@@ -35,11 +46,11 @@ class helper_type_datetime(base):
           
     return dt.astimezone(dateutil_tz.tzutc())
   
-  def datetime_as_string(self, datetime_format = "%Y%m%d%H%M%S", datetime_to_format = None, time_zone="utc", *args, **kwargs):    
-    if datetime_to_format is None:
-      datetime_to_format = self.get(time_zone= time_zone)
+  def datetime_as_string(self, dt_format = "%Y%m%d%H%M%S", dt = None, time_zone="utc", *args, **kwargs):    
+    if dt is None:
+      dt = self.get(time_zone= time_zone)
     
-    return datetime_to_format.strftime(datetime_format)
+    return dt.strftime(dt_format)
   
   # get_tzinfo_from_datetime
   def get_tzinfo(self, check_datetime, default_tz, *args, **kwargs):
@@ -111,7 +122,7 @@ class helper_type_datetime(base):
     if next_nearest_minute < 60:
       return datetime(year=dt.year, month=dt.month, day=dt.day, hour=dt.hour,minute=next_nearest_minute, tzinfo= dt.tzinfo)
     
-    return dt + self.time_delta_seconds(total_seconds=((next_nearest_minute - dt.minute) * 60))
+    return dt + self.time_delta(seconds=((next_nearest_minute - dt.minute) * 60))
 
   def datetime_from_string(self, dt_string, dt_format="%Y/%m/%d", *args, **kwargs):    
     if self._main_reference.helper_type().general().is_type(dt_format, str):
