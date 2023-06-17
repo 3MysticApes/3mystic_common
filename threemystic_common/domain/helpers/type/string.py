@@ -27,7 +27,7 @@ class helper_type_string(base):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
       ).type_error(
-        logger = self.get_logger(),
+        logger = self._main_reference.get_common().get_logger(),
         name = "case",
         message = f"case type is unknown. valid options: {valid_case_options}"
       )

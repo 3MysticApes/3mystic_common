@@ -63,10 +63,23 @@ class base(abc.ABC):
       self._common = init_object.get_common()
       return self.get_common()
     
+    from threemystic_common.common import common as threemystic_common
+    if common is not None:
+      if isinstance(common, threemystic_common):
+        self._common = common
+        return self.get_common()
+      if hasattr(common, "get_common") and not refresh:
+        if self.get_common() is not None and isinstance(common.get_common(), threemystic_common):
+          self._common = common.get_common()
+          return self.get_common()
+      if hasattr(common, "_common") and not refresh:
+        if self._common is not None and isinstance(common, threemystic_common):
+          self._common = common._common
+          return self.get_common()
+        
     if common is None:
-      from threemystic_common.common import common as threemystic_common
       self._common = threemystic_common()
-      self.get_common()
+      return self.get_common()
   
   def get_common(self, *args, **kwargs):    
     if hasattr(self, "_main_reference"):
