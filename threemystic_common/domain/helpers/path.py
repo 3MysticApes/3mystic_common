@@ -1,4 +1,5 @@
 from pathlib import Path  
+from pathvalidate import ValidationError, validate_filepath
 from threemystic_common.base_class.base_common import base
 
 class helper_path(base): 
@@ -7,6 +8,13 @@ class helper_path(base):
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(logger_name= f"helper_path", *args, **kwargs)
   
+  def is_valid_filepath(self, path, *args, **kwargs):
+    try:
+      validate_filepath(path)
+      return True
+    except ValidationError as e:
+      return False
+
   # report_directory
   def get(self, path = None, *args, **kwargs)->Path:
     if path is None:

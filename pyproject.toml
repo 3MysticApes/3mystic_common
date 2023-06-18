@@ -34,7 +34,8 @@ dependencies = [
   "pycryptodomex >= 3.14.1",
   "requests >= 2.27.1",
   "cryptography >= 38.0.3",
-  "typing-extensions >= 4.4.0"
+  "typing-extensions >= 4.4.0",
+  "pathvalidate >= 3.0.0"
 ]
 dynamic = ["version"]
 

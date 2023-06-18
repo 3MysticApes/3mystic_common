@@ -7,6 +7,31 @@ class helper_type_string(base):
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(logger_name= f"helper_type_string", *args, **kwargs)
   
+  def join(self, separator, str_array, return_empty_if_null = True, *args, **kwargs):
+    if not return_empty_if_null and str_array is None:
+      return None
+    if return_empty_if_null and str_array is None:
+      return ""
+
+    if self.is_null_or_whitespace(string_value= separator):
+      separator = ""
+      
+    if self._main_reference.helper_type().general().is_type(str_array, list):
+      if(len(str_array) < 1):
+        return ""
+      if(len(str_array) == 1):
+        return str_array[0]
+
+      return separator.join(str_array)
+    
+    raise self._main_reference.exception().exception(
+        exception_type = "argument"
+      ).type_error(
+        logger = self._main_reference.get_common().get_logger(),
+        name = "str_array",
+        message = f"str_array is not a list"
+      )
+  
   def trim(self, string_value, trim_chars = None, return_empty_if_null = True, *args, **kwargs):
     if not return_empty_if_null and string_value is None:
       return None
