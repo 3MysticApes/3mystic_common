@@ -17,6 +17,7 @@ class helper_type_string(base):
       separator = ""
       
     if self._main_reference.helper_type().general().is_type(str_array, list):
+      str_array = [item for item in str_array if item is not None]
       if(len(str_array) < 1):
         return ""
       if(len(str_array) == 1):
