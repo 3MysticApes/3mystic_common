@@ -2,7 +2,7 @@ from threemystic_common.exceptions.generate_data.quit import quit_exception
 
 class base_handler:
   def __init__(self, *args, **kwargs):
-    pass
+    self.__is_array = False
   
   def _response_allow_empty(self, item, *args, **kwargs):
     return item.get("allow_empty") == True
@@ -26,11 +26,16 @@ class base_handler:
     if allow_quit or self._is_array():
       print(f"To exit please type one of the following:\n{self._quit_options()}")
 
-  def _type(self, *args, **kwargs):
+  def _type(self, item, *args, **kwargs):
+    if item.get("type") is not None:
+      if item.get("type") == list:
+        self.__is_array = True
+      return item.get("type")
+
     return None
 
   def _is_array(self, *args, **kwargs):
-    return False
+    return self.__is_array
     
   def _is_response_empty(self, response_value):
     if not response_value:
@@ -112,7 +117,7 @@ class base_handler:
     else:
       self._response_is_required_not_required(item= item, *args, **kwargs)
 
-  def _process_type_none(self, item, allow_quit, *args, **kwargs):
+  def _prompt_user(self, item, allow_quit, *args, **kwargs):
     return_value = self._get_user_input_prompt()
 
     if allow_quit and return_value.lower() in self._quit_options():
@@ -134,23 +139,58 @@ class base_handler:
     
     return return_value
 
-  def _get_user_input(self, item, allow_quit, *args, **kwargs):
-    return_value = None
-    
-    if self._type() == None:
-      try:
-        return_value = self._process_type_none(item= item, allow_quit= allow_quit)
+  def _process_type_list(self, item, allow_quit, *args, **kwargs):
+    try:
+      
+      if self._type(item) == list:
+        return_value = self._prompt_user(item= item, allow_quit= allow_quit)
         if self._response_allow_empty(item= item) and self._is_response_empty(response_value= return_value):
           if "default" in item:
             return_value = item.get("default")
-      
         
         return {
           "raw": return_value,
           "formated": self._get_formated(return_value= return_value, item= item)
         }
-      except quit_exception:
-        return {"quit": True}
+      return None
+    except quit_exception:
+      return {"quit": True}
+    except KeyboardInterrupt:
+      return {"quit": True}
+
+  def _process_type_default(self, item, allow_quit, *args, **kwargs):
+    try:
+      return_value = self._prompt_user(item= item, allow_quit= allow_quit)
+      if self._response_allow_empty(item= item) and self._is_response_empty(response_value= return_value):
+        if "default" in item:
+          return_value = item.get("default")
+      
+      return {
+        "raw": return_value,
+        "formated": self._get_formated(return_value= return_value, item= item)
+      }
+      return None
+    except quit_exception:
+      return {"quit": True}
+    except KeyboardInterrupt:
+      return {"quit": True}
+  
+  def _process_type(self, item, *args, **kwargs):
+    if self._type(item) == list:
+      return self._process_type_list(item= item, *args, **kwargs)
+
+    return self._process_type_default(item= item, *args, **kwargs)
+
+
+  def _get_user_input(self, item, allow_quit, *args, **kwargs):
+    return_value = None
+
+    self._process_type(
+      item= item,
+      allow_quit= allow_quit, 
+      *args, **kwargs
+    )
+    
 
   def _get_user_input_prompt(self, *args, **kwargs):
     print("-------------------------------------------------------------------------\n")

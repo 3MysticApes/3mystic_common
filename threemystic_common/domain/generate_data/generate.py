@@ -72,8 +72,8 @@ class generate_data(base):
         attribute_name= key, 
         item= item
       )
-
-      if return_data[key].get("quit") == True:
+      
+      if return_data[key] is None or return_data[key].get("quit") == True:
         print("Exiting now. No Data Saved")
         return None
 
