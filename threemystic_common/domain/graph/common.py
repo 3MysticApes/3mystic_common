@@ -10,7 +10,7 @@ class graph_common(base):
   def __get_supported_graphs(self):
     return ["msgraph"]
   
-  def init_graph(self, graph_method, graph_config, *args, **kwargs):    
+  def init_graph(self, graph_method, *args, **kwargs):    
     graph_method = graph_method.lower() if graph_method is not None else ""
     
     if graph_method not in self.__get_supported_graphs():
@@ -24,11 +24,12 @@ class graph_common(base):
 
     if not hasattr(self, "_graph_method"):
       self._graph_method = {}
-
+    
     if graph_method == "msgraph":
       from threemystic_common.domain.graph.msgraph import graph_msgraph as graph
       self._graph_method[graph_method] = graph(
-        config = graph_config
+        main_reference= self._main_reference,
+        *args, **kwargs
       )
 
   def graph(self, graph_method, unset = False, *args, **kwargs):
@@ -43,15 +44,10 @@ class graph_common(base):
       return    
     
     graph_method = graph_method.lower() if graph_method is not None else ""
-    if not hasattr(self, "_graph_method"):
+    if hasattr(self, "_graph_method"):
       if self._graph_method.get(graph_method) is not None:
         return self._graph_method[graph_method]
    
-    raise self._main_reference.exception().exception(
-      exception_type = "generic"
-    ).not_implemented(
-      logger = self._main_reference.get_common().get_logger(),
-      name = "graph_method",
-      message = f"Graph not inited: {graph_method}.\nPlease run init_graph}"
-    )
+    self.init_graph(graph_method= graph_method, *args, **kwargs)
+    return self.graph(graph_method= graph_method, *args, **kwargs)
 

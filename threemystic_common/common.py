@@ -61,6 +61,20 @@ class common(base):
   def get_configuration(self, *args, **kwargs):
     return self._config_data
   
+  def graph(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_graph")
+      return
+    
+    if hasattr(self, "_graph"):
+      return self._graph
+    
+    from threemystic_common.domain.graph.common import graph_common as graph        
+    self._graph = graph(
+      main_reference= self, *args, **kwargs
+    )
+    return self.graph(*args, **kwargs)
+  
   def exception(self, unset = False, *args, **kwargs):
     if(unset):
       self._unset("_exception")

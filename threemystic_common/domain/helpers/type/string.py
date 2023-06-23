@@ -33,6 +33,24 @@ class helper_type_string(base):
         message = f"str_array is not a list"
       )
   
+  def ltrim(self, string_value, trim_chars = None, return_empty_if_null = True, *args, **kwargs):
+    if not return_empty_if_null and string_value is None:
+      return None
+
+    if self.is_null_or_whitespace(string_value= string_value):
+      return ""
+    
+    return string_value.lstrip() if trim_chars is None else string_value.lstrip(trim_chars)
+  
+  def rtrim(self, string_value, trim_chars = None, return_empty_if_null = True, *args, **kwargs):
+    if not return_empty_if_null and string_value is None:
+      return None
+
+    if self.is_null_or_whitespace(string_value= string_value):
+      return ""
+    
+    return string_value.rstrip() if trim_chars is None else string_value.rstrip(trim_chars)
+  
   def trim(self, string_value, trim_chars = None, return_empty_if_null = True, *args, **kwargs):
     if not return_empty_if_null and string_value is None:
       return None

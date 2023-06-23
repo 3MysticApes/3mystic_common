@@ -30,6 +30,20 @@ class helper_type_common(base):
       main_reference= self._main_reference
     )
     return self.general(*args, **kwargs)
+  
+  def int(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_int")
+      return
+
+    if hasattr(self, "_int"):
+      return self._int
+    
+    from threemystic_common.domain.helpers.type.int import helper_type_int as helper
+    self._int = helper(
+      main_reference= self._main_reference
+    )
+    return self.int(*args, **kwargs)
 
   def string(self, unset = False, *args, **kwargs):
     if(unset):

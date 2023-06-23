@@ -8,6 +8,7 @@ class base_handler:
     return item.get("allow_empty") == True
 
   def _response_is_valid(self, response_value, item, *args, **kwargs):
+
     if self._response_allow_empty(item= item) and self._is_response_empty(response_value= response_value):
       return True
 
@@ -169,7 +170,7 @@ class base_handler:
         "raw": return_value,
         "formated": self._get_formated(return_value= return_value, item= item)
       }
-      return None
+      
     except quit_exception:
       return {"quit": True}
     except KeyboardInterrupt:
@@ -183,9 +184,8 @@ class base_handler:
 
 
   def _get_user_input(self, item, allow_quit, *args, **kwargs):
-    return_value = None
 
-    self._process_type(
+    return self._process_type(
       item= item,
       allow_quit= allow_quit, 
       *args, **kwargs

@@ -19,25 +19,21 @@ class helper_type_datetime(base):
     utc = self.convert_to_utc(dt=datetime.utcnow(), default_utctime= True)
     return self.convert_time_zone(dt= utc, time_zone= time_zone)
   
-  def time_delta(self, dt = None, microseconds = 0, milliseconds= 0, seconds = 0, minutes =0, hours = 0, days = 0, weeks = 0, time_zone="utc", *args, **kwargs):    
-    if dt is None:
-      dt = self.get(time_zone= time_zone)
-
-    return self.convert_time_zone(dt=(dt + timedelta(
+  def time_delta(self, microseconds = 0, milliseconds= 0, seconds = 0, minutes =0, hours = 0, days = 0, weeks = 0, time_zone="utc", *args, **kwargs):    
+    return timedelta(
       microseconds= microseconds,milliseconds= milliseconds,
       seconds= seconds, minutes= minutes, hours= hours,
-      days= days, weeks= weeks )), time_zone= time_zone)
+      days= days, weeks= weeks )
   
-  def time_delta_seconds(self, dt = None, total_seconds = 300, time_zone="utc", *args, **kwargs):    
+  def time_delta_seconds(self, total_seconds = 300, time_zone="utc", *args, **kwargs):    
     return self.time_delta(
-      dt= dt,
       total_seconds= total_seconds,
       time_zone= time_zone,
       *args, **kwargs
     )
   
   def get_epoch(self, *args, **kwargs):    
-    return datetime.utcfromtimestamp(0)
+    return self.convert_to_utc(dt= datetime.utcfromtimestamp(0))
 
   # convert_datetime_utc
   def convert_to_utc(self, dt, default_utctime = True, *args, **kwargs):   
@@ -113,11 +109,17 @@ class helper_type_datetime(base):
     return ":".join(time_parts)
       
   # get_datetime_nearest_minute
-  def get_nearest_minute(self, dt, minute = 15, *args, **kwargs):    
+  def get_nearest_minute(self, dt = None, minute = 15, time_zone= "utc", *args, **kwargs):    
+    if dt is None:
+      dt = self.get(time_zone= time_zone)
+
     return datetime(year=dt.year, month=dt.month, day=dt.day, hour=dt.hour,minute=minute*int(math.floor((dt.minute / minute))), tzinfo= dt.tzinfo)
 
   # get_datetime_nearest_next_minute
-  def get_nearest_next_minute(self, dt, minute = 15, *args, **kwargs):  
+  def get_nearest_next_minute(self, dt = None, minute = 15, time_zone= "utc", *args, **kwargs):  
+    if dt is None:
+      dt = self.get(time_zone= time_zone)
+
     next_nearest_minute = minute*(int(math.floor((dt.minute / minute)))+ 1)
     if next_nearest_minute < 60:
       return datetime(year=dt.year, month=dt.month, day=dt.day, hour=dt.hour,minute=next_nearest_minute, tzinfo= dt.tzinfo)
@@ -211,19 +213,19 @@ class helper_type_datetime(base):
   
   # isTokenExpired_Now
   def is_token_expired_now(self, compare_datetime, buffer_delta = timedelta(seconds=300)):   
-    return (self.convert_utc(compare_datetime) <= (self.convert_utc(self.get(time_zone= "local")) + buffer_delta))
+    return (self.convert_utc(compare_datetime) <= (self.convert_utc(self.get(time_zone= "local")) - buffer_delta))
 
   # isTokenExpired_Duration
   def is_token_expired(self, token_life_duration, start_time = None, buffer_delta = timedelta(seconds=60), time_zone= "utc", *args, **kwargs):  
     if start_time is None:
       start_time = self.get(time_zone= time_zone)
-    return (start_time + token_life_duration) <= (self.get(time_zone= time_zone + buffer_delta))
+    return (start_time + token_life_duration) <= (self.get(time_zone= time_zone - buffer_delta))
   
   # isTokenExpiredEpoch_Duration
   def is_token_expired_epoch(self, token_life_duration, start_time = None, buffer_delta = timedelta(seconds=300), time_zone= "utc", *args, **kwargs):  
     if start_time is None:
       start_time = self.get_epoch()
-    return self.token_expired_epoch(token_life_duration= token_life_duration, start_time= start_time) <= (self.get(time_zone= time_zone) + buffer_delta)
+    return self.token_expired_epoch(token_life_duration= token_life_duration, start_time= start_time) <= (self.get(time_zone= time_zone) - buffer_delta)
   
   # GetTokenExpiredEpoch_Duration
   def token_expired_epoch(self, token_life_duration, start_time = None, *args, **kwargs):  
