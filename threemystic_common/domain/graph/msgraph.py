@@ -16,19 +16,39 @@ class graph_msgraph(base):
   def openid_config_default(self, *args, **kwargs):
     return "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration"
   
-  def create_folder_data(self, name = "New Folder", *args, **kwargs):
-    return {
-    "name": name,
-    "folder": { }
-    }
+  def create_folder_data(self, name = "New Folder", folder_args = None, *args, **kwargs):
+    if not self.get_common().helper_type().general().is_type(obj= folder_args, type_check= dict):
+      return {
+      "name": name,
+      "folder": { }
+      }
+    
+    return self.get_common().helper_type().dictionary().merge_dictionary([
+      {},
+      {
+      "folder": { }
+      },
+      folder_args,
+      {"name": name,}
+    ])
 
-  def create_file_data(self, name = "New File", mime_type = "text/plain", *args, **kwargs):
-    return {
-    "name": name,
-    "file": { 
-      "mimeType": mime_type
-    }
-  }
+  def create_file_data(self, name = "New File", mime_type = "text/plain", file_args = None, *args, **kwargs):
+    if not self.get_common().helper_type().general().is_type(obj= file_args, type_check= dict):
+      return {
+      "name": name,
+      "folder": { }
+      }
+    
+    return self.get_common().helper_type().dictionary().merge_dictionary([
+      {},
+      file_args,
+      {
+        "name": name,
+        "file": { 
+          "mimeType": mime_type
+        }
+      }
+    ])
   
   def _get_known_session_types(self, *args, **kwargs):
     return {
@@ -71,7 +91,7 @@ class graph_msgraph(base):
     auth_token = (self.graph_credentials.get_token(scope)
                   if not self.get_common().helper_type().general().is_type(obj= self.graph_credentials, type_check= dict)
                   else self.graph_credentials.get("get_token"))
-    
+
     self._current_graph_token[scope_hash] = ({
       "token": auth_token.token,
       "expires_on": auth_token.expires_on

@@ -21,6 +21,14 @@ class graph_base(base):
     self.__set_credentials(credentials= credentials, *args, **kwargs)
 
   @abc.abstractclassmethod
+  def create_folder_data(self, *args, **kwargs):
+    pass
+
+  @abc.abstractclassmethod
+  def create_file_data(self, *args, **kwargs):
+    pass
+
+  @abc.abstractclassmethod
   def graph_scope_default(self, *args, **kwargs):
     pass
 
@@ -186,7 +194,7 @@ class graph_base(base):
         {
           "Content-Type":"application/json"
         },
-        headers, 
+        headers,
         self._get_auth_header(scope= scope)
       ]
     )
@@ -199,7 +207,7 @@ class graph_base(base):
       }
 
       if data is not None:
-        param_data["data"] = self.get_common().helper_json().dumps(data= data) if not not self.get_common().helper_type().general().is_type(obj= data, type_check= bytes) else data
+        param_data["data"] = self.get_common().helper_json().dumps(data= data) if not self.get_common().helper_type().general().is_type(obj= data, type_check= bytes) else data
 
       request_response = self._get_request_method(method=method)(**param_data)
       request_response.raise_for_status()
@@ -208,7 +216,7 @@ class graph_base(base):
         try:
           return request_response.json()
         except Exception as err:
-          self.logger.exception(
+          self.get_common().get_logger().exception(
             msg= f"Exception JSON - Not Caught - could not complete graph request - Status Code {request_response.status_code}\n{request_response.text}\n{err}",
             extra={
               "err": err,
@@ -221,7 +229,7 @@ class graph_base(base):
           )
 
     except requests.exceptions.HTTPError as err:
-      self.logger.exception(
+      self.get_common().get_logger().exception(
         msg= f"HTTPError - Not Caught - could not complete graph request - Status Code {request_response.status_code}\n{request_response.text}\n{err}",
         extra={
           "err": err,
@@ -236,7 +244,7 @@ class graph_base(base):
 
     except Exception as err:
       
-      self.logger.exception(
+      self.get_common().get_logger().exception(
         msg= f"Exception - Not Caught - could not complete graph request - Status Code {request_response.status_code}\n{request_response.text}\n{err}",
         extra={
           "err": err,
