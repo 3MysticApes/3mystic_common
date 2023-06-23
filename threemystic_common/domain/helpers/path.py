@@ -1,5 +1,5 @@
 from pathlib import Path  
-from pathvalidate import sanitize_filepath
+from pathvalidate import sanitize_filepath, sanitize_filename
 from threemystic_common.base_class.base_common import base
 
 class helper_path(base): 
@@ -10,6 +10,9 @@ class helper_path(base):
   
   def is_valid_filepath(self, path, *args, **kwargs):
     return sanitize_filepath(path) == path
+  
+  def is_valid_filename(self, file_name, *args, **kwargs):
+    return sanitize_filename(file_name) == file_name
 
   # report_directory
   def get(self, path = None, *args, **kwargs)->Path:
