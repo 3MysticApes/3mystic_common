@@ -25,6 +25,14 @@ class graph_base(base):
     pass
 
   @abc.abstractclassmethod
+  def generate_session_header(self, session_config, refresh= False, *args, **kwargs):
+    pass
+
+  @abc.abstractclassmethod
+  def close_session(self, session_config, *args, **kwargs):
+    pass
+
+  @abc.abstractclassmethod
   def create_file_data(self, *args, **kwargs):
     pass
 
@@ -179,7 +187,7 @@ class graph_base(base):
     except Exception as err:
       raise err
   
-  def __send_request(self, url, method = "get", scope = None, params = None, headers = None, data = None, version = "v1.0", session_regen_detail = None, *args, **kwargs):
+  def __send_request(self, url, method = "get", scope = None, params = None, headers = None, data = None, version = "v1.0", session_config = None, *args, **kwargs):
     """
     This function is a general method to send requests. It will auto added the required information to authtenticate.
     """
@@ -198,6 +206,15 @@ class graph_base(base):
         self._get_auth_header(scope= scope)
       ]
     )
+
+    if session_config is not None:
+      session_header = self.generate_session_header(
+        session_config= session_config
+      )
+      if session_header is not None:
+        safe_headers[session_header["key"]] = session_header["value"]
+
+
     graph_url = f'https://{self.get_openid_config()["msgraph_host"]}/{version}{url}{self._process_params(params)}'
     
     try:

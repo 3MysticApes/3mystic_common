@@ -58,6 +58,84 @@ class graph_msgraph(base):
   def get_known_session_types(self, *args, **kwargs):
     return list(self._get_known_session_types().keys())
   
+  def generate_session_data(self, session_config, refresh= False, *args, **kwargs):
+    session_type= self.get_common().helper_type().string().set_case(string_value= session_config.get("session_type"), case= "lower")
+    if session_type not in self.get_known_session_types():
+      return None
+    
+    base_path = ""
+    if session_type == "workbook":
+      base_path = f"{session_config.get('group_id')}" if self.get_common().helper_type().string().set_case(string_value= session_config.get('group_id'), case= "lower") == "me" else f"items/{session_config.get('group_id')}"
+      base_path = f"drive/{base_path}/workbook"
+      
+      session_key = {
+        "drive_item_id": session_config.get("drive_id"), 
+        "persist_changes": session_config.get("persist_changes"),
+        "session_type": self._get_known_session_types().get(session_type)
+      } 
+
+    if not self.get_common().helper_type().string().is_null_or_whitespace(string_value= session_config.get("group_id")):
+      session_key["group_id"] = session_config.get("group_id")
+
+    session_key = self.get_common().helper_json().dumps(data= session_key)
+    if hasattr(self, "_ms_graph_sessions") and not refresh:
+      if self._ms_graph_sessions.get(session_key):
+        return {
+          "type": session_type,
+          "data": self._ms_graph_sessions.get(session_key),
+          "base_path": base_path
+        }
+      
+    if not hasattr(self, "_ms_graph_sessions"):
+      self._ms_graph_sessions = {}
+
+    self._ms_graph_sessions[session_key] = self.send_request(
+      url = self.generate_graph_url(
+        resource= self._get_ms_graph_resource(), 
+        resource_id= self._get_ms_graph_resource_id(), 
+        base_path= f"{base_path}{'/createSession' if session_config.get('resfresh_session') is None else '/refreshSession'}"),
+        data = { "persistChanges": session_config.get("persist_changes") } if session_config.get("persist_changes") is not None and session_config.get("resfresh_session") is None else None,
+        params= {"@microsoft.graph.conflictBehavior": "replace"},
+        headers= {} if session_config.get('resfresh_session') is None else { f'{session_type}-Session-Id': session_config.get('resfresh_session')},
+        method= "post"
+    )
+    return self.generate_session_data(session_config= session_config, *args, **kwargs)
+      
+  def generate_session_header(self, session_config, refresh= False, *args, **kwargs):
+    header_data = self.generate_session_data(
+      session_config= session_config,
+      refresh= refresh,
+      *args, **kwargs
+    )
+    if header_data is None:
+      return None
+
+    return {
+      "key": f'{header_data.get("type")}-Session-Id',
+      "value": header_data.get("data")["Id"]
+    }
+
+  def close_session(self, session_config, *args, **kwargs):
+    header_data = self.generate_session_data(
+      session_config= session_config,
+      refresh= refresh,
+      *args, **kwargs
+    )
+    if header_data is None:
+      return None
+
+    return self.send_request(
+      url = self.generate_graph_url(
+        resource= self._get_ms_graph_resource(), 
+        resource_id= self._get_ms_graph_resource_id(), 
+        base_path= f"{header_data.get('base_path')}/closeSession",
+        headers= {"workbook-session-id": header_data.get("data")["Id"]},
+        method= "post"
+      )
+    )
+     
+       
+
   def generate_graph_url(self, resource, resource_id = None, base_path= None, *args, **kwargs):
     graph_url = self.get_common().helper_type().string().trim(string_value= f'{resource}')
     if not self.get_common().helper_type().string().is_null_or_whitespace(string_value= resource_id):
