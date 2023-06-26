@@ -16,7 +16,7 @@ class base(main_base):
     return ["aws", "azure"]
   
   @classmethod
-  def get_supported_output_format(self, *args, **kwargs):
+  def get_supported_output_format(cls, *args, **kwargs):
     return ["json", "yaml"]
   
   def get_provider(self, *args, **kwargs):

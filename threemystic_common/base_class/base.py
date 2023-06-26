@@ -1,7 +1,7 @@
-import abc
+from abc import ABC
 from logging import Logger
 
-class base(abc.ABC): 
+class base(ABC): 
   """This is a set of library wrappers to help general python apps"""
 
   def __init__(self, *args, **kwargs) -> None:

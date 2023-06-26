@@ -1,4 +1,4 @@
-import abc
+from abc import abstractmethod
 from threemystic_common.base_class.base_common import base
 import requests,urllib
 
@@ -20,35 +20,35 @@ class graph_base(base):
     self.graph_scope = graph_scope
     self.__set_credentials(credentials= credentials, *args, **kwargs)
 
-  @abc.abstractclassmethod
+  @abstractmethod
   def create_folder_data(self, *args, **kwargs):
     pass
 
-  @abc.abstractclassmethod
+  @abstractmethod
   def generate_session_header(self, session_config, refresh= False, *args, **kwargs):
     pass
 
-  @abc.abstractclassmethod
+  @abstractmethod
   def close_session(self, session_config, *args, **kwargs):
     pass
 
-  @abc.abstractclassmethod
+  @abstractmethod
   def create_file_data(self, *args, **kwargs):
     pass
 
-  @abc.abstractclassmethod
+  @abstractmethod
   def graph_scope_default(self, *args, **kwargs):
     pass
 
-  @abc.abstractclassmethod
+  @abstractmethod
   def openid_config_default(self, *args, **kwargs):
     pass
 
-  @abc.abstractclassmethod
+  @abstractmethod
   def generate_graph_url(self, *args, **kwargs):
     pass
 
-  @abc.abstractclassmethod
+  @abstractmethod
   def _get_auth_header(self, scope= None, refresh = False,  *args, **kwargs):
     pass
 

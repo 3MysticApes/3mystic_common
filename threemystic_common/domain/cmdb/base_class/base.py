@@ -1,4 +1,4 @@
-import abc
+from abc import abstractmethod
 import asyncio
 from threemystic_common.base_class.base_common import base
 from openpyxl import Workbook
@@ -42,7 +42,7 @@ class cmdb_base(base):
     }
 
   # get_cmdb_source
-  @abc.abstractmethod
+  @abstractmethod
   def get_source(self, *args, **kwargs):
     raise self._main_reference.exception().exception(
       exception_type = "function"
@@ -53,7 +53,7 @@ class cmdb_base(base):
     )
 
   # aws_get_resource_groups
-  @abc.abstractmethod
+  @abstractmethod
   def get_resource_groups(self, *args, **kwargs):    
     raise self._main_reference.exception().exception(
       exception_type = "function"
@@ -116,7 +116,7 @@ class cmdb_base(base):
 
     return str1.lower() == str2.lower()
 
-  @abc.abstractmethod
+  @abstractmethod
   def generate_resource_tags_csv(self, *args, **kwargs): 
     raise self._main_reference.exception().exception(
         exception_type = "function"
@@ -128,7 +128,7 @@ class cmdb_base(base):
   
   # generate_tag_columns_cmdb
   # generate_tag_columns
-  @abc.abstractmethod
+  @abstractmethod
   def generate_tag_columns(self, *args, **kwargs):
     # This will combine the 2 methods into one. I just would need to pass a variable to indicate if it should contain the source column
     raise self._main_reference.exception().exception(
@@ -141,7 +141,7 @@ class cmdb_base(base):
   
   # generate_tag_columns_cmdb_basic
   # generate_tag_columns_basic
-  @abc.abstractmethod
+  @abstractmethod
   def generate_tag_columns_basic(self, *args, **kwargs):
     # This will combine the 2 methods into one. I just would need to pass a variable to indicate if it should contain the source column
     raise self._main_reference.exception().exception(
@@ -310,7 +310,7 @@ class cmdb_base(base):
     )
 
   # get_report_default_row_cmdb
-  @abc.abstractmethod
+  @abstractmethod
   def get_report_default_row(self, *args, **kwargs):
     raise self._main_reference.exception().exception(
         exception_type = "function"
@@ -320,7 +320,7 @@ class cmdb_base(base):
         message = f"Not Implemented"
       )
   
-  @abc.abstractmethod
+  @abstractmethod
   def get_account_environment(self, *args, **kwargs):
     raise self._main_reference.exception().exception(
         exception_type = "function"
