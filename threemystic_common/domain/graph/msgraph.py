@@ -115,7 +115,7 @@ class graph_msgraph(base):
       "value": header_data.get("data")["Id"]
     }
 
-  def close_session(self, session_config, *args, **kwargs):
+  def close_session(self, session_config, refresh = False, *args, **kwargs):
     header_data = self.generate_session_data(
       session_config= session_config,
       refresh= refresh,

@@ -29,7 +29,7 @@ class graph_base(base):
     pass
 
   @abstractmethod
-  def close_session(self, session_config, *args, **kwargs):
+  def close_session(self, session_config, refresh = False, *args, **kwargs):
     pass
 
   @abstractmethod
