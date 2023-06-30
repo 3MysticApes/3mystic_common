@@ -250,10 +250,6 @@ class graph_base(base):
           )
 
     except requests.exceptions.HTTPError as err:
-      print(safe_headers)
-      print(graph_url)
-      print(method)
-      print(request_response.text)
       self.get_common().get_logger().exception(
         msg= f"HTTPError - Not Caught - could not complete graph request - Status Code {request_response.status_code}\n{request_response.text}\n{err}",
         extra={
