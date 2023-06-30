@@ -183,6 +183,9 @@ class graph_base(base):
           *args, **kwargs
         )
       
+      # if err.response.status_code == 400:
+        # error_details = err.response.json()
+      
       raise err
     except Exception as err:
       raise err
@@ -211,6 +214,7 @@ class graph_base(base):
       session_header = self.generate_session_header(
         session_config= session_config
       )
+      
       if session_header is not None:
         safe_headers[session_header["key"]] = session_header["value"]
 
@@ -246,6 +250,10 @@ class graph_base(base):
           )
 
     except requests.exceptions.HTTPError as err:
+      print(safe_headers)
+      print(graph_url)
+      print(method)
+      print(request_response.text)
       self.get_common().get_logger().exception(
         msg= f"HTTPError - Not Caught - could not complete graph request - Status Code {request_response.status_code}\n{request_response.text}\n{err}",
         extra={
