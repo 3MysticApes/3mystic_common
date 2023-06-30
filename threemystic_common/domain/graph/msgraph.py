@@ -116,7 +116,7 @@ class graph_msgraph(base):
       )
     except Exception as err:
       if refresh_session:
-        return self._generate_session_data(session_config= session_config, refresh= refresh, refresh_session = False, *args, **kwargs)
+        return self._generate_session_data(session_config= session_config, refresh= True, refresh_session = False, *args, **kwargs)
       raise err
     if not refresh_session:
       self._ms_graph_sessions[session_key] = response
