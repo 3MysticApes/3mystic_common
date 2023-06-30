@@ -31,6 +31,20 @@ class helper_type_common(base):
     )
     return self.general(*args, **kwargs)
   
+  def requests(self, unset = False, *args, **kwargs):
+    if(unset):
+      self._unset("_requests")
+      return
+
+    if hasattr(self, "_requests"):
+      return self._requests
+    
+    from threemystic_common.domain.helpers.type.requests import helper_type_requests as helper
+    self._requests = helper(
+      main_reference= self._main_reference
+    )
+    return self.requests(*args, **kwargs)
+  
   def int(self, unset = False, *args, **kwargs):
     if(unset):
       self._unset("_int")

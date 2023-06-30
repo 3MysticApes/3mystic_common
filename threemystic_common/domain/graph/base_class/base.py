@@ -25,7 +25,7 @@ class graph_base(base):
     pass
 
   @abstractmethod
-  def generate_session_header(self, session_config, refresh= False, *args, **kwargs):
+  def generate_session_header(self, session_config, refresh= False,  refresh_session = False, *args, **kwargs):
     pass
 
   @abstractmethod
@@ -166,33 +166,53 @@ class graph_base(base):
     self._base_openid_config = result.json()
     return self.get_openid_config(*args, **kwargs)
   
-  def send_request(self, *args, **kwargs):    
+  def send_request(self, url, method = "get", scope = None, params = None, headers = None, data = None, version = "v1.0", session_config = None, *args, **kwargs):    
     """
-    This function is a general method to send requests. It will auto added the required information to authtenticate.
+    This function is a general method to send requests. It will try to handel the call in a more graceful way
     """
+    
     try:
-      return self.__send_request(
-        **kwargs
+      return self._send_request(
+        url, method = method, scope = scope, 
+        params = params, headers = headers, 
+        data = data, version = version, 
+        session_config = session_config, 
+        *args, **kwargs
       )
     
     except requests.exceptions.HTTPError as err:
       if err.response.status_code == 401:
         self.get_common().get_logger().warning("MSGRAPH-Unauthorized for url")
         self._get_auth_header(scope= kwargs.get("graph_scope"), refresh= True)
-        return self.send_request(
+        return self._send_request(
+          url, method = method, scope = scope, 
+          params = params, headers = headers, 
+          data = data, version = version, 
+          session_config = session_config, 
           *args, **kwargs
         )
       
-      # if err.response.status_code == 400:
-        # error_details = err.response.json()
-      
+      if err.response.status_code == 400:
+        error_details = err.response.json()
+        if self.get_common().helper_type().string().set_case(string_value= error_details.get("error").get("code"), case= "lower") == "invalidsession":
+          if session_config is not None:
+            self.generate_session_header(session_config= session_config, refresh= True, refresh_session= True )
+            return self._send_request(
+              url, method = method, scope = scope, 
+              params = params, headers = headers, 
+              data = data, version = version, 
+              session_config = session_config, 
+              *args, **kwargs
+            )
+
+      # need someway to track a bad refresh so it generates a new session.
       raise err
     except Exception as err:
       raise err
   
-  def __send_request(self, url, method = "get", scope = None, params = None, headers = None, data = None, version = "v1.0", session_config = None, *args, **kwargs):
+  def _send_request(self, url, method = "get", scope = None, params = None, headers = None, data = None, version = "v1.0", session_config = None, *args, **kwargs):
     """
-    This function is a general method to send requests. It will auto added the required information to authtenticate.
+    This is the direct call to the send request. You have to handel the errors
     """
 
     if headers is None:
@@ -243,7 +263,7 @@ class graph_base(base):
               "err": err,
               "url": graph_url,
               "method": method,
-              "data": self.get_common().helper_json().dumps(data= data) if data is not None else "",
+              "data": self.get_common().helper_json().dumps(data= data) if data is not None and not self.get_common().helper_type().general().is_type(obj= data, type_check= bytes) else "",
               "headers": self.get_common().helper_json().dumps(data= headers) if headers is not None else "",
               "params": self.get_common().helper_json().dumps(data= params) if params is not None else "",
             }
@@ -256,7 +276,7 @@ class graph_base(base):
           "err": err,
           "url": graph_url,
           "method": method,
-          "data": self.get_common().helper_json().dumps(data= data) if data is not None else "",
+          "data": self.get_common().helper_json().dumps(data= data) if data is not None and not self.get_common().helper_type().general().is_type(obj= data, type_check= bytes) else "",
           "headers": self.get_common().helper_json().dumps(data= headers) if headers is not None else "",
           "params": self.get_common().helper_json().dumps(data= params) if params is not None else "",
         }
@@ -271,7 +291,7 @@ class graph_base(base):
           "err": err,
           "url": graph_url,
           "method": method,
-          "data": self.get_common().helper_json().dumps(data= data) if data is not None else "",
+          "data": self.get_common().helper_json().dumps(data= data) if data is not None and not self.get_common().helper_type().general().is_type(obj= data, type_check= bytes) else "",
           "headers": self.get_common().helper_json().dumps(data= headers) if headers is not None else "",
           "params": self.get_common().helper_json().dumps(data= params) if params is not None else "",
         }
