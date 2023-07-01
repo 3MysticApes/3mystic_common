@@ -51,6 +51,10 @@ class graph_base(base):
   @abstractmethod
   def _get_auth_header(self, scope= None, refresh = False,  *args, **kwargs):
     pass
+  
+  @abstractmethod
+  def generate_url_prefix(self, version = "v1.0", *args, **kwargs):
+    pass
 
   @property
   def graph_credentials(self):
@@ -218,8 +222,8 @@ class graph_base(base):
     if headers is None:
       headers = {}
 
-    if not url.startswith("/"):
-      url = f'/{url}'
+    if url.startswith("/"):
+      url = f'{url[1:]}'
     safe_headers = self.get_common().helper_type().dictionary().merge_dictionary(
       [
         {
@@ -239,7 +243,7 @@ class graph_base(base):
         safe_headers[session_header["key"]] = session_header["value"]
 
 
-    graph_url = f'https://{self.get_openid_config()["msgraph_host"]}/{version}{url}{self._process_params(params)}'
+    graph_url = f'{self.generate_url_prefix(version= version)}{url}{self._process_params(params)}'
     
     try:
       param_data = {

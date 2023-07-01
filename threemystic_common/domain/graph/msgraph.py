@@ -16,6 +16,9 @@ class graph_msgraph(base):
   def openid_config_default(self, *args, **kwargs):
     return "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration"
   
+  def generate_url_prefix(self, version = "v1.0", *args, **kwargs):
+    return f'https://{self.get_openid_config()["msgraph_host"]}/{version}/'
+  
   def create_folder_data(self, name = "New Folder", folder_args = None, *args, **kwargs):
     if not self.get_common().helper_type().general().is_type(obj= folder_args, type_check= dict):
       return {
