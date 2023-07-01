@@ -5,7 +5,7 @@ A set of common files that are used for the various projects under 3 Mystic Apes
 
 ## pip
 
-This project is currently designed to be installed via pip
+This project is currently designed to be installed via pip <br/>
 pip install https://github.com/3MysticApes/3mystic_common
 
 Once installed you will get the following command:
