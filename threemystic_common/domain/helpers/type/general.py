@@ -51,3 +51,33 @@ class helper_type_general(base):
       return copy.deepcopy(object_copy)
     
     return copy.copy(object_copy)
+  
+  
+
+  def get_container_value(self, container, value_key, *args, **kwargs):
+    if self.get_common().helper_type().general().is_type(value_key, str):
+      if hasattr(container, value_key):
+        return getattr(container, value_key)
+      if value_key in container:
+        return container[value_key]
+      
+      return None
+    
+    if not self.get_common().helper_type().general().is_type(value_key, list):
+      raise self.get_common().exception().exception(
+        exception_type = "argument"
+      ).not_implemented(
+        logger = self.get_common().get_logger(),
+        name = "value_key",
+        message = f"value_key must be either a string or an array. Got Type: {type(value_key)}"
+      )
+    
+    if len(value_key) < 1:
+      return None
+    
+    while len(value_key) > 0:
+      container = self.get_container_value(container= container, value_key= value_key.pop(0), *args, **kwargs)
+      if container is None:
+        return container
+
+    return container
