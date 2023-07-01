@@ -75,8 +75,8 @@ class helper_type_general(base):
     if len(value_key) < 1:
       return None
     
-    while len(value_key) > 0:
-      container = self.get_container_value(container= container, value_key= value_key.pop(0), *args, **kwargs)
+    for key_value in value_key:
+      container = self.get_container_value(container= container, value_key= key_value, *args, **kwargs)
       if container is None:
         return container
 
