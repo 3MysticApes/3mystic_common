@@ -65,6 +65,9 @@ class helper_type_string(base):
     if self.is_null_or_whitespace(string_value= string_value):
       return string_value
     
+    if not self._main_reference().helper_type().general().is_type(obj= string_value, type_check= str):
+      return string_value
+    
     valid_case_options = ["upper", "lower", "camel", "pascal"]
     case = self.trim(string_value=case).lower()
     if case not in valid_case_options:
