@@ -121,6 +121,7 @@ class helper_type_string(base):
   
   # split_string
   def split(self, string_value, trim_data = True, remove_empty = True, separator = "[,;]", regex_split = True, *args, **kwargs):
+    
     if regex_split:
       return self._main_reference.helper_type().regex().split(
         string_value= string_value,

@@ -19,7 +19,12 @@ class helper_type_dictionary(base):
     
     return -1
 
-  def merge_dictionary(self, dict1, dict2 = None, replace_on_merge = False, custom_handlers = {}, unique_list = False, update_first_dictionary = True):
+  def _merge_dictionary_update_new_dictionary(self, dict1, *args, **kwargs):
+    tmp_dict = {}
+    tmp_dict.update(dict1)
+    return tmp_dict
+  
+  def merge_dictionary(self, dict1, dict2 = None, replace_on_merge = False, unique_list = False, update_first_dictionary = True, *args, **kwargs):
     if dict1 is None and dict2 is None:
       return None
     if dict1 is None and dict2 is not None:
@@ -30,19 +35,23 @@ class helper_type_dictionary(base):
       if main_dict_index < 0:
         return None
       
-      return_dict = dict1[main_dict_index] if update_first_dictionary else {}.update(dict1[main_dict_index])      
-      if (main_dict_index + 1) == len(dict1):
+      return_dict = dict1[main_dict_index] if update_first_dictionary else self._merge_dictionary_update_new_dictionary(dict1[main_dict_index])    
+      
+      main_dict_index += 1
+      if (main_dict_index) == len(dict1):
         return return_dict
 
       for dict_item in dict1[main_dict_index:]:
-        self.merge_dictionary(dict1= return_dict, dict2=dict_item,)
+        return_dict = self.merge_dictionary(dict1= return_dict, dict2=dict_item, unique_list= unique_list, update_first_dictionary = True)
+
       return return_dict
 
     if dict2 is None:
       return dict1
     
-    update_dictionary = dict1 if update_first_dictionary else {}.update(dict1)
-    if replace_on_merge:
+    update_dictionary = dict1 if update_first_dictionary else self._merge_dictionary_update_new_dictionary(dict1)
+ 
+    if replace_on_merge or len(update_dictionary) < 1:
       update_dictionary.update(dict2)
       return update_dictionary
 
@@ -51,13 +60,21 @@ class helper_type_dictionary(base):
     for key, item in update_dictionary.items():
       if self._main_reference.helper_type().general().is_type(item, dict):
         if key in dict2_copy:
-          self.merge_dictionary(item, dict2_copy[key])
+          self.merge_dictionary(item, dict2_copy[key], unique_list= unique_list, update_first_dictionary = True)
           dict2_copy.pop(key, None)
         continue
       if self._main_reference.helper_type().general().is_type(item, list):
         if key in dict2_copy:
           item += dict2_copy[key]
-          if unique_list:
+
+          if unique_list is not None and unique_list is not False:
+            if self._main_reference.helper_type().general().is_type(unique_list, str):
+              if key != unique_list:
+                continue
+            if self._main_reference.helper_type().general().is_type(unique_list, list):
+              if key not in unique_list:
+                continue
+
             item = self._main_reference.helper_type().list().unique_list(item)
           dict2_copy.pop(key, None)
           

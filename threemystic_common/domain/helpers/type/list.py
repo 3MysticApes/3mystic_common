@@ -21,15 +21,26 @@ class helper_type_list(base):
       name = "data",
       message = f"Data is None"
     )
-  def unique_list(self, data, *args, **kwargs):
+  def unique_list(self, data, case_sensitive = True, *args, **kwargs):
+    if data is None or not self._main_reference.helper_type().general().is_type(data, list):
+      return data
+    
     if len(data) < 2:
       return data
       
     unique_data = {}
     for item in data:
-      unique_data[self._main_reference.encryption().hash(hash_method="sha1").generate_hash(self._main_reference.helper_json().dumps(data= item))] = item
+      if case_sensitive:
+        unique_data[self._main_reference.encryption().hash(hash_method="sha1").generate_hash(self._main_reference.helper_json().dumps(data= item))] = item
+        continue
+      unique_data[(self._main_reference.encryption().hash(hash_method="sha1").generate_hash(
+        self._main_reference.helper_type().string().set_case(
+          string_value= self._main_reference.helper_json().dumps(data= item),
+          case = "lower"
+        ))
+      )] = item
 
-    return [ val for val in unique_data.values()]
+    return list(unique_data.values())
   
   def __flatten(self, data, flatten_list, recursive= True, *args, **kwargs):
     if not self._main_reference.helper_type().general().is_type(data, list):
