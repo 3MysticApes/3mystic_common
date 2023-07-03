@@ -151,6 +151,20 @@ class helper_type_datetime(base):
       iso_datetime_str = f"{iso_datetime_str[0:len(iso_datetime_str) - 1]}+00:00"
     
     return datetime.fromisoformat(iso_datetime_str)
+  
+  def get_iso_datetime(self, dt = None, *args, **kwargs):    
+    if dt is None:
+      dt = self.get()
+    
+    iso_format = dt.isoformat(sep="T",timespec='auto')
+    if iso_format.endswith("00:00"):
+      iso_format = iso_format[0:len(iso_format)-5]
+      if iso_format.endswith("+") or iso_format.endswith("+"):
+        iso_format = iso_format[0:len(iso_format)-1]
+      iso_format = f'{iso_format}z'
+    
+    return iso_format
+  
 
   # convert_datetime_utc
   def convert_utc(self, dt, default_utctime = True):   
