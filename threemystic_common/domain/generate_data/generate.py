@@ -30,7 +30,7 @@ class generate_data(base):
           message = f"Contains an element using a reserved key: {key}. Reserved Keys: {self._get_restricted_keynames()}"
         )   
 
-      if item.get("skip"):
+      if item.get("skip") is not None:
         if item["skip"](return_data):
           return_data[key] = None
           continue
