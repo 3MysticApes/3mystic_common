@@ -19,7 +19,7 @@ class helper_type_datetime(base):
     utc = self.convert_to_utc(dt=datetime.utcnow(), default_utctime= True)
     return self.convert_time_zone(dt= utc, time_zone= time_zone)
   
-  def time_delta(self, microseconds = 0, milliseconds= 0, seconds = 0, minutes =0, hours = 0, days = 0, weeks = 0, time_zone="utc", *args, **kwargs):    
+  def time_delta(self, microseconds = 0, milliseconds= 0, seconds = 0, minutes =0, hours = 0, days = 0, weeks = 0,  *args, **kwargs):
     return timedelta(
       microseconds= microseconds,milliseconds= milliseconds,
       seconds= seconds, minutes= minutes, hours= hours,
