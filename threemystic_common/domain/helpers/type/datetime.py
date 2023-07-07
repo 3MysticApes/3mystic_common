@@ -223,7 +223,7 @@ class helper_type_datetime(base):
 
   # datetime_ticks
   def ticks(self, dt, tick_startdate = datetime(year= 1, month= 1, day= 1, hour= 0, minute= 0, tzinfo= dateutil_tz.tzutc()), *args, **kwargs):
-    return self.datetime_ticks_as_seconds(dt= dt, tick_startdate= tick_startdate) * 10**7
+    return self.ticks_as_seconds(dt= dt, tick_startdate= tick_startdate) * 10**7
   
   # isTokenExpired_Now
   def is_token_expired_now(self, compare_datetime, buffer_delta = timedelta(seconds=300)):   
