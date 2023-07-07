@@ -34,6 +34,12 @@ class helper_type_datetime(base):
   
   def get_epoch(self, *args, **kwargs):    
     return self.convert_to_utc(dt= datetime.utcfromtimestamp(0))
+  
+  def get_from_timestamp(self, time_delta, *args, **kwargs):
+    if self._main_reference.helper_type().general().is_type(time_delta, int):
+      time_delta = timedelta(milliseconds= time_delta)
+
+    return (self.convert_to_utc(dt= datetime.utcfromtimestamp(0)) + time_delta)
 
   # convert_datetime_utc
   def convert_to_utc(self, dt, default_utctime = True, *args, **kwargs):   
