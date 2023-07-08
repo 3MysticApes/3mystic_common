@@ -12,6 +12,10 @@ class base(main_base):
     self.__provider = provider
 
   @classmethod
+  def get_nonprod_names(cls, *args, **kwargs):
+    return ["dev", "test", "stage", "nonprod", "non-prod"]
+
+  @classmethod
   def get_supported_providers(cls, *args, **kwargs):
     return ["aws", "azure"]
   
