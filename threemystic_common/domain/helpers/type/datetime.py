@@ -49,7 +49,7 @@ class helper_type_datetime(base):
       current_month = f'0{current_month}'
     # YYYY-MM-DDTHH:MM:SS.mmmmmm    
     year_month_parsed_dt = (self.parse_iso(
-      iso_datetime_str= f'{now_utc.year + years}-{current_month}-{now_utc.strftime("%dT%H:%M:%S.%f")}+00:00'
+      iso_datetime_str= f'{now_utc.year + years}-{current_month}-{self.datetime_as_string(dt_format="%dT%H:%M:%S.%f", dt= now_utc)}+00:00'
     ) + return_data)
     
     return_data = (year_month_parsed_dt - now_utc)
@@ -64,6 +64,9 @@ class helper_type_datetime(base):
   
   def get_epoch(self, *args, **kwargs):    
     return self.convert_to_utc(dt= datetime.utcfromtimestamp(0))
+  
+  def get_timestamp(self, dt, *args, **kwargs):
+    return dt.timestamp()
   
   def get_from_timestamp(self, time_delta, *args, **kwargs):
     if self._main_reference.helper_type().general().is_type(time_delta, int):
