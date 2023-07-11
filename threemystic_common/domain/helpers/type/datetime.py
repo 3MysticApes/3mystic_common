@@ -19,11 +19,41 @@ class helper_type_datetime(base):
     utc = self.convert_to_utc(dt=datetime.utcnow(), default_utctime= True)
     return self.convert_time_zone(dt= utc, time_zone= time_zone)
   
-  def time_delta(self, microseconds = 0, milliseconds= 0, seconds = 0, minutes =0, hours = 0, days = 0, weeks = 0,  *args, **kwargs):
-    return timedelta(
+  def time_delta(self, microseconds = 0, milliseconds= 0, seconds = 0, minutes =0, hours = 0, days = 0, weeks = 0, months = 0, years = 0,  *args, **kwargs):
+    return_data = timedelta(
       microseconds= microseconds,milliseconds= milliseconds,
       seconds= seconds, minutes= minutes, hours= hours,
       days= days, weeks= weeks )
+    
+    years = self._main_reference.helper_type().int().get(int_value= years, default= 0)
+    months = self._main_reference.helper_type().int().get(int_value= months, default= 0)
+    
+    now_utc = self.get()
+    current_month = now_utc.month
+    while (months + current_month) <= 0 or (months + current_month) > 12:
+      months = (months + current_month)
+      if months <= 0:
+        years -= 1
+        current_month = 12
+        continue
+
+      if months > 12:
+        months -= 12
+        years += 1
+        current_month = 0
+        continue
+      
+      
+    current_month += months
+    if current_month < 10:
+      current_month = f'0{current_month}'
+    # YYYY-MM-DDTHH:MM:SS.mmmmmm    
+    year_month_parsed_dt = (self.parse_iso(
+      iso_datetime_str= f'{now_utc.year + years}-{current_month}-{now_utc.strftime("%dT%H:%M:%S.%f")}+00:00'
+    ) + return_data)
+    
+    return_data = (year_month_parsed_dt - now_utc)
+    return return_data
   
   def time_delta_seconds(self, total_seconds = 300, time_zone="utc", *args, **kwargs):    
     return self.time_delta(

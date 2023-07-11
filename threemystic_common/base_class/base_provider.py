@@ -13,7 +13,7 @@ class base(main_base):
 
   @classmethod
   def get_nonprod_names(cls, *args, **kwargs):
-    return ["dev", "test", "stage", "nonprod", "non-prod", "development", "devtest"]
+    return ["devtest", "development", "dev", "test", "stage", "nonprod", "non-prod" ]
 
   @classmethod
   def get_supported_providers(cls, *args, **kwargs):
