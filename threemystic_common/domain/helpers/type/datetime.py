@@ -19,7 +19,10 @@ class helper_type_datetime(base):
     utc = self.convert_to_utc(dt=datetime.utcnow(), default_utctime= True)
     return self.convert_time_zone(dt= utc, time_zone= time_zone)
   
-  def time_delta(self, microseconds = 0, milliseconds= 0, seconds = 0, minutes =0, hours = 0, days = 0, weeks = 0, months = 0, years = 0,  *args, **kwargs):
+  def time_delta(self, microseconds = 0, milliseconds= 0, seconds = 0, minutes =0, hours = 0, days = 0, weeks = 0, months = 0, years = 0, dt = None,  *args, **kwargs):
+    """
+    dt argument is only needed when using months or years. If None it uses utc_now
+    """
     return_data = timedelta(
       microseconds= microseconds,milliseconds= milliseconds,
       seconds= seconds, minutes= minutes, hours= hours,
@@ -28,8 +31,10 @@ class helper_type_datetime(base):
     years = self._main_reference.helper_type().int().get(int_value= years, default= 0)
     months = self._main_reference.helper_type().int().get(int_value= months, default= 0)
     
-    now_utc = self.get()
-    current_month = now_utc.month
+    if dt is None:
+      dt = self.get()
+
+    current_month = dt.month
     while (months + current_month) <= 0 or (months + current_month) > 12:
       months = (months + current_month)
       if months <= 0:
@@ -47,12 +52,25 @@ class helper_type_datetime(base):
     current_month += months
     if current_month < 10:
       current_month = f'0{current_month}'
+    
+    month_year_dt = self.parse_iso(
+      iso_datetime_str= f'{dt.year + years}-{current_month}-01{self.datetime_as_string(dt_format="T%H:%M:%S.%f", dt= dt)}+00:00'
+    )
+    
+    dt_day = dt.day
+    last_day_of_month = self.last_day_month_day(month= month_year_dt.month, year= month_year_dt.year)
+    if dt_day > last_day_of_month:
+      dt_day = 1
+      current_month += 1
+      if current_month > 12:
+        current_month = 1
+        years += 1
     # YYYY-MM-DDTHH:MM:SS.mmmmmm    
     year_month_parsed_dt = (self.parse_iso(
-      iso_datetime_str= f'{now_utc.year + years}-{current_month}-{self.datetime_as_string(dt_format="%dT%H:%M:%S.%f", dt= now_utc)}+00:00'
+      iso_datetime_str= f'{dt.year + years}-{current_month}-{self.get_day_as_2digits(day= dt_day)}{self.datetime_as_string(dt_format="T%H:%M:%S.%f", dt= dt)}+00:00'
     ) + return_data)
     
-    return_data = (year_month_parsed_dt - now_utc)
+    return_data = (year_month_parsed_dt - dt)
     return return_data
   
   def time_delta_seconds(self, total_seconds = 300, time_zone="utc", *args, **kwargs):    
@@ -189,6 +207,7 @@ class helper_type_datetime(base):
     if self._main_reference.helper_type().string().set_case(string_value= iso_datetime_str, case= "lower")[-1] == "z":
       iso_datetime_str = f"{iso_datetime_str[0:len(iso_datetime_str) - 1]}+00:00"
     
+    print(iso_datetime_str)
     return datetime.fromisoformat(iso_datetime_str)
   
   def get_iso_datetime(self, dt = None, *args, **kwargs):    
@@ -303,8 +322,10 @@ class helper_type_datetime(base):
       dt = self.get(*args, **kwargs)
     return (dt - timedelta(days= 1))
   
-  def last_day_month(self, month, *args, **kwargs):  
-    year = self.get().year
+  def last_day_month(self, month, year = None, *args, **kwargs):  
+    if year is None:
+      year = self.get().year
+
     month = int(month) + 1
     if month > 12:
       month = 1
@@ -313,5 +334,5 @@ class helper_type_datetime(base):
     dt = self.datetime_from_string(f"{year}/{self.get_month_as_2digits(month= month)}/01")
     return (dt - timedelta(days= 1))
   
-  def last_day_month_day(self, month, *args, **kwargs):      
-    return self.last_day_month(month= month).day
+  def last_day_month_day(self, month, year = None, *args, **kwargs):      
+    return self.last_day_month(month= month, year= year).day

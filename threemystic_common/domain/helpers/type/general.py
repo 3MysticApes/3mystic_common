@@ -34,6 +34,9 @@ class helper_type_general(base):
     except:
       return type(obj) == type_check
   
+  def get_type(self, obj, *args, **kwargs):
+    return type(obj)
+  
   def if_null_default(self, check_val, default_val, enforce_type = None, *args, **kwargs):
     if enforce_type is not None and not self.is_type(check_val, enforce_type):
       return default_val
