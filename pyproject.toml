@@ -35,7 +35,8 @@ dependencies = [
   "requests >= 2.27.1",
   "cryptography >= 38.0.3",
   "typing-extensions >= 4.4.0",
-  "pathvalidate >= 3.0.0"
+  "pathvalidate >= 3.0.0",  
+  "CurrencyConverter >= 0.17",
 ]
 dynamic = ["version"]
 

@@ -50,11 +50,9 @@ class helper_type_datetime(base):
       
       
     current_month += months
-    if current_month < 10:
-      current_month = f'0{current_month}'
     
     month_year_dt = self.parse_iso(
-      iso_datetime_str= f'{dt.year + years}-{current_month}-01{self.datetime_as_string(dt_format="T%H:%M:%S.%f", dt= dt)}+00:00'
+      iso_datetime_str= f'{dt.year + years}-{self.get_month_as_2digits(month= current_month)}-01{self.datetime_as_string(dt_format="T%H:%M:%S.%f", dt= dt)}+00:00'
     )
     
     dt_day = dt.day
@@ -67,7 +65,7 @@ class helper_type_datetime(base):
         years += 1
     # YYYY-MM-DDTHH:MM:SS.mmmmmm    
     year_month_parsed_dt = (self.parse_iso(
-      iso_datetime_str= f'{dt.year + years}-{current_month}-{self.get_day_as_2digits(day= dt_day)}{self.datetime_as_string(dt_format="T%H:%M:%S.%f", dt= dt)}+00:00'
+      iso_datetime_str= f'{dt.year + years}-{self.get_month_as_2digits(month= current_month)}-{self.get_day_as_2digits(day= dt_day)}{self.datetime_as_string(dt_format="T%H:%M:%S.%f", dt= dt)}+00:00'
     ) + return_data)
     
     return_data = (year_month_parsed_dt - dt)
@@ -207,7 +205,6 @@ class helper_type_datetime(base):
     if self._main_reference.helper_type().string().set_case(string_value= iso_datetime_str, case= "lower")[-1] == "z":
       iso_datetime_str = f"{iso_datetime_str[0:len(iso_datetime_str) - 1]}+00:00"
     
-    print(iso_datetime_str)
     return datetime.fromisoformat(iso_datetime_str)
   
   def get_iso_datetime(self, dt = None, *args, **kwargs):    

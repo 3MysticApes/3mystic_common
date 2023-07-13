@@ -202,6 +202,23 @@ class common(base):
     )
     return self.helper_yaml(*args, **kwargs)
   
+  # https://github.com/alexprengere/currencyconverter
+  def helper_currency(self, unset = False, fallback_on_wrong_date = True, use_decimal = False, fallback_on_missing_rate= True, fallback_on_missing_rate_method= "linear_interpolation", *args, **kwargs):
+    if(unset):
+      self._unset("_helper_currency")
+      return
+    
+    if hasattr(self, "_helper_currency"):
+      return self._helper_currency
+    
+    from threemystic_common.domain.helpers.currency import helper_currency as helper
+    self._helper_currency = helper(
+      main_reference= self,
+      fallback_on_wrong_date = fallback_on_wrong_date, use_decimal = use_decimal, fallback_on_missing_rate= fallback_on_missing_rate, fallback_on_missing_rate_method= fallback_on_missing_rate_method,
+      *args, **kwargs
+    )
+    return self.helper_currency(*args, **kwargs)
+  
   def helper_parallel_processing(self, unset = False, *args, **kwargs):
     if(unset):
       self._unset("_helper_parallel_processing")
