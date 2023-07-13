@@ -1,4 +1,5 @@
 from threemystic_common.exceptions.generate_data.quit import quit_exception
+import readline
 
 class base_handler:
   def __init__(self, *args, **kwargs):

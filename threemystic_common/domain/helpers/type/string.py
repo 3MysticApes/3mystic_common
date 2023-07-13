@@ -58,6 +58,9 @@ class helper_type_string(base):
     if self.is_null_or_whitespace(string_value= string_value):
       return ""
     
+    if not self._main_reference.helper_type().general().is_type(obj= string_value, type_check= str):
+      string_value = str(string_value)
+
     return string_value.strip() if trim_chars is None else string_value.strip(trim_chars)
 
 
