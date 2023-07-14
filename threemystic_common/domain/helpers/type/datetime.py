@@ -216,7 +216,7 @@ class helper_type_datetime(base):
       iso_format = iso_format[0:len(iso_format)-5]
       if iso_format.endswith("+") or iso_format.endswith("+"):
         iso_format = iso_format[0:len(iso_format)-1]
-      iso_format = f'{iso_format}z'
+      iso_format = f'{iso_format}Z'
     
     return iso_format
   
