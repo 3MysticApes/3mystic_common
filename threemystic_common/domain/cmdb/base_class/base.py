@@ -52,17 +52,6 @@ class cmdb_base(base):
       message = f"Not Implemented"
     )
 
-  # aws_get_resource_groups
-  @abstractmethod
-  def get_resource_groups(self, *args, **kwargs):    
-    raise self._main_reference.exception().exception(
-      exception_type = "function"
-    ).not_implemented(
-      logger = self._main_reference.get_common().get_logger(),
-      name = "get_resource_groups",
-      message = f"Not Implemented"
-    )
-
   def get_report_default_columns(self, data_item, *args, **kwargs):
     if self._main_reference.helper_type().general().is_type(data_item["default_columns"], dict):
       return data_item["default_columns"]["default"]
