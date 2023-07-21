@@ -12,7 +12,7 @@ class exception_base(base):
     if logger is None:
       logger = self._main_reference.get_logger()
     
-    log_action = logger.exception if not log_as_warning else logger.debug
+    log_action = logger.exception if not log_as_warning else logger.warning
     if name is not None and self._exception_type != "generic":
       return_exception = Exception(f"{self._exception_type}: {name}\n{message}")
       log_action(
