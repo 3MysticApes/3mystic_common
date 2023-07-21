@@ -9,12 +9,14 @@ class common(base):
     def __init__(self):
       pass
 
-  def __init__(self, logger = None, config_path = None, *args, **kwargs) -> None:     
+  def __init__(self, logger = None, config_path = None, logging_level = 40, *args, **kwargs) -> None:     
     super().__init__(*args, **kwargs)
     self._logger = self.helper_type().logging().get_child_logger(
       child_logger_name= "3mystic_common_lib_logger",
       logger= logger
     )
+    self.helper_type().logging().set_logger_level(self._logger, logging_level)
+    
     self.update_configuration(config_path= config_path)
   
   
