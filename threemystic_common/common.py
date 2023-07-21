@@ -10,6 +10,8 @@ class common(base):
       pass
 
   def __init__(self, logger = None, config_path = None, logging_level = 40, *args, **kwargs) -> None:     
+    # logging levels
+    # https://docs.python.org/3/library/logging.html#logging-levels
     super().__init__(*args, **kwargs)
     self._logger = self.helper_type().logging().get_child_logger(
       child_logger_name= "3mystic_common_lib_logger",
