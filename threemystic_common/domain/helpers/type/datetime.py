@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from time import sleep
 
 from dateutil import tz as dateutil_tz
 from threemystic_common.base_class.base_common import base
@@ -12,6 +13,9 @@ class helper_type_datetime(base):
 
   def __init__(self, *args, **kwargs) -> None:
     super().__init__(logger_name= f"helper_type_datetime", *args, **kwargs)
+  
+  def time_sleep(self, seconds, *args, **kwargs):    
+    sleep( seconds)
   
   # get_utc_datetime
   # get_utc
