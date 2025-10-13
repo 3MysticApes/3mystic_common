@@ -1,4 +1,5 @@
-import ruamel.yaml as yaml
+import ruamel.yaml as YAML
+from io import StringIO
 
 from threemystic_common.base_class.base_common import base
 
@@ -10,10 +11,14 @@ class helper_yaml(base):
     super().__init__(logger_name= f"helper_json", *args, **kwargs)
 
   def dumps(self, data, multiple_documents = False, use_safe = True, *args, **kwargs):   
-    if not multiple_documents:
-      return yaml.safe_dump(data, default_flow_style= False) if use_safe else yaml.dump(data)
-
-    return yaml.safe_dump_all(data, default_flow_style= False) if use_safe else yaml.dump_all(data)
+    yaml = YAML.YAML(typ='safe', pure=True) if use_safe else YAML.YAML()
+    with StringIO() as buffer:
+      if not multiple_documents:
+        yaml.dump(data, buffer)
+      else:
+        yaml.dump_all(data, buffer)
+      
+      return buffer.getvalue()
   
   def loads(self, data, return_empty_on_null = True, multiple_documents = False, use_safe = True,  *args, **kwargs):   
     if data is None:
@@ -36,8 +41,9 @@ class helper_yaml(base):
       return self._load_stream(yaml_stream= yaml_stream, multiple_documents= multiple_documents, use_safe= use_safe)
 
   def _load_stream(self, yaml_stream, multiple_documents, use_safe, *args, **kwargs):    
+    yaml = YAML.YAML(typ='safe', pure=True) if use_safe else YAML.YAML()
     if not multiple_documents:
-      return yaml.safe_load(stream= yaml_stream) if use_safe else yaml.load(stream= yaml_stream, Loader=yaml.FullLoader)  
+      return yaml.load(stream= yaml_stream) 
 
-    docs = yaml.safe_load_all(stream= yaml_stream) if use_safe else yaml.load_all(stream= yaml_stream, Loader=yaml.FullLoader)  
+    docs = yaml.load_all(stream= yaml_stream)
     return [doc for doc in docs]

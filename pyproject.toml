@@ -2,7 +2,7 @@
 # https://github.com/pypa/hatch/blob/master/pyproject.toml
 
 [build-system]
-requires = ["hatchling>=1.11.0"]
+requires = ["hatchling>=1.14.0"]
 build-backend = "hatchling.build"
 
 [project]
@@ -22,12 +22,13 @@ classifiers = [
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.14",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
   "colorama; platform_system == 'Windows'",
-  "ruamel.yaml >= 0.17.31",
+  "ruamel.yaml >= 0.18.7",
   "asyncio >= 3.4.3",
   "python-dateutil >= 2.8.2",
   "openpyxl >= 3.0.9",
@@ -56,6 +57,10 @@ exclude = [
   "/docs",
   "/scripts",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["threemystic_common"]
+artifacts = [ ]
 
 [tool.black]
 line-length = 120
