@@ -29,15 +29,14 @@ classifiers = [
 dependencies = [
   "colorama; platform_system == 'Windows'",
   "ruamel.yaml >= 0.18.7",
-  "asyncio >= 3.4.3",
-  "python-dateutil >= 2.8.2",
-  "openpyxl >= 3.0.9",
-  "pycryptodomex >= 3.14.1",
-  "requests >= 2.27.1",
-  "cryptography >= 38.0.3",
-  "typing-extensions >= 4.4.0",
-  "pathvalidate >= 3.0.0",  
-  "CurrencyConverter >= 0.17",
+  "python-dateutil >= 2.9.0",
+  "openpyxl >= 3.1.5",
+  "pycryptodomex >= 3.23.0",
+  "requests >= 2.32.1",
+  "cryptography >= 46.0.0",
+  "typing-extensions >= 4.15.0",
+  "pathvalidate >= 3.3.0",  
+  "CurrencyConverter >= 0.18",
 ]
 dynamic = ["version"]
 
