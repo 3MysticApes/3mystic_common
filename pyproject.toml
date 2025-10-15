@@ -10,7 +10,7 @@ name = "threemystic-common"
 description = "Common Library for for various tool sets"
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 authors = [
   { name="Ron Truex" },
 ]
