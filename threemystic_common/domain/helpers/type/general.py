@@ -82,6 +82,7 @@ class helper_type_general(base):
     
     for key_value in value_key:
       container = self.get_container_value(container= container, value_key= key_value, *args, **kwargs)
+      
       if container is None:
         return container
 
