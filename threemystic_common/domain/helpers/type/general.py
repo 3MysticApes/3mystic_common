@@ -58,7 +58,9 @@ class helper_type_general(base):
   
 
   def get_container_value(self, container, value_key, *args, **kwargs):
-    if self.get_common().helper_type().general().is_type(value_key, str):
+    if self.get_common().helper_type().general().is_type(value_key, str):      
+      if self.get_common().helper_type().general().is_type(container, dict):
+        return container.get(value_key, None)
       if hasattr(container, value_key):
         return getattr(container, value_key)
       if value_key in container:
