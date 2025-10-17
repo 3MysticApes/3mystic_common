@@ -62,6 +62,8 @@ class helper_type_list(base):
     return flatten_list
 
   def flatten(self, data, recursive= True, *args, **kwargs):
+    if(data is None):
+      return None
     if not self._main_reference.helper_type().general().is_type(data, list):
       raise self._main_reference.exception().exception(
         exception_type = "argument"
@@ -72,18 +74,7 @@ class helper_type_list(base):
       )
     
     return self.__flatten(data= data, flatten_list= [], recursive= recursive)
-  
-  # flatten_array_length
-  def flatten_length(self, *args, **kwargs):
-    # this shouldn't be needed I Can just do a len off the flatten
-    raise self._main_reference.exception().exception(
-      exception_type = "function"
-    ).exception(
-        logger = self._main_reference.get_common().get_logger(),
-      name = "flatten_length",
-      message = f"Not Needed"
-    )
-  
+   
   def array_chucked(self, data, chunk_size):
     if self._main_reference.helper_type().general().is_type(data, list):
       raise self._main_reference.exception().exception(
